@@ -5,4 +5,4 @@
 2. We wrote our team contract together. Eric documented the contract on the website.
 3. Drew was absent due to a conflict. He told us prior to the meeting, so we are okay with it.
 4. Emily uploaded files on google drive.
-5. Ayomi distributed works for the lab 1 report.
+5. Ayomi distributed work for the lab 1 report.
