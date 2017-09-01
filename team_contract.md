@@ -1,6 +1,6 @@
 # ECE 3400, Semester Fall 2017, Team #6
 
-### Team Members: Ayomi Sanni (acs333), Drew Mera (dnm54), Emily Sun (eys27), Eric Lyne (eal234), Jacob Glueck (jng55), Joo Chae (jc2464)
+### Team Members: Ayomi Sanni (acs333), Drew Mera (dnm54), Emily Sun (eys27), Eric Lyne (eal234), Jacob Glueck (jng55), Joo Yeon Chae (jc2464)
 
 ### Team Procedures
 
@@ -56,7 +56,7 @@ Oct 21st - Nov 3rd (Lab 4 and Milestone 3): Eric Lyne
 
 Nov 4th - Nov 17th (Milestone 4): Jacob Glueck
 
-Nov 18th - Dec 5th (Final competition and deadline for the website): Joo Chae
+Nov 18th - Dec 5th (Final competition and deadline for the website): Joo Yeon Chae
 
 ------
 
