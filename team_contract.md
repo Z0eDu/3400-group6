@@ -16,31 +16,31 @@
 
 _Team Participation:_
 
-1.	Strategies to ensure cooperation and equal distribution of tasks: Assign roles in advance
+1.	Strategies to ensure cooperation and equal distribution of tasks: Assign roles in advance, roles will be assigned by team leader.
 
 2.	Strategies for encouraging/including ideas from all team members (team maintenance): Do not unconstructively critize other's work, give ideas freely.
 
-3.	Strategies for keeping on task (task maintenance): Each assignment will be given on Messenger
+3.	Strategies for keeping on task (task maintenance): Each assignment will be distributed on Messenger.
 
-4.	Strategies to get help if you're stuck: Consult each other, consult TA's
+4.	Strategies to get help if you're stuck: Consult each other, consult TA's.
 
 _Personal Accountability:_
 
-1.	Expected individual attendance, punctuality, and participation at all team meetings: Yes
+1.	Expected individual attendance, punctuality, and participation at all team meetings: Every individual should be present at team meetings, unless indicated otherwise. If absent, team member should notify the rest of the team 24 hours ahead of time.
 
-2.	Expected level of responsibility for fulfilling team assignments, timelines, and deadlines: Yes
+2.	Expected level of responsibility for fulfilling team assignments, timelines, and deadlines: Everyone should be expected to fulfill their assigned duty and adhere to all deadlines. 
 
-3.	Expected level of communication with other team members: Yes
+3.	Expected level of communication with other team members: All team members should speak up and be willing to listen to ideas and suggestions from teammates.Team members should update each other if any issues or questions arise.
 
-4.	Expected level of commitment to team decisions and tasks: Yes
+4.	Expected level of commitment to team decisions and tasks: Each team member should be fully committed to delivering their task well. Team decisions will be made by everyone on a consensus.
 
-5. How should a team member catch up if they have to miss a meeting: Read minutes
+5. How should a team member catch up if they have to miss a meeting: Read meeting minutes and ask team members what their deliverable should be, if necessary.
 
 _Consequences for Failing to Follow Procedures and Fulfill Expectations_
 
-1.	Describe how, as a group, you would handle individuals who do not live up to this contract: Tell them blatantly
+1.	Describe how, as a group, you would handle individuals who do not live up to this contract: Remind the individual kindly.
 
-2.	Describe what your team will do if these infractions continue: Tell a TA
+2.	Describe what your team will do if these infractions continue: Communicate with the TA.
 
 ### Team Leadership
 
