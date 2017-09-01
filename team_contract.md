@@ -1,6 +1,6 @@
-#ECE 3400, Semester # Fall 2017  Team #6
+# ECE 3400, Semester Fall 2017, Team #6
 
-#Team Members: Ayomi Sanni (acs333) Drew Mera (dnm54) Emily Sun (eys27) Eric Lyne (eal234) Jacob Glueck (jng55) Joo Chae (jc2464)
+### Team Members: Ayomi Sanni (acs333), Drew Mera (dnm54), Emily Sun (eys27), Eric Lyne (eal234), Jacob Glueck (jng55), Joo Chae (jc2464)
 
 ### Team Procedures
 
@@ -58,17 +58,15 @@ Nov 4th - Nov 17th (Milestone 4): Jacob Glueck
 
 Nov 18th - Dec 5th (Final competition and deadline for the website): Joo Chae
 
-(If you are more or less than 6 people, please adjust the time periods accordingly).
-
 ------
 
 * I participated in formulating the standards, roles, and procedures as stated in this contract.
 * I understand that I am obligated to abide by these terms and conditions.
 * I understand that if I do not abide by these terms and conditions, I will suffer the consequences as stated in this contract.
 
-1.  Ayomi Sanni _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _  date  9/1/2017
-2.  Drew Mera_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _  date  9/1/2017
-3.  Emily Sun_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _  date  9/1/2017
-4.  Eric Lyne_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _  date  9/1/2017
-5.  Jacob Glueck_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _  date  9/1/2017
-6.  Joo Chae  date  9/1/2017
+1.  Ayomi Sanni, 9/1/2017
+2.  Drew Mera,  9/1/2017
+3.  Emily Sun, 9/1/2017
+4.  Eric Lyne, 9/1/2017
+5.  Jacob Glueck, 9/1/2017
+6.  Joo Yeon Chae, 9/1/2017
