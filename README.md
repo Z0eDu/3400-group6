@@ -13,6 +13,7 @@
 
 * Lab: Monday 1930 - 2230
 * [Team contract](team_contract.md)
+* [Meeting notes](meeting_notes.md)
 
 ## Labs
 * [Lab 1](lab1/README.md)
