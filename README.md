@@ -1,5 +1,7 @@
 # Cornell ECE 3400 Fall 2017: Group 6
 
+## Monday 1930 - 2230
+
 ## Members
 
 * Ayomi Sanni (acs333)
