@@ -7,7 +7,7 @@
 * Emily Sun (eys27)
 * Eric Lyne (eal234)
 * Jacob Glueck (jng55)
-* Joo Chae (jc2464)
+* Joo Yeon Chae (jc2464)
 
 ## Team information
 
