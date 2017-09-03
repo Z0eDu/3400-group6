@@ -9,8 +9,7 @@
 
 We connected the potentiometer to the Arduino like so:
 
-<img src="https://lh4.googleusercontent.com/gH3Ndi3KH1D2QZhWMhl0BO8blufS9mbOZ5FZL_F1u9qA6LcSqTXGxjh26cy33M7byJCtSRBC05_yq0w=w958-h928">
-
+<img src="https://docs.google.com/uc?id=0B1r9QYTd8YNrTmRwODRBZjV1OGs">
 
 We then modified the `AnalogReadSerial` example (found in the "Examples" menu in the Arduino IDE) to this:
 
