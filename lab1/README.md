@@ -82,6 +82,22 @@ Finally, we attached the LED leads to the oscilloscope to see what the PWM signa
 
 <iframe src="https://drive.google.com/file/d/0B1r9QYTd8YNrTHhhUzBoUzY1aWM/preview" width="640" height="480"></iframe>
 
+## Mapping the Potentiometer to the Servo
+We then mapped the values from the potentiometer to control the servo.  The Parallax continuous rotation servo takes in values from a PWM signal ranging from 0-180.  At a value of 90, the servo is not moving; increasing toward 180 the servo speeds up in one direction, and decreasing to 0 the servo speeds up in the other direction.
+
+Just like with the LED, we read in the value from the potentiometer and mapped it to the relevant range of values (0-180 this time):
+```cpp
+  val = analogRead(potpin);            // reads the value of the potentiometer
+  val = map(val, 0, 1023, 0, 180);     // scale the reading between 0 and 180
+```
+Next, we outputted that value to the servo to make it move according to the reading taken from the potentiometer.  We waited 15 ms to ensure that the servo could alter its movement after the reading is received:
+
+```cpp
+  myservo.write(val);                  // sets the servo position according to the scaled value
+  delay(15);                          // waits for the servo to get there
+```
+
+Afterward, we hooked up the input to the servo to watch how the PWM signal changes with the values of the potentiometer.  Like before, the higher the value, the larger the duty cycle, except this time the duty cycle didn't change as drastically because we mapaped the values from 0-180 until 0-255.
 
 ## Assembling the Robot
 
@@ -122,7 +138,8 @@ void loop() {
 }
 ```
 
-<iframe src= "https://drive.google.com/file/d/1Xzk2YGG8ga-V-myhpGhhaubiew9y8vnGVg/preview" width="640" height="480"></iframe>
+[Click here to watch our robot move](https://drive.google.com/file/d/1Xzk2YGG8ga-V-myhpGhhaubiew9y8vnGVg/view?usp=sharing)
+
 
 
 ## Work Distribution
