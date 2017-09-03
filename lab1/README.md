@@ -5,6 +5,11 @@
 
 **Team 2**: Drew, Eric, Joo Yeon
 
+## Internal LED
+
+<img src="https://drive.google.com/drive/u/1/folders/0B1r9QYTd8YNrLXFZT0NOd1Z4WDQ">
+
+
 ## Reading the Potentiometer
 
 We connected the potentiometer to the Arduino like so:
