@@ -13,6 +13,13 @@ Using the "Blink" code in File> Examples> 1.Basics> Blink of Arduino IDE, we cou
 
 [<img src = "https://docs.google.com/uc?id=0B1QvEdmy23tjMkxKWTdHTW5EMWc" height="400">](https://drive.google.com/file/d/0B1r9QYTd8YNrNDVkeWtic3RsVTg/view?usp=sharing)
 
+## External LED
+
+The external LED was connected in series with a 1k ohm resistor from pin 11 to ground on the Arduino. 
+
+
+
+We then modifyied the Blink code to incorperate an external LED by replacing all instances of LED_BUILTIN with 11.
 
 ## Reading the Potentiometer
 
