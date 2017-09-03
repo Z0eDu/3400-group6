@@ -64,15 +64,42 @@ Finally, we attached the LED leads to the oscilloscope to see what the PWM signa
 
 We took cues from the sample robot in Lab 1 to put together our own. To begin with, we first assembled the materials we needed, as shown below.
 
-<img src="https://docs.google.com/uc?id=1c0DkySEyc6ZJIq_NvBGxPMbfce-NcpBacw">
+<img src="https://docs.google.com/uc?id=1c0DkySEyc6ZJIq_NvBGxPMbfce-NcpBacw" height="400">
 
 The first thing we mounted were the Parallax servos. The servo was first attached to the mount, and then to the baseboard.
 
+<img src="https://docs.google.com/uc?id=0B1r9QYTd8YNrMFJWd3B5aWZJazA" height="400">
+
+<img src="https://docs.google.com/uc?id=0B1r9QYTd8YNrSlNid18tNGQ4SXc" height="400">
+
 The wheels were then mounted to the servos. We noticed that some of the wheels available to us did not have have a mating part that fit well on the servo. This should be something we think about when designing our own wheels down the line.
+
+<img src="https://docs.google.com/uc?id=1eazASuumQB5sKiFpqPIOJ5tm4pvzpyMf9w" height="400">
 
 The battery, Arduino, and front-wheel were also put together as follows.
 
+<figure>
+	<img src="https://docs.google.com/uc?id=0B1r9QYTd8YNrZkRPRGNJLWdRVGs" height="400">
+	<figcaption>Battery pack mounts</figcaption>
+</figure>
+
+<figure>
+	<img src="https://docs.google.com/uc?id=1Y8ZkJ1QISOGYjLM5azNQpE-2pwf03tD-eA" height="400">
+	<figcaption> Mounted Arduino with standoffs and front wheel </figcaption>
+</figure>
+
+
 The next thing we had to think about was how we would power both the necessary peripherals. To power two servos from our 5V battery pack, we spliced a USB cable such that we were able to get the individual power and ground wires. Since there is only a single 5V port on the Arduino, this served us well as a temporary hack so both servos could access 5V through connection on a breadboard. The Arduino was powered through a 9V battery, that we placed beneath the Arduino mount on the robot.
+
+<figure>
+	<img src="https://docs.google.com/uc?id=1Bg2puudVcm_6CI4zmGxcJnTOrO3zEnfg6Q" height="400">
+	<figcaption Spliced USB cable </figcaption>
+</figure>
+
+<figure>
+	<img src="https://docs.google.com/uc?id=1XYp7w0-QsNITrHD-juAAXtCYlJIOh87FHg" height="400">
+	<figcaption> Final assembly of robot with breadboard </figcaption>
+</figure>
 
 ## Work Distribution
 
