@@ -17,7 +17,7 @@ Using the "Blink" code in File> Examples> 1.Basics> Blink of Arduino IDE, we cou
 
 The external LED was connected in series with a 1k ohm resistor from pin 11 to ground on the Arduino as seen below. 
 
-<img src="https://lh5.googleusercontent.com/dZ0ipAf4XxQlwILLBHHNXkyqfywNvDJrBbO-4K96-c6hN7M613GplfWuVup-vMF9cph8c_oD0ddCc9c=w1920-h950-rw">
+<iframe src="https://drive.google.com/file/d/0BzwUNPRyfTQHeVZfMXVLR2U4Ylk/preview" width="640" height="480"></iframe>
 
 We then modifyied the Blink code to incorperate an external LED by replacing all instances of LED_BUILTIN with 11 `setup()` and  `loop()`. 
 E.g.
