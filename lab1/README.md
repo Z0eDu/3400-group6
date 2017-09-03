@@ -30,13 +30,13 @@ void loop() {
   // print the results to the Serial Monitor:
   Serial.print("sensor = ");
   Serial.println(sensorValue);
-  
+
   // wait 0.5 s
   delay(500);
 }
 ```
 
-Running that code printed out the analog value to the serial montior. It worked as expected. Here's a picture of the setup:
+Running that code printed out the analog value to the serial monitor. It worked as expected. Here's a picture of the setup:
 
 ![pot-arduino-pic](https://lh3.googleusercontent.com/JNyjTZcaYBsktG-GgPXmr5g1LiwD3qYWUKJQjxEcN2iUXuDAzjWPYiJ3dkpXt9Dzm1st8-mC-3oZ_4lJfVMb9Q=w958-h928-rw)
 
@@ -88,7 +88,7 @@ As we rotated the potentiometer, the LED changed brightness:
 
 <iframe src="https://drive.google.com/file/d/0B1r9QYTd8YNrcDJ1dDNBdV81cWs/preview" width="640" height="480"></iframe>
 
-Finally, we attached the LED leads to the osciliscope to see what the PWM signal looked like. As we rotated the potentiometer, the duty cycle of the square wave changed:
+Finally, we attached the LED leads to the oscilloscope to see what the PWM signal looked like. As we rotated the potentiometer, the duty cycle of the square wave changed:
 
 <iframe src="https://drive.google.com/file/d/0B1r9QYTd8YNrTHhhUzBoUzY1aWM/preview" width="640" height="480"></iframe>
 
