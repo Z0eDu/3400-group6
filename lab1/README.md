@@ -7,7 +7,7 @@
 
 ## Internal LED
 
-[![Internal LED Video]<img src = "https://docs.google.com/uc?id=0B1QvEdmy23tjMkxKWTdHTW5EMWc" height="400">](https://drive.google.com/file/d/0B1r9QYTd8YNrNDVkeWtic3RsVTg/view?usp=sharing)
+[!<img src = "https://docs.google.com/uc?id=0B1QvEdmy23tjMkxKWTdHTW5EMWc" height="400">](https://drive.google.com/file/d/0B1r9QYTd8YNrNDVkeWtic3RsVTg/view?usp=sharing)
 
 
 ## Reading the Potentiometer
