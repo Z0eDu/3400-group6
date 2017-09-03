@@ -37,11 +37,11 @@ void loop() {
 
 Running that code printed out the analog value to the serial monitor. It worked as expected. Here's a picture of the setup:
 
-<img src="https://lh3.googleusercontent.com/JNyjTZcaYBsktG-GgPXmr5g1LiwD3qYWUKJQjxEcN2iUXuDAzjWPYiJ3dkpXt9Dzm1st8-mC-3oZ_4lJfVMb9Q=w958-h928-rw" height="400">
+<img src="https://docs.google.com/uc?id=1agDfyTcCZsLoZ3OFB3EO3M6aQLcQPt0MUA" height="400">
 
 The next phase was controlling an LED with the potentiometer reading. We built the following circuit:
 
-<img src="https://lh3.googleusercontent.com/NvmLU-VTT4xxGs-HEeml8QHDkVfilKOdsGNLrtKcOV_cO_buRRkR3HlFNr8q5r9mPaAeqVNUQz1jw7s=w958-h928">
+<img src="https://docs.google.com/uc?id=0B1r9QYTd8YNrUTg1RnY0di1TWXM">
 
 Note that the LED is connected to pin 9 on the Arduino, which is important because pin 9 is a PWM pin.
 
@@ -81,7 +81,7 @@ void loop() {
 
 This code reads the potentiometer value on analog pin 3, and then scales it from 0-1023 to 0-255. This is because `analogWrite` only writes values from 0-255. We ran this code, and it worked as expected. Here's a picture of the setup:
 
-<img src="https://lh4.googleusercontent.com/4FmPaz6YKEXsQJIiJLPTTpvqcTRwlgFndAD_v6Nyi3Hm2NhopjWdL9dQhDR1LKHmJh3NfO3MMjIRCqsTuZ5mKA=w958-h928-rw" height="400">
+<img src="https://docs.google.com/uc?id=1DkwUjAhXsz1BvK-RX3O2ZzwMXiiciTsKhQ" height="400">
 
 As we rotated the potentiometer, the LED changed brightness:
 
