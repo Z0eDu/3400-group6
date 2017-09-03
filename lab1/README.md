@@ -114,7 +114,8 @@ The next thing we had to think about was how we would power the necessary periph
 ## Driving the Robot
 
 After we finished assembling our robot, we wrote code for our robot to move straight in a line and turn around in a circle. We recorded the robot moving in a circle. One of the servos was moving faster than the other one, so our robot appears to be moving around a stationary point.
-<img src = "https://drive.google.com/open?id=0B4-ue266N8b0T0pyWnZMbDRsY0U" />
+<img src = "https://drive.google.com/open?id=0B4-ue266N8b0T0pyWnZMbDRsY0U" width = "500">
+[<img src = "https://drive.google.com/open?id=1Xzk2YGG8ga-V-myhpGhhaubiew9y8vnGVg" height = "400">] (https://drive.google.com/open?id=1Xzk2YGG8ga-V-myhpGhhaubiew9y8vnGVg)
 
 
 
