@@ -98,6 +98,7 @@ Next, we outputted that value to the servo to make it move according to the read
 ```
 
 Click the image below to watch the servo move:
+
 [<img src = "https://drive.google.com/uc?id=0ByCM4xElwbIeZnIwVzc2dU5lQnc" width="350">](https://drive.google.com/file/d/0B1QvEdmy23tjR0hJVzNJMWMzbnc/view?usp=sharing)
 
 Afterward, we hooked up the input to the servo to the oscilloscope to watch how the PWM signal changes with the values of the potentiometer.  As before, the more we increased the value, the larger the duty cycle was, except this time the duty cycle didn't change as drastically because we mapaped the values from 0-180 instead of 0-255.
