@@ -2,6 +2,7 @@
 
 ### Teams
 **Team 1**: Ayomi, Emily, Jacob
+
 **Team 2**: Drew, Eric, Joo Yeon
 
 ## Reading the Potentiometer
