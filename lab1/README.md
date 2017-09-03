@@ -1,4 +1,4 @@
-# Lab 1: Microcontroller
+# Lab 1
 
 ### Teams
 **Team 1**: Ayomi, Emily, Jacob
@@ -11,7 +11,7 @@ We downloaded Arduino IDE from [this link.](https://www.arduino.cc/en/Main/Softw
 
 Using the "Blink" code in File> Examples> 1.Basics> Blink of Arduino IDE, we could make the internal LED blink.
 
-[<img src = "https://docs.google.com/uc?id=0B1QvEdmy23tjMkxKWTdHTW5EMWc" width="350">](https://drive.google.com/file/d/0B1r9QYTd8YNrNDVkeWtic3RsVTg/view?usp=sharing)
+[<img src = "https://docs.google.com/uc?id=0B1QvEdmy23tjMkxKWTdHTW5EMWc" height="400">](https://drive.google.com/file/d/0B1r9QYTd8YNrNDVkeWtic3RsVTg/view?usp=sharing)
 
 ## External LED
 
@@ -96,6 +96,9 @@ Next, we outputted that value to the servo to make it move according to the read
   myservo.write(val);                  // sets the servo position according to the scaled value
   delay(15);                          // waits for the servo to get there
 ```
+
+Click the image below to watch the servo move:
+[<img src = "https://drive.google.com/uc?id=0ByCM4xElwbIeZnIwVzc2dU5lQnc" width="350">](https://drive.google.com/file/d/0B1QvEdmy23tjR0hJVzNJMWMzbnc/view?usp=sharing)
 
 Afterward, we hooked up the input to the servo to the oscilloscope to watch how the PWM signal changes with the values of the potentiometer.  As before, the more we increased the value, the larger the duty cycle was, except this time the duty cycle didn't change as drastically because we mapaped the values from 0-180 instead of 0-255.
 
