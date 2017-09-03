@@ -115,8 +115,12 @@ The next thing we had to think about was how we would power the necessary periph
 
 After we finished assembling our robot, we wrote code for our robot to move straight in a line and turn around in a circle. We recorded the robot moving in a circle. One of the servos was moving faster than the other one, so our robot appears to be moving around a stationary point.
 ```cpp
-  servoRight.write(180);
-  servoLeft.write(180);
+void loop() {
+  // scale it to use it with the servo (value between 0 and 180)
+  servoRight.write(0);
+  servoLeft.write(180);// sets the servo position according to the scaled value   94 is where it stopped
+  delay(15);                           // waits for the servo to get there
+}
 ```
 
 <img src = "https://drive.google.com/open?id=1Xzk2YGG8ga-V-myhpGhhaubiew9y8vnGVg" height = "400">
