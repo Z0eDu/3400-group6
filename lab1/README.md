@@ -11,28 +11,25 @@ We connected the potentiometer to the Arduino like so:
 
 <img src="https://docs.google.com/uc?id=0B1r9QYTd8YNrTmRwODRBZjV1OGs">
 
-We then modified the `AnalogReadSerial` example (found in the "Examples" menu in the Arduino IDE) to this:
-
+We then modified the `AnalogReadSerial` example (found in the "Examples" menu in the Arduino IDE). In order to communicate over USB, we initialized the serial connection in `setup()`:
 ```cpp
-const int analogInPin = A3;  // Analog input pin that the potentiometer is attached to
-int sensorValue = 0;        // value read from the pot
-
 void setup() {
   // initialize serial communications at 9600 bps:
   Serial.begin(9600);
 }
-
-void loop() {
-  // read the analog in value:
-  sensorValue = analogRead(analogInPin);
-
-  // print the results to the Serial Monitor:
-  Serial.print("sensor = ");
-  Serial.println(sensorValue);
-
-  // wait 0.5 s
-  delay(500);
-}
+```
+We read the sensor value in an `analogRead` call:
+```cpp
+int sensorValue = analogRead(A3)
+```
+We printed it to the screen using `Serial` methods:
+```cpp
+Serial.print("sensor = ");
+Serial.println(sensorValue);
+```
+Finally, we waited for half a second using `delay`:
+```cpp
+delay(500)
 ```
 
 Running that code printed out the analog value to the serial monitor. It worked as expected. Here's a picture of the setup:
@@ -45,41 +42,13 @@ The next phase was controlling an LED with the potentiometer reading. We built t
 
 Note that the LED is connected to pin 9 on the Arduino, which is important because pin 9 is a PWM pin.
 
-We then modified the `AnalogInOutSerial` example to this:
+We then modified the `AnalogInOutSerial` example. After reading the sensor value (as discussed above), we scaled it from 0-1023 to 0-255, and then wrote it to the output pin:
 
 ```cpp
-const int analogInPin = A3;  // Analog input pin that the potentiometer is attached to
-const int analogOutPin = 9; // Analog output pin that the LED is attached to
-
-int sensorValue = 0;        // value read from the pot
-int outputValue = 0;        // value output to the PWM (analog out)
-
-void setup() {
-  // initialize serial communications at 9600 bps:
-  Serial.begin(9600);
-}
-
-void loop() {
-  // read the analog in value:
-  sensorValue = analogRead(analogInPin);
-  // map it to the range of the analog out:
-  outputValue = map(sensorValue, 0, 1023, 0, 255);
-  // change the analog out value:
-  analogWrite(analogOutPin, outputValue);
-
-  // print the results to the Serial Monitor:
-  Serial.print("sensor = ");
-  Serial.print(sensorValue);
-  Serial.print("\t output = ");
-  Serial.println(outputValue);
-
-  // wait 2 milliseconds before the next loop for the analog-to-digital
-  // converter to settle after the last reading:
-  delay(2);
-}
+  int outputValue = map(sensorValue, 0, 1023, 0, 255);
+  analogWrite(9, outputValue);
 ```
-
-This code reads the potentiometer value on analog pin 3, and then scales it from 0-1023 to 0-255. This is because `analogWrite` only writes values from 0-255. We ran this code, and it worked as expected. Here's a picture of the setup:
+The scaling was needed because `analogWrite` only writes values from 0-255. We ran this code, and it worked as expected. Here's a picture of the setup:
 
 <img src="https://docs.google.com/uc?id=1DkwUjAhXsz1BvK-RX3O2ZzwMXiiciTsKhQ" height="400">
 
