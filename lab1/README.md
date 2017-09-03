@@ -79,12 +79,12 @@ The wheels were then mounted to the servos. We noticed that some of the wheels a
 <img src="https://docs.google.com/uc?id=1eazASuumQB5sKiFpqPIOJ5tm4pvzpyMf9w" height="350">
 
 
-The battery, Arduino, and front-wheel were also put together as follows.
+The battery mount, Arduino, and front-wheel were also assembled as follows.
 
 <img src="https://docs.google.com/uc?id=0B1r9QYTd8YNrZkRPRGNJLWdRVGs" width="350"/> <img src="https://docs.google.com/uc?id=1Y8ZkJ1QISOGYjLM5azNQpE-2pwf03tD-eA" width="350" height="467"/> 
 
 
-The next thing we had to think about was how we would power the necessary peripherals. To power two servos from our 5V battery pack, we spliced a USB cable such that we were able to get the individual power and ground wires. Since there is only a single 5V port on the Arduino, this served us well as a temporary hack so both servos could access 5V through connection on a breadboard. The Arduino was powered through a 9V battery, that we placed beneath the Arduino mount on the robot. With everything put together, our robot was ready to be programmed.
+The next thing we had to think about was how we would power the necessary peripherals. To power two servos from our 5V battery pack, we spliced a USB cable such that we were able to get the individual power and ground wires. Since there is only a single 5V port on the Arduino, this served us well as a temporary hack so both servos could access 5V through connection on a breadboard. The Arduino was powered through a 9V battery, that we placed beneath the Arduino mount on the robot. With everything assembled, our robot was ready to be programmed.
 
 <img src="https://docs.google.com/uc?id=1Bg2puudVcm_6CI4zmGxcJnTOrO3zEnfg6Q" width="350"/> <img src="https://docs.google.com/uc?id=1XYp7w0-QsNITrHD-juAAXtCYlJIOh87FHg" width="350"/> 
 
