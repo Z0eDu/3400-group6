@@ -7,6 +7,10 @@
 
 ## Internal LED
 
+We downloaded Arduino IDE from [this link.](https://www.arduino.cc/en/Main/Software)
+
+Using the "Blink" code in File> Examples> 1.Basics> Blink directory of Arduino IDE, we could make the internal LED blink.
+
 [!<img src = "https://docs.google.com/uc?id=0B1QvEdmy23tjMkxKWTdHTW5EMWc" height="400">](https://drive.google.com/file/d/0B1r9QYTd8YNrNDVkeWtic3RsVTg/view?usp=sharing)
 
 
@@ -97,5 +101,6 @@ The next thing we had to think about was how we would power the necessary periph
 
 ## Work Distribution
 
+*   Joo Yeon: internal LED blink
 *   Jacob: reading the potentiometer
 *   Emily: assembling the robot
