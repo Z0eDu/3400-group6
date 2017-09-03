@@ -60,6 +60,20 @@ Finally, we attached the LED leads to the oscilloscope to see what the PWM signa
 
 <iframe src="https://drive.google.com/file/d/0B1r9QYTd8YNrTHhhUzBoUzY1aWM/preview" width="640" height="480"></iframe>
 
+## Assembling the Robot
+
+We took cues from the sample robot in Lab 1 to put together our own. To begin with, we first assembled the materials we needed, as shown below.
+
+
+The first thing we mounted were the Parallax servos. The servo was first attached to the mount, and then to the baseboard.
+
+The wheels were then mounted to the servos. We noticed that some of the wheels available to us did not have have a mating part that fit well on the servo. This should be something we think about when designing our own wheels down the line.
+
+The battery, Arduino, and front-wheel were also put together as follows.
+
+The next thing we had to think about was how we would power both the necessary peripherals. To power two servos from our 5V battery pack, we spliced a USB cable such that we were able to get the individual power and ground wires. Since there is only a single 5V port on the Arduino, this served us well as a temporary hack so both servos could access 5V through connection on a breadboard. The Arduino was powered through a 9V battery, that we placed beneath the Arduino mount on the robot.
+
 ## Work Distribution
 
 *   Jacob: reading the potentiometer
+*   Emily: assembling the robot
