@@ -64,7 +64,7 @@ Finally, we attached the LED leads to the oscilloscope to see what the PWM signa
 
 We took cues from the sample robot in Lab 1 to put together our own. To begin with, we first assembled the materials we needed, as shown below.
 
-<img src=https://docs.google.com/uc?id=1c0DkySEyc6ZJIq_NvBGxPMbfce-NcpBacw>
+<img src="https://docs.google.com/uc?id=1c0DkySEyc6ZJIq_NvBGxPMbfce-NcpBacw">
 
 The first thing we mounted were the Parallax servos. The servo was first attached to the mount, and then to the baseboard.
 
