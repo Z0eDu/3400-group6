@@ -131,3 +131,4 @@ void loop() {
 *   Joo Yeon: internal LED blink
 *   Jacob: reading the potentiometer
 *   Emily: assembling the robot
+*   Ayomi: Driving the robot
