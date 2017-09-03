@@ -122,7 +122,7 @@ void loop() {
 }
 ```
 
-<img src="https://drive.google.com/file/d/1Xzk2YGG8ga-V-myhpGhhaubiew9y8vnGVg/preview" width="640" height="480">
+<img src="https://docs.google.com/uc?id=1Xzk2YGG8ga-V-myhpGhhaubiew9y8vnGVg" width="640" height="480">
 
 
 
