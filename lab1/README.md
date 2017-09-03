@@ -97,7 +97,7 @@ Next, we outputted that value to the servo to make it move according to the read
   delay(15);                          // waits for the servo to get there
 ```
 
-Afterward, we hooked up the input to the servo to watch how the PWM signal changes with the values of the potentiometer.  Like before, the higher the value, the larger the duty cycle, except this time the duty cycle didn't change as drastically because we mapaped the values from 0-180 until 0-255.
+Afterward, we hooked up the input to the servo to the oscilloscope to watch how the PWM signal changes with the values of the potentiometer.  As before, the more we increased the value, the larger the duty cycle was, except this time the duty cycle didn't change as drastically because we mapaped the values from 0-180 instead of 0-255.
 
 ## Assembling the Robot
 
@@ -146,5 +146,6 @@ void loop() {
 
 *   Joo Yeon: internal LED blink
 *   Jacob: reading the potentiometer
+*   Drew: mapping the potentiometer to the servo
 *   Emily: assembling the robot
 *   Ayomi: Driving the robot
