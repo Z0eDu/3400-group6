@@ -1,4 +1,4 @@
-# Lab 1
+# Lab 1: Microcontroller
 
 ### Teams
 **Team 1**: Ayomi, Emily, Jacob
