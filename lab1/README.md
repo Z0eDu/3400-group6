@@ -130,6 +130,7 @@ The battery mount, Arduino, and front-wheel were also assembled as follows.
 
 <img src="https://docs.google.com/uc?id=0B1r9QYTd8YNrZkRPRGNJLWdRVGs" width="350"/> <img src="https://docs.google.com/uc?id=1Y8ZkJ1QISOGYjLM5azNQpE-2pwf03tD-eA" width="350" height="467"/>
 
+<img src= "https://docs.google.com/uc?id=0B1r9QYTd8YNrbnJmZERpaTdKY0k" height="350">
 
 The next thing we had to think about was how we would power the necessary peripherals. To power two servos from our 5V battery pack, we spliced a USB cable such that we were able to get the individual power and ground wires. Since there is only a single 5V port on the Arduino, this served us well as a temporary hack so both servos could access 5V through connection on a breadboard. The Arduino was powered through a 9V battery, that we placed beneath the Arduino mount on the robot. With everything assembled, our robot was ready to be programmed.
 
@@ -141,12 +142,6 @@ The next thing we had to think about was how we would power the necessary periph
 After we finished assembling our robot, we wrote the code for our robot to move straight in a line and turn around in a circle. We recorded the robot moving in a circle. One of the servos was moving faster than the other one, so our robot appears to be moving around a stationary point.
 Here is the video:
 <iframe src="https://drive.google.com/file/d/1Xzk2YGG8ga-V-myhpGhhaubiew9y8vnGVg/preview" width="640" height="480"></iframe>
-
-## Soldering
-
-We soldered wires in order to make the battery connection.
-
-<img src= "https://docs.google.com/uc?id=0B1r9QYTd8YNrbnJmZERpaTdKY0k" height="350">
 
 ## Work Distribution
 
