@@ -140,6 +140,14 @@ The next thing we had to think about was how we would power the necessary periph
 ## Driving the Robot
 
 After we finished assembling our robot, we wrote the code for our robot to move straight in a line and turn around in a circle. We recorded the robot moving in a circle. One of the servos was moving faster than the other one, so our robot appears to be moving around a stationary point.
+```cpp	
+void loop() {
+      servoRight.write(180);
+      servoLeft.write(180);
+      delay(15);                       
+}
+```
+
 Here is the video:
 <iframe src="https://drive.google.com/file/d/1Xzk2YGG8ga-V-myhpGhhaubiew9y8vnGVg/preview" width="640" height="480"></iframe>
 
