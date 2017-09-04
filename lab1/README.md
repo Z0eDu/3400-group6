@@ -146,7 +146,7 @@ Here is the video:
 
 We also soldered wires in order to make the battery connection simple.
 
-<img src= "https://docs.google.com/uc?id=0B1r9QYTd8YNrbnJmZERpaTdKY0k">
+<img src= "https://docs.google.com/uc?id=0B1r9QYTd8YNrbnJmZERpaTdKY0k" width="640" height="480">
 
 ## Work Distribution
 
