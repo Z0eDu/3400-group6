@@ -1,4 +1,9 @@
-# Lab 1
+# Lab 1: Microcontroller
+
+### Objectives
+* Learn how to use the various functionalities of the Arduino Uno and the Arduino IDE.
+* Construct a simple functional Arduino program using multiple external components and the Arduino Uno.
+* Assemble our robot and have it perform a simple autonomous task
 
 ### Teams
 **Team 1**: Ayomi, Emily, Jacob
@@ -147,8 +152,9 @@ void loop() {
 
 ## Work Distribution
 
-*   Joo Yeon: internal LED blink
-*   Jacob: reading the potentiometer
-*   Drew: mapping the potentiometer to the servo
-*   Emily: assembling the robot
+*   Joo Yeon: Internal LED blink
+*   Eric: External LED
+*   Jacob: Reading the potentiometer
+*   Drew: Mapping the potentiometer to the servo
+*   Emily: Assembling the robot
 *   Ayomi: Driving the robot
