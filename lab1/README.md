@@ -144,7 +144,7 @@ Here is the video:
 
 ## Soldering
 
-We also soldered wires in order to make the battery connection simple.
+We soldered wires in order to make the battery connection simple.
 
 <img src= "https://docs.google.com/uc?id=0B1r9QYTd8YNrbnJmZERpaTdKY0k" height="350">
 
