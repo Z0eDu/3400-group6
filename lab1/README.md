@@ -15,11 +15,11 @@ Using the "Blink" code in File> Examples> 1.Basics> Blink of Arduino IDE, we cou
 
 ## External LED
 
-The external LED was connected in series with a 1k ohm resistor from pin 11 to ground on the Arduino as seen below. 
+The external LED was connected in series with a 1k ohm resistor from pin 11 to ground on the Arduino as seen below.
 
 <img src="https://docs.google.com/uc?id=0BzwUNPRyfTQHeVZfMXVLR2U4Ylk" height="400">
 
-We then modifyied the Blink code to incorperate an external LED by replacing all instances of LED_BUILTIN with 11 `setup()` and  `loop()`. 
+We then modifyied the Blink code to incorperate an external LED by replacing all instances of LED_BUILTIN with 11 `setup()` and  `loop()`.
 E.g.
 ```cpp
 void setup() {
@@ -93,13 +93,13 @@ Just like with the LED, we read in the value from the potentiometer and mapped i
 Next, we outputted that value to the servo to make it move according to the reading taken from the potentiometer.  We waited 15 ms to ensure that the servo could alter its movement after the reading is received:
 
 ```cpp
-  myservo.write(val);                  // sets the servo position according to the scaled value
-  delay(15);                          // waits for the servo to get there
+  myservo.write(val);               // sets the servo position according to the scaled value
+  delay(15);                        // waits for the servo to get there
 ```
 
-Click the image below to watch the servo change its movements as we moved the potentiometer:
+Here's a video of the servo moving in response to the potentiometer:
 
-[<img src = "https://drive.google.com/uc?id=0ByCM4xElwbIeZnIwVzc2dU5lQnc" width="350">](https://drive.google.com/file/d/0B1QvEdmy23tjR0hJVzNJMWMzbnc/view?usp=sharing)
+<iframe src="https://drive.google.com/file/d/0B1QvEdmy23tjR0hJVzNJMWMzbnc/preview" width="640" height="480"></iframe>
 
 Afterward, we hooked up the input to the servo to the oscilloscope to watch how the PWM signal changes with the values of the potentiometer.  As before, the more we increased the value, the larger the duty cycle was, except this time the duty cycle didn't change as drastically because we mapaped the values from 0-180 instead of 0-255.
 
@@ -113,7 +113,7 @@ We took cues from the sample robot in Lab 1 to put together our own. To begin wi
 
 The first thing we mounted were the Parallax servos. The servo was first attached to the mount, and then to the baseboard.
 
-<img src="https://docs.google.com/uc?id=0B1r9QYTd8YNrMFJWd3B5aWZJazA" width="350"/> <img src="https://docs.google.com/uc?id=0B1r9QYTd8YNrSlNid18tNGQ4SXc" width="350"/> 
+<img src="https://docs.google.com/uc?id=0B1r9QYTd8YNrMFJWd3B5aWZJazA" width="350"/> <img src="https://docs.google.com/uc?id=0B1r9QYTd8YNrSlNid18tNGQ4SXc" width="350"/>
 
 
 The wheels were then mounted to the servos. We noticed that some of the wheels available to us did not have have a mating part that fit well on the servo. This should be something we think about when designing our own wheels down the line.
@@ -123,12 +123,12 @@ The wheels were then mounted to the servos. We noticed that some of the wheels a
 
 The battery mount, Arduino, and front-wheel were also assembled as follows.
 
-<img src="https://docs.google.com/uc?id=0B1r9QYTd8YNrZkRPRGNJLWdRVGs" width="350"/> <img src="https://docs.google.com/uc?id=1Y8ZkJ1QISOGYjLM5azNQpE-2pwf03tD-eA" width="350" height="467"/> 
+<img src="https://docs.google.com/uc?id=0B1r9QYTd8YNrZkRPRGNJLWdRVGs" width="350"/> <img src="https://docs.google.com/uc?id=1Y8ZkJ1QISOGYjLM5azNQpE-2pwf03tD-eA" width="350" height="467"/>
 
 
 The next thing we had to think about was how we would power the necessary peripherals. To power two servos from our 5V battery pack, we spliced a USB cable such that we were able to get the individual power and ground wires. Since there is only a single 5V port on the Arduino, this served us well as a temporary hack so both servos could access 5V through connection on a breadboard. The Arduino was powered through a 9V battery, that we placed beneath the Arduino mount on the robot. With everything assembled, our robot was ready to be programmed.
 
-<img src="https://docs.google.com/uc?id=1Bg2puudVcm_6CI4zmGxcJnTOrO3zEnfg6Q" width="350"/> <img src="https://docs.google.com/uc?id=1XYp7w0-QsNITrHD-juAAXtCYlJIOh87FHg" width="350"/> 
+<img src="https://docs.google.com/uc?id=1Bg2puudVcm_6CI4zmGxcJnTOrO3zEnfg6Q" width="350"/> <img src="https://docs.google.com/uc?id=1XYp7w0-QsNITrHD-juAAXtCYlJIOh87FHg" width="350"/>
 
 
 ## Driving the Robot
