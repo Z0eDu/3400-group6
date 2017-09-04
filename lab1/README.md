@@ -142,6 +142,11 @@ After we finished assembling our robot, we wrote the code for our robot to move 
 Here is the video:
 <iframe src="https://drive.google.com/file/d/1Xzk2YGG8ga-V-myhpGhhaubiew9y8vnGVg/preview" width="640" height="480"></iframe>
 
+## Soldering
+
+We also soldered wires in order to make the battery connection simple.
+
+<img src= "https://docs.google.com/uc?id=0B1r9QYTd8YNrbnJmZERpaTdKY0k">
 
 ## Work Distribution
 
