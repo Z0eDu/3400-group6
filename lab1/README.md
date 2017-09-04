@@ -11,7 +11,7 @@ We downloaded Arduino IDE from [this link.](https://www.arduino.cc/en/Main/Softw
 
 Using the "Blink" code in File> Examples> 1.Basics> Blink of Arduino IDE, we could make the internal LED blink.
 
-[<img src = "https://docs.google.com/uc?id=0B1QvEdmy23tjMkxKWTdHTW5EMWc" height="400">](https://drive.google.com/file/d/0B1r9QYTd8YNrNDVkeWtic3RsVTg/view?usp=sharing)
+<iframe src="https://drive.google.com/file/d/0B1r9QYTd8YNrNDVkeWtic3RsVTg/preview" width="640" height="480"></iframe>
 
 ## External LED
 
@@ -142,8 +142,7 @@ void loop() {
 }
 ```
 
-[Click here to watch our robot move](https://drive.google.com/file/d/1Xzk2YGG8ga-V-myhpGhhaubiew9y8vnGVg/view?usp=sharing)
-
+<iframe src="https://drive.google.com/file/d/1Xzk2YGG8ga-V-myhpGhhaubiew9y8vnGVg/preview" width="640" height="480"></iframe>
 
 
 ## Work Distribution
