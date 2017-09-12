@@ -19,6 +19,7 @@
 #define DRIVE_NEUTRAL 90
 #define DRIVE_FORWARDS 120
 #define DRIVE_BACKWARDS 0
+#define DRIVE_TURN_SPEED 20
 
 #include <servo.h>
 Servo servo_left;
@@ -57,6 +58,22 @@ void drive(int dir) {
 
   servo_left.write(vl);
   servo_right.write(vr);
+}
+
+
+void rotate90(int dir) {
+  int vl = dir * DRIVE_TURN_SPEED + DRIVE_NEUTRAL;
+  int vr = - dir * DRIVE_TURN_SPEED + DRIVE_NEUTRAL;
+
+  servo_left.write(vl);
+  servo_right.write(vr);
+
+  while (lineStatus() == LINE_FOLLOW_GOOD) {
+    delay(REGULATION_DELAY);
+  }
+
+  servo_left.write(DRIVE_NEUTRAL);
+  servo_right.write(DRIVE_NEUTRAL);
 }
 
 int lineFollow() {
