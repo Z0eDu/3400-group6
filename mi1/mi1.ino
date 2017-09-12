@@ -2,7 +2,7 @@
 #define LEFT_IN A3
 #define RIGHT_IN A2
 #define RIGHT_OUT A1
-#define LINE_P 50
+#define LINE_P 5
 
 #define SERVO_LEFT 10
 #define SERVO_RIGHT 11
@@ -20,6 +20,7 @@
 #define DRIVE_FORWARDS 120
 #define DRIVE_BACKWARDS 0
 #define DRIVE_TURN_SPEED 20
+#define DRIVE_MAX 180
 
 #include <servo.h>
 Servo servo_left;
@@ -30,6 +31,11 @@ void setup() {
   Serial.begin(9600);
   servo_left.attach(SERVO_LEFT);
   servo_right.attach(SERVO_RIGHT);
+}
+
+void drive(int left, int right) {
+  servo_left.write(DRIVE_NEUTRAL + left);
+  servo_right.write(DRIVE_MAX - (DRIVE_NEUTRAL + right));
 }
 
 byte nsr(int pin) {
@@ -55,25 +61,21 @@ int lineStatus() {
 void drive(int dir) {
   int vl = LINE_P * dir / 255 + DRIVE_FORWARDS;
   int vr =  - LINE_P * dir / 255 + DRIVE_FORWARDS;
-
-  servo_left.write(vl);
-  servo_right.write(vr);
+  drive(vl, vr);
 }
 
 
 void rotate90(int dir) {
-  int vl = dir * DRIVE_TURN_SPEED + DRIVE_NEUTRAL;
-  int vr = - dir * DRIVE_TURN_SPEED + DRIVE_NEUTRAL;
+  int vl = dir * DRIVE_TURN_SPEED;
+  int vr = - dir * DRIVE_TURN_SPEED;
 
-  servo_left.write(vl);
-  servo_right.write(vr);
+  drive(vl, vr)
 
   while (lineStatus() == LINE_FOLLOW_GOOD) {
     delay(REGULATION_DELAY);
   }
 
-  servo_left.write(DRIVE_NEUTRAL);
-  servo_right.write(DRIVE_NEUTRAL);
+  drive(0, 0);
 }
 
 int lineFollow() {
