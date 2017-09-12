@@ -6,3 +6,8 @@
 3. Drew was absent due to a conflict. He told us prior to the meeting, so we are okay with it.
 4. Emily uploaded files on google drive.
 5. Ayomi distributed work for the lab 1 report.
+
+## 2017.09.08
+1. We discussed what open lab times work best next week. We agreed to decide who will go to which one, after lab Monday night 
+2. We broke up the teams for lab 2. The Acoustic Team: Ayomi, Eric, Jacob; The Optical Team: Joo-yeon, Emily, Drew
+3. We chose a second meeting time that works for everyone. Which we added to the team contract.

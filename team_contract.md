@@ -4,7 +4,7 @@
 
 ### Team Procedures
 
-* Weekly meetings will occur at Kimball B11 at 11:15 on Friday. Be on time there will not be reminds unless meeting time or location is adjusted. Announcements for adjustments will be made the day before at the least. Formal agendas, notes, and mintues will be rotated from meeting to meeting, and stored onto the website for others' use. Motivation to stay on track will be provided through the opportunity to leave early. Consensus will be required for any major decision. Messenger will be used as a means of communication. Up to three hours delay will be accepted during daylight hours, indefinite otherwise. 
+* Weekly meetings will occur at Kimball B11 at 11:15 on Friday and Duffield Hall at 7:00 pm on Wednesday. Be on time there will not be reminds unless meeting time or location is adjusted. Announcements for adjustments will be made the day before at the least. Formal agendas, notes, and mintues will be rotated from meeting to meeting, and stored onto the website for others' use. Motivation to stay on track will be provided through the opportunity to leave early. Consensus will be required for any major decision. Messenger will be used as a means of communication. Up to three hours delay will be accepted during daylight hours, indefinite otherwise. 
 
 ### Team Expectations
 
