@@ -1,6 +1,6 @@
 # Lab 2: Digital Signal Processing
 
-### Objectives
+## Objectives
 * Stuff  
 
 Grading Criteria  
@@ -11,7 +11,7 @@ Grading Criteria
 3 points: Distinguish an IR treasure blinking at 7 KHz from one blinking at 12KHz.  
 3 points: Nicely merged code  
 
-### Teams
+## Teams
 **Team 1 (acoustic)**: Ayomi, Eric, Jacob
 
 **Team 2 (optical)**: Drew, Emily, Joo Yeon
@@ -22,6 +22,16 @@ TODO
 
 ## Treasure Detection
 TODO
+
+
+
+
+In order to detect the 7 kHz frequency, we took FFT data using the Arduino's ADC hooked up to a function generator with a 7 kHz sine wave and compared that to the FFT from holding the treasure close to the sensor.  Below are the results of the FFT for both cases.  While slightly less sharp than the function generator, the peak around the 48th bin for the treasure data is still clear.  We can digitally process this data and detect treasures at different frequencies.
+
+<img src="https://docs.google.com/uc?id=0ByCM4xElwbIeQnBmUGZ1UGdiZ1k" height="400">
+
+<img src="https://docs.google.com/uc?id=0ByCM4xElwbIeUjRjSHBSaW90Slk" height="400">
+
 
 
 
