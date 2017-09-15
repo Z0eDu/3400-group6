@@ -1,4 +1,4 @@
-# Lab 1: Microcontroller
+# Lab 1: Digital Signal Processing
 
 ### Objectives
 * Stuff
