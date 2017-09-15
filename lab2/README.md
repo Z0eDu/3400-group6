@@ -1,7 +1,9 @@
 # Lab 2: Digital Signal Processing
 
 ### Objectives
-* Stuff  
+* Add sensors make analog and digital filters to interface with Arduino
+* Detect a 660Hz whistle blow signifying the beginning of your maze mapping 
+* Be able to detect a 7kHz IR beacon with an Arduino using the FFT library
 
 Grading Criteria  
 2 points: Correct FFT analysis  
@@ -21,7 +23,10 @@ Grading Criteria
 TODO
 
 ## Treasure Detection
-TODO
+
+
+
+We first assembled the IR circuit 
 
 
 
