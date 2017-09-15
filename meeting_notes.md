@@ -13,10 +13,9 @@
 3. We chose a second meeting time that works for everyone. Which we added to the team contract.
 
 ## 2017.09.15
-1. We discussed how we would split up the writeup between us for Milestone 1 and Lab 2
-2. Ayomi: Tone Detection, Drew/Emily/Jennie: Treasure Detection, Eric, Jacob: Milestone 1
-3. Emily and Jennie will go into open lab hours to get a few more pictures for Treasure Detection
-4. Brainstormed how we would work on Milestone 2
+1. We discussed how we would split the writeup between us for Lab 2 and MS1
+2. Ayomi: Tone Detection, Drew, Emily, Jennie: Treasure Detection, Eric, Jacob: Milestone 1
+3. Brainstormed how we would work on Milestone 2
 5. We will meet Monday night during the allotted lab time to work on MS2
 6. Worked on updating the website for Lab 2 and MS1	
 
