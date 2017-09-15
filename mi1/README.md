@@ -3,7 +3,7 @@
 ## Robot Design
 
 We mounted 4 line sensors on the front of our robot:
-![foo](https://drive.google.com/file/d/0ByCM4xElwbIeLVBpbVlmSnNPSFE/preview)
+<iframe src="https://drive.google.com/file/d/0ByCM4xElwbIeUkpPaGQtN01ITWs/preview" width="640" height="480"></iframe>
 
 ## Line Following
 
