@@ -11,3 +11,9 @@
 1. We discussed what open lab times work best next week. We agreed to decide who will go to which one, after lab Monday night 
 2. We broke up the teams for lab 2. The Acoustic Team: Ayomi, Eric, Jacob; The Optical Team: Joo-yeon, Emily, Drew
 3. We chose a second meeting time that works for everyone. Which we added to the team contract.
+
+## 2017.09.15
+1. We discussed how we would split up the writeup between us for Milestone 1 and Lab 2
+2. Ayomi: Tone Detection, Drew/Emily/Jennie: Treasure Detection, Eric, Jacob: Milestone 1
+3. Emily and Jennie will go into open lab hours to get a few more pictures for Treasure Detection
+4. Brainstormed how we would work on Milestone 2
