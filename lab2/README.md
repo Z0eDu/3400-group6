@@ -24,12 +24,17 @@ TODO
 
 ## Treasure Detection
 
+We first assembled the IR circuit according to the suggested schematic for Lab 2, as shown below.
+[insert schematic]
+[insert image]
 
+Since the phototransistor is sensitive to light, we wanted to see how the brightness of the room would affect the frequency detected by the phototransistor. To do this, we probed the output with an oscilloscope to examine it's output. The video below shows magnitude fluctuations as we covered the phototransistor with our hand. We decided that that there was enough noise, so we decided to build a simple amplifier circuit to see if that would provide us a better signal.
+[insert video]
+[insert schematic]
 
-We first assembled the IR circuit 
+< Amplifier Circuit >
 
-
-
+< Low Pass/High pass filter>
 
 In order to detect the 7 kHz frequency, we took FFT data using the Arduino's ADC hooked up to a function generator with a 7 kHz sine wave and compared that to the FFT from holding the treasure close to the sensor.  Below are the results of the FFT for both cases.  While slightly less sharp than the function generator, the peak around the 48th bin for the treasure data is still clear.  We can digitally process this data and detect treasures at different frequencies.
 
