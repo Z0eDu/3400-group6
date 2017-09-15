@@ -36,6 +36,7 @@ void setup() {
   servo_right.attach(SERVO_RIGHT);
 }
 
+// Effect: drives each motor at the given normalized velocity
 void drive(int left, int right) {
 
   if (right < 0) {
@@ -46,8 +47,9 @@ void drive(int left, int right) {
   }
   servo_left.write(DRIVE_NEUTRAL_LEFT + left);
   servo_right.write(DRIVE_MAX - (DRIVE_NEUTRAL_RIGHT + right));
-  }
+}
 
+// Returns: a normalized line sensor reading. 0 means black, 255 means white.
 byte nsr(int pin) {
   int raw = analogRead(pin);
   Serial.print(pin);
@@ -56,6 +58,10 @@ byte nsr(int pin) {
   return 255 - map(constrain(raw, LINE_WHITE, LINE_BLACK), LINE_WHITE, LINE_BLACK, 0, 255);
 }
 
+// Returns: the error from being straight on the line. Between -255 and 255
+// 0: perfect
+// < 0: off to the right
+// > 0: off to the left
 int lineError() {
   int left = nsr(LEFT_IN);
   int right = nsr(RIGHT_IN);
@@ -67,6 +73,9 @@ int lineError() {
   return left - right;
 }
 
+// Returns: the current intsection status
+// LINE_FOLLOW_STOP: at intersection
+// LINE_FOLLOW_GOOD: not at intersection
 int lineStatus() {
   int left = nsr(LEFT_OUT);
   int right = nsr(RIGHT_OUT);
@@ -81,6 +90,10 @@ int lineStatus() {
   }
 }
 
+// Effect: causes the robot to drive with the specified curvature
+// dir = 0: straight
+// dir < 0: left
+// dir > 0: right
 void drive(int dir) {
   int vl = LINE_P * dir / 255 + DRIVE_FORWARDS;
   int vr =  - LINE_P * dir / 255 + DRIVE_FORWARDS;
@@ -90,7 +103,9 @@ void drive(int dir) {
   drive(vl, vr);
 }
 
-
+// Effect: rotates the robot 90 degrees
+// dir = -1: left
+// dir = 1: right
 void rotate90(int dir) {
   //Serial.println("GOING");
   //lineFollow(10000);
@@ -102,7 +117,7 @@ void rotate90(int dir) {
   int vr = - dir * DRIVE_TURN_SPEED;
   Serial.println("TURNING");
   drive(vl, vr);
-//  
+//
 //  while (lineStatus() == LINE_FOLLOW_GOOD) {
 //    delay(REGULATION_DELAY);
 //  }
@@ -113,6 +128,8 @@ void rotate90(int dir) {
   drive(0, 0);
 }
 
+// Effect: follows the line, for at most timeout milliseconds.
+// Stops at an intersection.
 int lineFollow(unsigned long timeout) {
   unsigned long start = millis();
   while(lineStatus() == LINE_FOLLOW_GOOD && ((millis()-start) < timeout || timeout == 0)) {
@@ -121,10 +138,12 @@ int lineFollow(unsigned long timeout) {
   }
 }
 
+// Effect: follows the line until an intersection
 int lineFollow() {
   return lineFollow(0);
 }
 
+// Effect: drives the robot in a figure eight
 void figureEight() {
   for(int i = 0; i < 8; i ++){
     if(i < 4) {
@@ -134,7 +153,7 @@ void figureEight() {
     }
     lineFollow();
   }
-  
+
 }
 
 void loop() {
