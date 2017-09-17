@@ -30,7 +30,7 @@ We tested our code to see if it could initially pick up a 660 Hz tone using a fu
 
 Taking the data from that, we created two separate graphs to see if there was a spike around 660 Hz tone
 
-<img src = "https://drive.google.com/open?id=0B4-ue266N8b0LVRKV1k4MWE3Mms"><img src = "https://drive.google.com/open?id=0B4-ue266N8b0S0RjRDdyYXFlemM">
+<img src = "https://docs.google.com/uc?id=0B4-ue266N8b0LVRKV1k4MWE3Mms"><img src = "https://docs.google.com/uc?id=0B4-ue266N8b0S0RjRDdyYXFlemM">
 
 
 ## Treasure Detection
