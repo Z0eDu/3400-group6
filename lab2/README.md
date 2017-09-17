@@ -30,19 +30,17 @@ We first assembled the IR circuit according to the suggested schematic for Lab 2
 
 
 We then adjusted the potentiometer on the treasure to make it flash at 7kHz, and measured the frequency output with an oscilloscope. We were able to tune the treasure to flash at around 7.04 kHz, as shown by the square wave on the oscilloscope.
+
 <img src="https://docs.google.com/uc?id=0B1QvEdmy23tjN0JxWFpabXpPckk" width="460">
 
 
 The next step was placing the treasure near our circuit to see if the phototransistor would be able to detect the frequency of the treasure. The image below shows us having to place the treasure extremely close to the phototransistor to get any sort of transient waveform on the oscilloscope. 
 
-<img src="https://docs.google.com/uc?id=0B1QvEdmy23tjbHBrX3FEOTBjWkU" width="400">
-
-<img src="https://docs.google.com/uc?id=0B1QvEdmy23tjNHF1N3p4b001X3M" width="400">
+<img src="https://docs.google.com/uc?id=0B1QvEdmy23tjbHBrX3FEOTBjWkU" width="420">     <img src="https://docs.google.com/uc?id=0B1QvEdmy23tjNHF1N3p4b001X3M" width="420">
 
 Since there was so much noise, we wanted to see how unwanted signals such as ambient light in the room was affecting the phototransistor. As a phototransistor acts as a switch under light, we wanted to see how the brightness of the room would affect the detected frequency. To do this, we probed the output of the phototransistor with an oscilloscope to examine it's it's voltage. The video below shows voltage fluctuations as we covered the phototransistor with our hand. As seen from the video of the oscilloscope output, there was a bit of noise, so we decided to build a simple amplifier circuit and add filtering to see if that would provide us a better signal.
 
 <iframe src="https://drive.google.com/file/d/0B1QvEdmy23tjbzR6SC1KUTAwTEU/preview" width="600" height="480"></iframe>
-
 
 
 < Insert Schematic of Amplifier Circuit >
