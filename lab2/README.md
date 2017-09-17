@@ -46,6 +46,13 @@ Since there was so much noise, we wanted to see how unwanted signals such as amb
 #### Amplifier and Filters
 < Insert Schematic of Amplifier Circuit >
 
+Amplifier values:  
+peak to peak: 20 mV  
+Ri = 1.18k  
+Rf = 118k  
+Gain = Rf/Ri = 100 gain => output should be ~2 V  
+
+
 
 Low pass filter:
 
