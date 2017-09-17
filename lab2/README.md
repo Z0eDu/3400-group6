@@ -25,14 +25,18 @@ TODO
 ## Treasure Detection
 
 We first assembled the IR circuit according to the suggested schematic for Lab 2, as shown below.
-[insert schematic]
-[insert image]
 
-Since the phototransistor is sensitive to light, we wanted to see how the brightness of the room would affect the frequency detected by the phototransistor. To do this, we probed the output with an oscilloscope to examine it's output. The video below shows magnitude fluctuations as we covered the phototransistor with our hand. We decided that that there was enough noise, so we decided to build a simple amplifier circuit to see if that would provide us a better signal.
-[insert video]
-[insert schematic]
+<img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoTm1OeHpqU1VTWlE" width="200">
 
-< Amplifier Circuit >
+<img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoaGRGRjl3MWpkbjA" width="400">
+
+Since a phototransistor acts as a switch under light, we wanted to see how the brightness of the room would affect the frequency detected by the phototransistor. To do this, we probed the output of the phototransistor with an oscilloscope to examine it's it's voltage. The video below shows voltage fluctuations as we covered the phototransistor with our hand. As seen from the video of the oscilloscope output, there was a bit of noise, so we decided to build a simple amplifier circuit to see if that would provide us a better signal.
+
+<iframe src="https://drive.google.com/file/d/0B1QvEdmy23tjbzR6SC1KUTAwTEU/preview" width="600" height="480"></iframe>
+
+
+
+< Insert Schematic of Amplifier Circuit >
 
 < Low Pass/High pass filter>
 
