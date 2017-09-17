@@ -46,10 +46,14 @@ Since there was so much noise, we wanted to see how unwanted signals such as amb
 #### Amplifier and Filters
 < Insert Schematic of Amplifier Circuit >
 
+
 Low pass filter:
+
 <img src="https://docs.google.com/uc?id=0B0-yVGdr0EwockktY3V2UmtnMDA" width="400">
 
+
 High pass filter:
+
 <img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoRWRibUhjSHk4NXM" width="400">
 
 
