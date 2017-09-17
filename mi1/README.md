@@ -50,7 +50,7 @@ After reaching these intersections, the function for line following is ended.
 Then, the method `rotate90(int dir)` was implemented. This function's intention was to place the robot near 90 degrees, any variations would then be caught by `lineFollow`. In this function the robot drives forward for 2 seconds to nearly center its wheels around the intersection. It then turns around its center by having both wheels turn at the same speed in opposite directions. The direction each wheel turns in is given by `dir`, an argument that is set to either 1 or -1, the speed is given by a constant. This turn is carried out for 1.7 seconds, an empirically determined value. Then the program stops the robot.
 
 ### Putting it Together
-Finally, the method `figureEight()` was constructed to be called in `loop()`. Inside this method is a for loop with an variable, `i`, that counts from 0 to 7. Line follow is called, and does not end until it reaches an intersection. Once it is finished, if i is below 4, a right turn is instructed, otherwise a left turn is instructed. Then this method repeats, giving the figure eight pattern.
+Finally, the method `figureEight()` was constructed to be called in `loop()`. Inside this method is a for loop with an variable, `i`, that counts from 0 to 7. Line follow is called, and does not end until it reaches an intersection. Once it is finished, if `i` is below 4, a right turn is instructed, otherwise a left turn is instructed. Then this method repeats, giving the figure eight pattern.
 
 <iframe src="https://drive.google.com/file/d/0B1r9QYTd8YNrUDF1QnNyRUhGYTA/preview" width="640" height="480"></iframe>
 
