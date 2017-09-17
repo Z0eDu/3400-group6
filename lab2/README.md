@@ -20,7 +20,18 @@ Grading Criteria
 
 
 ## Tone Detection
-TODO
+We noticed our microphone had an amplifier on it already, so we did not assemble one. Using the FFT library and Team alpha as references, we wrote our code connecting the microphone, so we would pick up sound for a certain amount of time. We printed out “start” at the beginning of each loop, so we could read it in the serial monitor.
+
+//code
+
+We tested our code to see if it could initially pick up a 660 Hz tone using a function generator and a tone generator. 
+
+// Square wave picture and video
+
+Taking the data from that, we created two separate graphs to see if there was a spike around 660 Hz tone
+
+<img src = "https://drive.google.com/open?id=0B4-ue266N8b0LVRKV1k4MWE3Mms"><img src = "https://drive.google.com/open?id=0B4-ue266N8b0S0RjRDdyYXFlemM">
+
 
 ## Treasure Detection
 
