@@ -3,6 +3,7 @@
 ## Robot Design
 
 We mounted 4 line sensors on the front of our robot:
+
 <img src="https://docs.google.com/drawings/d/e/2PACX-1vTnUPFIO_hQl_hhROnfM4NYv3XP-baZnS-AEOdejTgAUpANg4RfpMMHAJY5JZtBBANSvGLjsKtdm3mF/pub?w=387&h=688" height="400">
 
 The inner 2 sensors are used for line following, and the outer 2 sensors are used to detect intersections:
