@@ -57,8 +57,8 @@ Finally, the method `figureEight()` was constructed to be called in `loop()`. In
 ## Work Distribution
 
 *   Ayomi: Soldering header pins into the line sensors, rebuilding the robot to accommodate a breadboard
-*   Drew:
+*   Drew: Robot building
 *   Emily: Mounting line sensors to the robot
 *   Eric: Driving and turning code, tuning
 *   Jacob: Initial line following code
-*   Joo Yeon:
+*   Joo Yeon: Robot building

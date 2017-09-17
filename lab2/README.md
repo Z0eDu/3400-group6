@@ -2,7 +2,7 @@
 
 ### Objectives
 * Add sensors make analog and digital filters to interface with Arduino
-* Detect a 660Hz whistle blow signifying the beginning of your maze mapping 
+* Detect a 660Hz whistle blow signifying the beginning of your maze mapping
 * Be able to detect a 7kHz IR beacon with an Arduino using the FFT library
 
 Grading Criteria  
@@ -35,7 +35,7 @@ We then adjusted the potentiometer on the treasure to make it flash at 7kHz, and
 <img src="https://docs.google.com/uc?id=0B1QvEdmy23tjN0JxWFpabXpPckk" width="460">
 
 
-The next step was placing the treasure near our circuit to see if the phototransistor would be able to detect the frequency of the treasure. The image below shows us having to place the treasure extremely close to the phototransistor to get any sort of transient waveform on the oscilloscope. 
+The next step was placing the treasure near our circuit to see if the phototransistor would be able to detect the frequency of the treasure. The image below shows us having to place the treasure extremely close to the phototransistor to get any sort of transient waveform on the oscilloscope.
 
 <img src="https://docs.google.com/uc?id=0B1QvEdmy23tjbHBrX3FEOTBjWkU" width="400">     <img src="https://docs.google.com/uc?id=0B1QvEdmy23tjNHF1N3p4b001X3M" width="400">
 
@@ -76,9 +76,9 @@ In order to detect the 7 kHz frequency, we took FFT data using the Arduino's ADC
 
 ## Work Distribution
 
-*   Ayomi:
+*   Ayomi: Soldering header pins onto microphone breakout board, audio FFT analysis and plots, threshold detection
 *   Drew: Code and results for treasure frequencies
-*   Emily: Treasure detection circuit assembly and initial testing 
-*   Eric:
-*   Jacob:
+*   Emily: Treasure detection circuit assembly and initial testing
+*   Eric: Audio ISR code, threshold detection code
+*   Jacob: Audio ISR code
 *   Joo Yeon: Amplifier and filtering circuits for phototransistor output
