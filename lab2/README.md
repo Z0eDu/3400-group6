@@ -45,28 +45,39 @@ Since there was so much noise, we wanted to see how unwanted signals such as amb
 <iframe src="https://drive.google.com/file/d/0B1QvEdmy23tjbzR6SC1KUTAwTEU/preview" width="500" height="400"></iframe>
 
 #### Amplifier and Filters
-< Insert Schematic of Amplifier Circuit >
 
-Amplifier values:  
+We have tried amplifier and filter circuits to cut out noise and make the treasure signal clear.
+The schematics, photos, and specifics can be found below.
+
+Amplifier circuit:
+<img src="https://docs.google.com/uc?id=0B1QvEdmy23tjQ0NpRjJIeXhZWm8" width="400">
+
+<img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoVndobUdDX0lza3M" width="400">
+
 peak to peak: 20 mV  
 Ri = 1.18k  
 Rf = 118k  
 Gain = Rf/Ri = 100 gain => output should be ~2 V  
 
 
-
 Low pass filter:
 
 <img src="https://docs.google.com/uc?id=0B0-yVGdr0EwockktY3V2UmtnMDA" width="400">
+
+<img src="https://docs.google.com/uc?id=0B1QvEdmy23tjbTM4LVp4ZkdXVEk" width="400">
 
 
 High pass filter:
 
 <img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoRWRibUhjSHk4NXM" width="400">
 
+
 Band pass filter
 
 <img src="https://docs.google.com/uc?id=0B1QvEdmy23tjNlY3YzFfelppQVU" width="400">
+
+
+The amplifier amplified the overall response. However, this made the distinction between the treasure signal and noise smaller. Each filter dampened the desired range of frequency, but filters also dampened the treasure signal somehow. Additional circuits made the peak unclear, so we decided to process the data software wise.
 
 
 #### Code and Results
