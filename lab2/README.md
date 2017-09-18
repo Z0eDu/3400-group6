@@ -48,7 +48,7 @@ sei();
 
 We used the oscilloscope to see if our interrupt was working properly.
 
-//
+<img src = "https://docs.google.com/uc?id=0B-CRHiExsEzBNXZPZzZ4RmxrRmM">
 
 We tested our code to see if it could initially pick up a 660 Hz tone using a function generator and a tone generator. We processed the FFT by converting bins to frequencies.  We printed out “start”, so we could easily read the serial monitor, and take out the bins to convert them. Using excel, we converted the bins to frequencies and use that data to create two separate graphs for Function generator(left) and tone generator(right)
 
