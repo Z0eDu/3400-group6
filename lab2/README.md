@@ -1,17 +1,17 @@
 # Lab 2: Digital Signal Processing
 
 ### Objectives
-* Add sensors make analog and digital filters to interface with Arduino
+* Learn about Open Music Labs FFT
 * Detect a 660Hz whistle blow signifying the beginning of your maze mapping
 * Be able to detect a 7kHz IR beacon with an Arduino using the FFT library
 
-Grading Criteria  
+<!-- Grading Criteria  
 2 points: Correct FFT analysis  
 2 points: Working amplifier circuit  
 3 points: Distinguish a 660Hz tone (from tones at 585Hz and 735Hz)  
 2 points: Working IR sensor circuit  
 3 points: Distinguish an IR treasure blinking at 7 KHz from one blinking at 12KHz.  
-3 points: Nicely merged code  
+3 points: Nicely merged code   -->
 
 ## Teams
 **Team 1 (acoustic)**: Ayomi, Eric, Jacob
@@ -21,8 +21,12 @@ Grading Criteria
 
 ## Tone Detection
 
-We noticed our microphone had an amplifier on it already, so we did not assemble one. Using the FFT library and Team alpha as references, we wrote our code connecting the microphone, so we would pick up sound for a certain amount of time.  We configured an 8 kHz interrupt. 
-We decided to use an interrupt because we need to get exact time as well as figure out the sampling rate in order for the FFT to make sense. We chose 8kHz because it is double the highest human voice frequency and would be half of the sampling rate.
+### Circuit
+We connected the microphone power and ground to +5 V and GND on the Arduino, respectively, and attached the signal line to A0. The Adafruit Electret Microphone Amplifier breakout board (product ID 1063) we used already had an amplifier on it, so there was no need to further amplify the signal.
+
+### FFT
+
+Team Alpha and the instructions spent lots of time experimenting with wrapping `analogRead` in a loop and measuring the sampling frequency by playing known tones and checking which bins of the FFT picked them up. This seemed like a complicated and time consuming process. Instead, we configured an 8 kHz interrupt. The interrupt fired at exactly 8 kHz, so we knew the exact sampling frequency. We chose 8kHz to satisfy the Nyquist sampling condition, which requires the sampling frequency to be double the highest frequency in our system, which would be human voice at 4 kHz.
 
 ```
 cli();
@@ -42,7 +46,7 @@ cli();
   sei();
 ```
 
-We used the oscilloscope to see if our interrupt was working properly. 
+We used the oscilloscope to see if our interrupt was working properly.
 
 //
 
