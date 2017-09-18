@@ -64,6 +64,10 @@ High pass filter:
 
 <img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoRWRibUhjSHk4NXM" width="400">
 
+Band pass filter
+
+<img src="https://docs.google.com/uc?id=0B1QvEdmy23tjNlY3YzFfelppQVU" width="400">
+
 
 #### Code and Results
 In order to detect the 7 kHz frequency, we took FFT data using the Arduino's ADC hooked up to a function generator with a 7 kHz sine wave and compared that to the FFT from holding the treasure close to the sensor. Below are the results of the FFT for both cases.  While slightly less sharp than the function generator, the peak around the 48th bin for the treasure data is still clear.  We can digitally process this data and detect treasures at different frequencies.
