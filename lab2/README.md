@@ -46,8 +46,8 @@ Since there was so much noise, we wanted to see how unwanted signals such as amb
 
 #### Amplifier and Filters
 
-We have tried amplifier and filter circuits to cut out noise and make the treasure signal clear.
-The schematics, photos, and specifics can be found below.
+We tried amplifier and filter circuits to cut out noise and make the treasure signal clear.
+The schematics, photos, and specifics are included here.
 
 Amplifier circuit:
 
