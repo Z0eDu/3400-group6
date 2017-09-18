@@ -84,7 +84,7 @@ Then we took 512 samples from the output of pin A0 to be processed.  We had to m
   fft_input[i] = k; // put real data into even bins
   fft_input[i+1] = 0; // set odd bins to 0
 ```
-Finally, we called fft functions to reorder the data to be processed, run the data, and then take the log of the magnitudes for each bin to facilitate analysis.
+Finally, we called fft functions from the FFT library to reorder the data to be processed, run the data, and then take the log of the magnitudes for each bin to facilitate analysis.
 ```cpp
   fft_window(); // window the data for better frequency response
   fft_reorder(); // reorder the data before doing the fft
