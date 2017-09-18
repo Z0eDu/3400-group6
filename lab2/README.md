@@ -28,7 +28,7 @@ We connected the microphone power and ground to +5 V and GND on the Arduino, res
 
 Team Alpha and the instructions spent lots of time experimenting with wrapping `analogRead` in a loop and measuring the sampling frequency by playing known tones and checking which bins of the FFT picked them up. This seemed like a complicated and time consuming process. Instead, we configured an 8 kHz interrupt. The interrupt fired at exactly 8 kHz, so we knew the exact sampling frequency. We chose 8kHz to satisfy the Nyquist sampling condition, which requires the sampling frequency to be double the highest frequency in our system, which would be human voice at 4 kHz.
 
-```
+```cpp
 cli();
 // put your setup code here, to run once:
 TCCR2A = 0;
