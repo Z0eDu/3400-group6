@@ -74,7 +74,7 @@ Band pass filter
 <img src="https://docs.google.com/uc?id=0B1QvEdmy23tjNlY3YzFfelppQVU" width="400">
 
 
-The amplifier amplified the overall response. However, this made the distinction between the treasure signal and noise smaller. Each filter dampened the desired range of frequency, but filters also dampened the treasure signal somehow. Additional circuits made the peak unclear, so we decided to process the data software wise.
+The amplifier amplified the overall response. However, this made the distinction between the treasure signal and noise smaller. Each filter dampened the desired range of frequency, but filters also dampened the treasure signal somewhat. Additional circuits made the peak unclear, so we decided to process the data software wise.
 
 
 #### Code and Results
