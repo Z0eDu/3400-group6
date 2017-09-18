@@ -1,0 +1,56 @@
+   ____ ____    _____ _ _  ___
+  / ___/ ___|  |___ // / |/ _ \
+ | |   \___ \    |_ \| | | | | |
+ | |___ ___) |  ___) | | | |_| |
+  \____|____/  |____/|_|_|\___/
+
+ Grading report for acs333
+
+
+-----------------------------------------------------------
+Score
+-----------------------------------------------------------
+
+Correctness:   30 out of  30
+
+
+-----------------------------------------------------------
+Code Quality
+-----------------------------------------------------------
+
+## Overall comments
+
+Excellent quality.
+
+Great! For the most part, your code is clean and concise. Your helper specifications need preconditions, and your match statement in nacci should use the default case _ (a single underscore) instead of the named variable other.
+
+## Red flags
+
+None.
+
+## Orange flags
+
+None.
+
+## Yellow flags
+
+* Specification comments are unclear or fail to state preconditions/postconditions: Specification for nacci helper functions do not contain preconditions. In the future, remember to state what each parameter specifically represents (as you did with the other functions).
+
+
+
+
+-----------------------------------------------------------
+Unit test summary
+-----------------------------------------------------------
+
+* Compilation of submission succeeded
+* Execution of test suite against submission succeeded
+* Test suite summary:
+  - Success:  65 out of 65 test cases
+  - Failure:  0 out of 65 test cases
+  - Timeout:  0 out of 65 test cases
+  - Error:    0 out of 65 test cases
+* Total score: 30 out of 30 points
+
+
+
