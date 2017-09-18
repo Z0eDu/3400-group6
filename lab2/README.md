@@ -54,7 +54,7 @@ We tested our code to see if it could initially pick up a 660 Hz tone using a fu
 
 <img src = "https://docs.google.com/uc?id=0B4-ue266N8b0LVRKV1k4MWE3Mms"><img src = "https://docs.google.com/uc?id=0B4-ue266N8b0S0RjRDdyYXFlemM">
 
-We found the spike were between bins 20 and 22, which would be frequencies 625 and 687.5. We changed our code so that we would keep track if we are hearing a tone in that range. We estimated the tone should occur for 15 cycles before the robot started moving. In this case we just lit up the LED on the Arduino.
+We found the spike were between bins 20 and 22, which would be frequencies 625 and 687.5. We changed our code so that we would keep track if we are hearing a tone in that range. We estimated the tone should occur for 15 data collection and FFT cycles before the robot started moving. In this case we just lit up the LED on the Arduino.
 
 <iframe src="https://drive.google.com/file/d/0B4-ue266N8b0TWV5cG9sXzRNX0U/preview" width="640" height="480"></iframe>
 
