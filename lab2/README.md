@@ -46,7 +46,7 @@ TIMSK2 |= (1 << OCIE2A);
 sei();
 ```
 
-We used the oscilloscope to see if our interrupt was working properly.
+We toggled a digital output with the ISR to make sure it was working properly, and got a square wave at 4 kHz as expected (because it ran at 8 kHz and changed state each time):
 
 <img src = "https://docs.google.com/uc?id=0B-CRHiExsEzBNXZPZzZ4RmxrRmM">
 
