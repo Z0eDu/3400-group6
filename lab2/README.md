@@ -27,11 +27,11 @@ We decided to use an interrupt because we need to get exact time as well as figu
 
 // Insert Code
 
-We tested our code to see if it could initially pick up a 660 Hz tone using a function generator and a tone generator. 
+We used the oscilloscope to see if our interrupt was working properly. 
 
-// square wave picture 
+//
 
-We processed the FFT by converting bins to frequencies.  We printed out “start”, so we could easily read the serial monitor, and take out the bins to convert them. Using excel, we converted the bins to frequencies and use that data to create two separate graphs for Function generator(left) and tone generator(right)
+We tested our code to see if it could initially pick up a 660 Hz tone using a function generator and a tone generator. We processed the FFT by converting bins to frequencies.  We printed out “start”, so we could easily read the serial monitor, and take out the bins to convert them. Using excel, we converted the bins to frequencies and use that data to create two separate graphs for Function generator(left) and tone generator(right)
 
 <img src = "https://drive.google.com/file/d/0B4-ue266N8b0LVRKV1k4MWE3Mms/view?usp=sharing"><img src = "https://drive.google.com/file/d/0B4-ue266N8b0S0RjRDdyYXFlemM/view?usp=sharing">
 
