@@ -31,13 +31,13 @@ We tested our code to see if it could initially pick up a 660 Hz tone using a fu
 
 // square wave picture 
 
-We processed the FFT by converting bins to frequencies.  We printed out “start”, so we could easily read the serial monitor, and take out the bins to convert them. Using excel, we converted the bins to frequencies and use that data to create two separate graphs
+We processed the FFT by converting bins to frequencies.  We printed out “start”, so we could easily read the serial monitor, and take out the bins to convert them. Using excel, we converted the bins to frequencies and use that data to create two separate graphs for Function generator(left) and tone generator(right)
 
-//The two graphs side by side
+<img src = "https://drive.google.com/file/d/0B4-ue266N8b0LVRKV1k4MWE3Mms/view?usp=sharing"><img src = "https://drive.google.com/file/d/0B4-ue266N8b0S0RjRDdyYXFlemM/view?usp=sharing">
 
 We found the spike were between bins 20 and 22, which would be frequencies 625 and 687.5. We changed our code so that we would keep track if we are hearing a tone in that range. We estimated the tone should occur for 15 cycles before the robot started moving. In this case we just lit up the LED on the Arduino.
 
-// Video
+<iframe src = "https://drive.google.com/file/d/0B4-ue266N8b0TWV5cG9sXzRNX0U/view?usp=sharing">
 
 
 
