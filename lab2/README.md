@@ -70,7 +70,30 @@ Band pass filter
 
 
 #### Code and Results
-In order to detect the 7 kHz frequency, we took FFT data using the Arduino's ADC hooked up to a function generator with a 7 kHz sine wave and compared that to the FFT from holding the treasure close to the sensor. Below are the results of the FFT for both cases.  While slightly less sharp than the function generator, the peak around the 48th bin for the treasure data is still clear.  We can digitally process this data and detect treasures at different frequencies.
+Our code was modified from the sample code to use the Arduino's internal ADC.  We used the internal ADC rather than analogRead() because the latter has a maximum sampling frequency of about 9 kHz, which is not nearly enough to sample even 7 kHz signals.  
+
+We set up the ADC like so:
+```cpp
+  TIMSK0 = 0; // turn off timer0 for lower jitter - delay() and millis() killed
+  ADCSRA = 0xe5; // set the adc to free running mode
+  ADMUX = 0x40; // use adc0
+  DIDR0 = 0x01; // turn off the digital input for adc0
+```
+Then we took 512 samples from the output of pin A0 to be processed.  We had to manipulate the output of the ADC, which returns two bytes of data in two separate variables, to be a 16 bit signed integer.  We took each sample and placed the real data into the even bins of the fft_input[] array, setting the odd (imaginary) bins to 0.
+```cpp
+  fft_input[i] = k; // put real data into even bins
+  fft_input[i+1] = 0; // set odd bins to 0
+```
+Finally, we called fft functions to reorder the data to be processed, run the data, and then take the log of the magnitudes for each bin to facilitate analysis.
+```cpp
+  fft_window(); // window the data for better frequency response
+  fft_reorder(); // reorder the data before doing the fft
+  fft_run(); // process the data in the fft
+  fft_mag_log(); // take the output of the fft
+```
+For now, we just displayed all of the data points for analysis and graphed them as shown below.  For later parts of the lab, we will process the data, eliminating peaks far away from where we want to look and only check for the treasure frequencies we need to detect.
+
+Below are the graphs for a 7 kHz sine wave from a function generator and for the 7 kHz treasure held close to the sensor.  While slightly less sharp than the function generator, the peak around the 48th bin for the treasure data is still clear.  We can digitally process this data and detect treasures at different frequencies.
 
 <img src="https://docs.google.com/uc?id=0ByCM4xElwbIeQnBmUGZ1UGdiZ1k" height="400">
 
