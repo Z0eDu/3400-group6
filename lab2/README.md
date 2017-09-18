@@ -20,7 +20,25 @@ Grading Criteria
 
 
 ## Tone Detection
-TODO
+
+We noticed our microphone had an amplifier on it already, so we did not assemble one. Using the FFT library and Team alpha as references, we wrote our code connecting the microphone, so we would pick up sound for a certain amount of time.  We configured an 8 kHz interrupt. 
+We decided to use an interrupt because we need to get exact time as well as figure out the sampling rate in order for the FFT to make sense. We chose 8kHz because it is double the highest human voice frequency and would be half of the sampling rate.
+
+
+// Insert Code
+
+We tested our code to see if it could initially pick up a 660 Hz tone using a function generator and a tone generator. 
+
+// square wave picture 
+
+We processed the FFT by converting bins to frequencies.  We printed out “start”, so we could easily read the serial monitor, and take out the bins to convert them. Using excel, we converted the bins to frequencies and use that data to create two separate graphs
+
+//The two graphs side by side
+
+We found the spike were between bins 20 and 22, which would be frequencies 625 and 687.5. We changed our code so that we would keep track if we are hearing a tone in that range. We estimated the tone should occur for 15 cycles before the robot started moving. In this case we just lit up the LED on the Arduino.
+
+// Video
+
 
 
 ## Treasure Detection
