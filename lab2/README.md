@@ -24,8 +24,23 @@ Grading Criteria
 We noticed our microphone had an amplifier on it already, so we did not assemble one. Using the FFT library and Team alpha as references, we wrote our code connecting the microphone, so we would pick up sound for a certain amount of time.  We configured an 8 kHz interrupt. 
 We decided to use an interrupt because we need to get exact time as well as figure out the sampling rate in order for the FFT to make sense. We chose 8kHz because it is double the highest human voice frequency and would be half of the sampling rate.
 
+```
+cli();
+  // put your setup code here, to run once:
+  TCCR2A = 0;// set entire TCCR2A register to 0
+  TCCR2B = 0;// same for TCCR2B
+  TCNT2  = 0;//initialize counter value to 0
+  // set compare match register for 8khz increments
+  OCR2A = 249;// = (16*10^6) / (8000*8) - 1 (must be <256)
+  // turn on CTC mode
+  TCCR2A |= (1 << WGM21);
+  // Set CS21 bit for 8 prescaler
+  TCCR2B |= (1 << CS21);   
+  // enable timer compare interrupt
+  TIMSK2 |= (1 << OCIE2A);
 
-// Insert Code
+  sei();
+```
 
 We used the oscilloscope to see if our interrupt was working properly. 
 
@@ -33,12 +48,11 @@ We used the oscilloscope to see if our interrupt was working properly.
 
 We tested our code to see if it could initially pick up a 660 Hz tone using a function generator and a tone generator. We processed the FFT by converting bins to frequencies.  We printed out “start”, so we could easily read the serial monitor, and take out the bins to convert them. Using excel, we converted the bins to frequencies and use that data to create two separate graphs for Function generator(left) and tone generator(right)
 
-<img src = "https://drive.google.com/file/d/0B4-ue266N8b0LVRKV1k4MWE3Mms/view?usp=sharing"><img src = "https://drive.google.com/file/d/0B4-ue266N8b0S0RjRDdyYXFlemM/view?usp=sharing">
+<img src = "https://docs.google.com/uc?id=0B4-ue266N8b0LVRKV1k4MWE3Mms/view?usp=sharing"><img src = "https://docs.google.com/uc?id=0B4-ue266N8b0S0RjRDdyYXFlemM/view?usp=sharing">
 
 We found the spike were between bins 20 and 22, which would be frequencies 625 and 687.5. We changed our code so that we would keep track if we are hearing a tone in that range. We estimated the tone should occur for 15 cycles before the robot started moving. In this case we just lit up the LED on the Arduino.
 
-<iframe src = "https://drive.google.com/file/d/0B4-ue266N8b0TWV5cG9sXzRNX0U/view?usp=sharing">
-
+<iframe src = "https://docs.google.com/uc?id=0B4-ue266N8b0TWV5cG9sXzRNX0U/view?usp=sharing"></iframe>
 
 
 ## Treasure Detection
