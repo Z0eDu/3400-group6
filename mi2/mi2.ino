@@ -18,7 +18,7 @@
 
 #define DRIVE_NEUTRAL_LEFT 94
 #define DRIVE_NEUTRAL_RIGHT 86
-#define DRIVE_SCALE_FWD 75
+#define DRIVE_SCALE_FWD 180
 #define DRIVE_SCALE_REV 120
 #define DRIVE_FORWARDS 10
 #define DRIVE_BACKWARDS 0
@@ -159,7 +159,7 @@ void figureEight() {
 
 void stopAtWall() {
   while (getDistance(1) > 7)
-    drive(10, 30);
+    drive(10, 10);
     
   drive(0,0);
 }
