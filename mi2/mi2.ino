@@ -156,8 +156,16 @@ void figureEight() {
 
 }
 
+
+void stopAtWall() {
+  while (getDistance(1) > 7)
+    drive(10, 30);
+    
+  drive(0,0);
+}
+
 //return the distance from the wall
-float getDistance(PINNAME) {
+float getDistance(int PINNAME) {
   float val = analogRead(PINNAME);   //read the value
   val = val * 5 /1023;               //convert the output to volts
 
@@ -167,7 +175,9 @@ float getDistance(PINNAME) {
 }
 
 void loop() {
-  figureEight();
+  stopAtWall();
+  
+  //figureEight();
   /*
   Serial.println("Starting!");
   lineFollow();
