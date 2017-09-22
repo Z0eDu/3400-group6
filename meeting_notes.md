@@ -17,5 +17,10 @@
 2. Ayomi: Tone Detection, Drew, Emily, Jennie: Treasure Detection, Eric, Jacob: Milestone 1
 3. Brainstormed how we would work on Milestone 2
 5. We will meet Monday night during the allotted lab time to work on MS2
-6. Worked on updating the website for Lab 2 and MS1	
+6. Worked on updating the website for Lab 2 and MS1
+
+## 2017.09.22
+1. Discussed how to split up MS2
+2. Drew (code) and Jacob (calibration): wall detection
+3. Emily (code), Ayomi (things to improve on), Jennie (how we found bin ranges), Eric (distance from sensor): treasure detection
 
