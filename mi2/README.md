@@ -46,8 +46,10 @@ We then held the treasure tuned to the correct frequency close to the phototrans
 
 With this data, we can digitally process the bins numbers and detect treasures at different frequencies.
 
-### Signal Filtering
+### Signal Amplification
 Since filter circuits affected the peak, we decided to filter software wise instead. To determine the range of bin where the peak should appear, we first connected a function generator that generates 7kHz/ 12kHz/ 17Hz directly as the input and collected data.
+
+Comparing it with the data when there is no treasure, we figured out the bin range of the peak at each frequency: 7kHz 20-60, 12kHz 70-90, and 17kHz 100-120. We amplified only the outputs at the peak range bins. This is the amplifying code.
 
 ```cpp
 for (int i = 0 ; i < 128 ; i += 1) {  
@@ -65,7 +67,14 @@ for (int i = 0 ; i < 128 ; i += 1) {
     }
  ```
 
-Comparing it with the data when there is no treasure, we figured out the ranges of bin for the peak at each frequency: 7kHz 20-60, 12kHz 70-90, and 17kHz 100-120. 
+The following graphs are from the amplified data.
+
+<img src="https://docs.google.com/uc?id=0B1QvEdmy23tjU183Qjc4SW9MTFU" width="300"> <img src="https://docs.google.com/uc?id=0B1QvEdmy23tjMzYzcjVXWmt5UW8" width="300">
+
+<img src="https://docs.google.com/uc?id=0B1QvEdmy23tjdU9YRUhwSm5OUDg" width="300"> <img src="https://docs.google.com/uc?id=0B1QvEdmy23tjenNwbzc2bG1maTA" width="300">
+
+The logarithmic amplitude went up to about 6000 when there was a peak. We were able to determine from the data if there was a peak, and what the frequency of the treasure was.
+
 
 ### Proximity of Treasure to Phototransistor
 
