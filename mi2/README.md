@@ -19,8 +19,8 @@ We tested our distance calculations by place the sensor in front of a wooden pla
 ## Work Distribution
 
 *   Ayomi: Treasure detection
-*   Drew: Treasure detection
+*   Drew: Wall detection
 *   Emily: Treasure detection
-*   Eric: Wall detection
+*   Eric: Treasure detection
 *   Jacob: Wall detection
 *   Joo Yeon: Treasure detection
