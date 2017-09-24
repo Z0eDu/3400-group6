@@ -41,13 +41,14 @@ We then created a sine wave with the frequency generator and ran our FFT code to
 
 <img src="https://docs.google.com/uc?id=0B1QvEdmy23tjMFZ6MENBSFJXTjQ" width="400"> <img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoRjU3d09LZmdVdjQ" width="450" height="300">
 
-We then held the treasure tuned to the correct frequency close to the phototransistor, and checked to ensure that the peaks for the treasure data lined up with that from the frequency generator. As seen from the graphs, the peak for 7KHz is around the 48th bin, around the 82nd bin for 12kHz (see Bin Ranges section), and around the 115th bin for 17kHz.  
+We then held the treasure tuned to the correct frequency close to the phototransistor, and checked to ensure that the peaks for the treasure data lined up with that from the frequency generator. As seen from the graphs, the peak for 7KHz is around the 48th bin, around the 82nd bin for 12kHz (see Signal Filtering section), and around the 115th bin for 17kHz.  
 <img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoeVhLWVJ0dmloUHc" width="350">  <img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoaGQ1OGxUNnFHbTA" width="350">
 
 With this data, we can digitally process the bins numbers and detect treasures at different frequencies.
 
 ### Signal Filtering
 Since filter circuits affected the peak, we decided to filter software wise instead. To determine the range of bin where the peak should appear, we first connected a function generator that generates 7kHz/ 12kHz/ 17Hz directly as the input and collected data.
+
 
 
 Comparing it with the data when there is no treasure, we figured out the ranges of bin for the peak at each frequency: 7kHz 20-60, 12kHz 70-90, and 17kHz ??. 
