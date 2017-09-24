@@ -17,7 +17,7 @@ We tested our distance calculations by place the sensor in front of a wooden pla
 
 ### Signal Filtering
 
-Since filter circuits affected the peak, we have decided to magnify it software wise instead. To determine the range of bin where the peak should appear, we first connected a function generator that generates 7kHz/ 12kHz/ 17Hz directly as the input and collected data. 
+Since filter circuits affected the peak, we decided to filter software wise instead. To determine the range of bin where the peak should appear, we first connected a function generator that generates 7kHz/ 12kHz/ 17Hz directly as the input and collected data. 
 
 
 <img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoUkFROEMxZXFnZlU" width = "400"><img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoSG5adlBBX05kaVk" width = "400">
