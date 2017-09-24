@@ -15,22 +15,36 @@ We tested our distance calculations by place the sensor in front of a wooden pla
 
 ## Treasure Classification
 
-### Signal Filtering
+### Initial Detecting Treasures at Different Frequencies
+Using our code from Lab 2, we wanted to first make sure that we were able to detect the treasures at 7kHz, 12kHz, and 17kHz. To do this, we first tuned the frequency of the treasure to obtain the desired frequencies using the oscilloscpe, as shown below.  
 
-Since filter circuits affected the peak, we decided to filter software wise instead. To determine the range of bin where the peak should appear, we first connected a function generator that generates 7kHz/ 12kHz/ 17Hz directly as the input and collected data. 
+<img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoY1ltR0toYmJDYzQ" width="275"><img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoUkxULUZYeEl0b2c" width="275"><img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoeXFOVDcyXzRWdDg" width="275">
+
+We then created a sine wave with the frequency generator and ran our FFT code to find the log magnitudes for each bin for both 12kHz and 17kHz (7 kHz was done in Lab 2). 
+
+<img src="https://docs.google.com/uc?id=0B1QvEdmy23tjRTRMTXpqUGFGMDA" width="400"> <img src="https://docs.google.com/uc?id=0B0-yVGdr0EwobldOS3dCRVQwVXM" width="450" height="300">
+
+<img src="https://docs.google.com/uc?id=0B1QvEdmy23tjMFZ6MENBSFJXTjQ" width="400"> <img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoRjU3d09LZmdVdjQ" width="450" height="300">
+
+We then held the treasure tuned to the correct frequency close to the phototransistor, and checked to ensure that the peaks for the treasure data lined up with that from the frequency generator. As seen from the graphs, the peak for 7KHz is around the 48th bin, around the 82nd bin for 12kHz (see Bin Ranges section), and around the 115th bin for 17kHz.  
+<img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoeVhLWVJ0dmloUHc" width="350">  <img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoaGQ1OGxUNnFHbTA" width="350">
+
+With this data, we can digitally process the bins numbers and detect treasures at different frequencies.
+
+### Bin Ranges 
+
+### Proximity of Treasure to Phototransistor
+
+### Filters and Future Improvements 
 
 
-<img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoUkFROEMxZXFnZlU" width = "400"><img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoSG5adlBBX05kaVk" width = "400">
-<img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoSG5adlBBX05kaVk" width = "400"><img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoWHdON3U1VHR6N1U" width="400">
-
-Comparing it with the data when there is no treasure, we figured out the ranges of bin for the peak at each frequency: 7kHz 20-60, 12kHz 70-90, and 17kHz ??.
 
 
 ## Work Distribution
 
 *   Ayomi: Treasure detection
-*   Drew: Wall detection
+*   Drew: Treasure detection
 *   Emily: Treasure detection
-*   Eric: Treasure detection
+*   Eric: Wall detection
 *   Jacob: Wall detection
-*   Joo Yeon: Treasure detection (bin ranges)
+*   Joo Yeon: Treasure detection
