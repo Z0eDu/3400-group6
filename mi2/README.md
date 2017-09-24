@@ -22,7 +22,7 @@ Since filter circuits affected the peak, we have decided to magnify it software 
 
 <img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoUkFROEMxZXFnZlU">
 
-<img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoSG5adlBBX05kaVk" width="200"><img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoSG5adlBBX05kaVk" width="200"><img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoWHdON3U1VHR6N1U" width="200">
+<img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoSG5adlBBX05kaVk" width="250"><img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoSG5adlBBX05kaVk" width="250"><img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoWHdON3U1VHR6N1U" width="250">
 
 Comparing it with the data when there is no treasure, we figured out the ranges of bin for the peak at each frequency: 7kHz 20-60, 12kHz 70-90, and 17kHz ??.
 
