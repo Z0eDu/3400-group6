@@ -20,9 +20,9 @@ We tested our distance calculations by place the sensor in front of a wooden pla
 Since filter circuits affected the peak, we have decided to magnify it software wise instead. To determine the range of bin where the peak should appear, we first connected a function generator that generates 7kHz/ 12kHz/ 17Hz directly as the input and collected data. 
 
 
-<img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoUkFROEMxZXFnZlU" width="500">
+<img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoUkFROEMxZXFnZlU">
 
-<img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoSG5adlBBX05kaVk" width="300"><img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoSG5adlBBX05kaVk" width="300"><img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoWHdON3U1VHR6N1U" width="300">
+<img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoSG5adlBBX05kaVk" width="200"><img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoSG5adlBBX05kaVk" width="200"><img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoWHdON3U1VHR6N1U" width="200">
 
 Comparing it with the data when there is no treasure, we figured out the ranges of bin for the peak at each frequency: 7kHz 20-60, 12kHz 70-90, and 17kHz ??.
 
