@@ -12,6 +12,18 @@ Where `d` is the distance in centimeters and `v` is the voltage in volts. The Ar
 We tested our distance calculations by place the sensor in front of a wooden plank, and moving it back and forth while measuring the distance with a ruler. The sensor worked as expcected, and the above formulas produced the correct distance, within 1 cm.
 
 ### Code
+From the conversion above, we were able to make the robot move while continually checking the wall sensor to see how far away from the wall. For the purposes of Milestone 2, we had the robot move as it got closer to the wall until it read that it was 7 cm away. To accomplish this, we created a helper function:
+```cpp
+void stopAtWall() {
+  while (getDistance(1) > 7)  //drive until the sensor at A1 is farther than 7 cm away from the wall
+    drive(10, 10);
+    
+  drive(0,0);             //stop
+}
+```
+Below is a video of our robot moving toward, and stopping at, a wall. In order to show that the robot stops autonomously, we moved the wall farther away, and it moved toward the wall again and stopped.
+
+<iframe src="https://drive.google.com/file/d/0ByCM4xElwbIeX2ZreEtQaWdUelk/preview" width="640" height="480"></iframe>
 
 ## Treasure Classification
 
@@ -22,7 +34,7 @@ Since filter circuits affected the peak, we have decided to magnify it software 
 
 <img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoUkFROEMxZXFnZlU">
 
-<img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoSG5adlBBX05kaVk" width="250"><img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoSG5adlBBX05kaVk" width="250"><img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoWHdON3U1VHR6N1U" width="250">
+<img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoSG5adlBBX05kaVk" width="200"><img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoSG5adlBBX05kaVk" width="200"><img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoWHdON3U1VHR6N1U" width="200">
 
 Comparing it with the data when there is no treasure, we figured out the ranges of bin for the peak at each frequency: 7kHz 20-60, 12kHz 70-90, and 17kHz ??.
 
