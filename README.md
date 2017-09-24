@@ -21,3 +21,4 @@
 
 ## Milestones
 * [Milestone 1](mi1/README.md)
+* [Milestone 2](mi2/README.md)
