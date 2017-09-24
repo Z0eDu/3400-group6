@@ -49,9 +49,23 @@ With this data, we can digitally process the bins numbers and detect treasures a
 ### Signal Filtering
 Since filter circuits affected the peak, we decided to filter software wise instead. To determine the range of bin where the peak should appear, we first connected a function generator that generates 7kHz/ 12kHz/ 17Hz directly as the input and collected data.
 
+```cpp
+for (int i = 0 ; i < 128 ; i += 1) {  
+   if (i > 30 && i < 60) { 
+      Serial.println(100*fft_log_out[i]);
+    }
+    else if (i > 70 && i < 90){
+      Serial.println(100*fft_log_out[i]);
+    }
+    else if (i > 100 && i < 120){
+      Serial.println(100*fft_log_out[i]);
+    }
+    else {
+      Serial.println(fft_log_out[i]);
+    }
+ ```
 
-
-Comparing it with the data when there is no treasure, we figured out the ranges of bin for the peak at each frequency: 7kHz 20-60, 12kHz 70-90, and 17kHz ??. 
+Comparing it with the data when there is no treasure, we figured out the ranges of bin for the peak at each frequency: 7kHz 20-60, 12kHz 70-90, and 17kHz 100-120. 
 
 ### Proximity of Treasure to Phototransistor
 
