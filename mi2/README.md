@@ -24,7 +24,7 @@ void stopAtWall() {
 ```
 Below is a video of our robot moving toward, and stopping at, a wall.  In order to show that the robot stops autonomously, we moved the wall farther away, and it moved toward the wall again and stopped.
 
-<iframe src="https://drive.google.com/file/d/0ByCM4xElwbIeX2ZreEtQaWdUelk/view" width="640" height="480"></iframe>
+<iframe src="https://drive.google.com/file/d/0ByCM4xElwbIeX2ZreEtQaWdUelk/preview" width="640" height="480"></iframe>
 
 
 ## Treasure Classification
