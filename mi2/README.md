@@ -46,7 +46,11 @@ We then held the treasure tuned to the correct frequency close to the phototrans
 
 With this data, we can digitally process the bins numbers and detect treasures at different frequencies.
 
-### Bin Ranges 
+### Signal Filtering
+Since filter circuits affected the peak, we decided to filter software wise instead. To determine the range of bin where the peak should appear, we first connected a function generator that generates 7kHz/ 12kHz/ 17Hz directly as the input and collected data.
+
+
+Comparing it with the data when there is no treasure, we figured out the ranges of bin for the peak at each frequency: 7kHz 20-60, 12kHz 70-90, and 17kHz ??. 
 
 ### Proximity of Treasure to Phototransistor
 
