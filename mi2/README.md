@@ -37,9 +37,9 @@ Using our code from Lab 2, we wanted to first make sure that we were able to det
 
 We then created a sine wave with the frequency generator and ran our FFT code to find the log magnitudes for each bin for both 12kHz and 17kHz (7 kHz was done in Lab 2). 
 
-<img src="https://docs.google.com/uc?id=0B1QvEdmy23tjRTRMTXpqUGFGMDA" width="400"> <img src="https://docs.google.com/uc?id=0B0-yVGdr0EwobldOS3dCRVQwVXM" width="450" height="300">
+<img src="https://docs.google.com/uc?id=0B1QvEdmy23tjRTRMTXpqUGFGMDA" width="400"> <img src="https://docs.google.com/uc?id=0B0-yVGdr0EwobldOS3dCRVQwVXM" width="425" height="300">
 
-<img src="https://docs.google.com/uc?id=0B1QvEdmy23tjMFZ6MENBSFJXTjQ" width="400"> <img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoRjU3d09LZmdVdjQ" width="450" height="300">
+<img src="https://docs.google.com/uc?id=0B1QvEdmy23tjMFZ6MENBSFJXTjQ" width="400"> <img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoRjU3d09LZmdVdjQ" width="425" height="300">
 
 We then held the treasure tuned to the correct frequency close to the phototransistor, and checked to ensure that the peaks for the treasure data lined up with that from the frequency generator. As seen from the graphs, the peak for 7KHz is around the 48th bin, around the 82nd bin for 12kHz (see Signal Filtering section), and around the 115th bin for 17kHz.  
 <img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoeVhLWVJ0dmloUHc" width="350">  <img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoaGQ1OGxUNnFHbTA" width="350">
