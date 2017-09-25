@@ -86,7 +86,7 @@ This raised the issue that attempting to amplify the signal to make the peak mor
 
 The two things we want to improve are the distance our robot picks up the treasure signals, and being able to better separate the signals from the rest. We know that we need to be able to detect signals only at 7kHz, 12kHz, 17kHz. Any other signals are irrelevant, so we want to design a filter that will ignore the other signals or amplify the ones we need. For improving the distance, we do not have a set plan yet, but we are deciding where is the best spot on the robot for it. 
 
-<iframe src="https://drive.google.com/file/d/0B0-yVGdr0EwoRjU3d09LZmdVdjQ/preview" width="640" height="480"></iframe> <img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoaGQ1OGxUNnFHbTA" width="350">
+<img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoRjU3d09LZmdVdjQ" width="350"> <img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoaGQ1OGxUNnFHbTA" width="350">
 
 The signals were not as good as we wanted them to be. Even from close distance, some of the signals only showed a small peak.
 
