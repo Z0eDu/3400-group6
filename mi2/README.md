@@ -88,7 +88,7 @@ The two things we want to improve are the distance our robot picks up the treasu
 
 <img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoRjU3d09LZmdVdjQ" width="350"> <img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoaGQ1OGxUNnFHbTA" width="350">
 
-The signals were not as good as we wanted them to be. Even from close distance, some of the signals only showed a small peak.
+The signals were not as good as we wanted them to be. Even from close distance, the signals were not as good as when we conncted the phototransistor to the frequency generator.
 
 
 ## Work Distribution
