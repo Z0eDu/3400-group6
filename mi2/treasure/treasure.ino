@@ -69,11 +69,11 @@ ISR(TIMER1_COMPA_vect){//timer1 interrupt 8kHz toggles pin 9
     fft_i = 0;
    //Serial.println("Start");
 
-   //for (byte i = 0; i <FFT_N/2; i++){
-      //if(i == 20 || i == 21 || i == 22){
-        //Serial.println(fft_log_out[i]);// send out the data
-      //}
-   //}
+    for (byte i = 0; i <FFT_N/2; i++){
+      // if(i == 20 || i == 21 || i == 22){
+      Serial.println(fft_log_out[i]);// send out the data
+      // }
+    }
     if(fft_log_out[20] >= 50 || fft_log_out[21] >= 50 ||fft_log_out[22] >= 50){
       count ++;
     } else{
