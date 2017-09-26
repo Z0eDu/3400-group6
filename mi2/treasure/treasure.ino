@@ -34,22 +34,22 @@ void setup() {
 
   cli();
   // put your setup code here, to run once:
-  TCCR1A = 0;// set entire TCCR1A register to 0
-  TCCR1B = 0;// same for TCCR1B
-  TCNT1  = 0;//initialize counter value to 0
+  TCCR0A = 0;// set entire TCCR1A register to 0
+  TCCR0B = 0;// same for TCCR1B
+  TCNT0  = 0;//initialize counter value to 0
   // set compare match register for 8khz increments
-  OCR1A = 56;// = (16*10^6) / (8000*8) - 1 (must be <256)
+  OCR0A = 51;// = (16*10^6) / (8000*8) - 1 (must be <256)
   // turn on CTC mode
-  TCCR1A |= (1 << WGM21);
+  TCCR0A |= (1 << WGM21);
   // Set CS21 bit for 8 prescaler
-  TCCR1B |= (1 << CS21);
+  TCCR0B |= (1 << CS21);
   // enable timer compare interrupt
-  TIMSK1 |= (1 << OCIE2A);
+  TIMSK0 |= (1 << OCIE2A);
 
   sei();
 }
 
-ISR(TIMER1_COMPA_vect){//timer1 interrupt 8kHz toggles pin 9
+ISR(TIMER0_COMPA_vect){//timer1 interrupt 8kHz toggles pin 9
 //generates pulse wave of frequency 8kHz/2 = 4kHz (takes two cycles for full wave- toggle high then toggle low)
   if (toggle2){
     digitalWrite(9,HIGH);
@@ -67,13 +67,15 @@ ISR(TIMER1_COMPA_vect){//timer1 interrupt 8kHz toggles pin 9
     fft_mag_log(); // take the output of the fft
 
     fft_i = 0;
-   //Serial.println("Start");
+   Serial.println("Start");
 
     for (byte i = 0; i <FFT_N/2; i++){
       // if(i == 20 || i == 21 || i == 22){
       Serial.println(fft_log_out[i]);// send out the data
       // }
     }
+    Serial.println("Stop");
+    
     if(fft_log_out[20] >= 50 || fft_log_out[21] >= 50 ||fft_log_out[22] >= 50){
       count ++;
     } else{
