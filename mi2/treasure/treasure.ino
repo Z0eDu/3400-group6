@@ -34,22 +34,22 @@ void setup() {
 
   cli();
   // put your setup code here, to run once:
-  TCCR3A = 0;// set entire TCCR2A register to 0
-  TCCR3B = 0;// same for TCCR2B
-  TCNT3  = 0;//initialize counter value to 0
+  TCCR1A = 0;// set entire TCCR1A register to 0
+  TCCR1B = 0;// same for TCCR1B
+  TCNT1  = 0;//initialize counter value to 0
   // set compare match register for 8khz increments
-  OCR3A = 56;// = (16*10^6) / (8000*8) - 1 (must be <256)
+  OCR1A = 56;// = (16*10^6) / (8000*8) - 1 (must be <256)
   // turn on CTC mode
-  TCCR3A |= (1 << WGM21);
+  TCCR1A |= (1 << WGM21);
   // Set CS21 bit for 8 prescaler
-  TCCR3B |= (1 << CS21);
+  TCCR1B |= (1 << CS21);
   // enable timer compare interrupt
-  TIMSK3 |= (1 << OCIE2A);
+  TIMSK1 |= (1 << OCIE2A);
 
   sei();
 }
 
-ISR(TIMER3_COMPA_vect){//timer1 interrupt 8kHz toggles pin 9
+ISR(TIMER1_COMPA_vect){//timer1 interrupt 8kHz toggles pin 9
 //generates pulse wave of frequency 8kHz/2 = 4kHz (takes two cycles for full wave- toggle high then toggle low)
   if (toggle2){
     digitalWrite(9,HIGH);
