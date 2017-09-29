@@ -24,3 +24,6 @@
 2. Drew (code) and Jacob (calibration): wall detection
 3. Emily (code), Ayomi (things to improve on), Jennie (how we found bin ranges), Eric (distance from sensor): treasure detection
 
+## 2017.09.29
+1. Decided on teams: Emily, Ayomi, Eric for team 1, and Drew, Jacob, and Jennie for team 2.
+2. Reminded each other to fill out the team survey
