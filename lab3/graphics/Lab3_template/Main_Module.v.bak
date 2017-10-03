@@ -1,0 +1,13 @@
+module Main_Module {
+	PIXEL_X,
+	PIXEL_Y,
+	PIXEL_COLOR_IN
+};
+
+input PIXEL_X;
+input PIXEL_Y;
+output [7:0] PIXEL_COLOR_IN;
+
+reg array;
+
+endmodule
