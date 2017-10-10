@@ -27,3 +27,6 @@
 ## 2017.09.29
 1. Decided on teams: Emily, Ayomi, Eric for team 1, and Drew, Jacob, and Jennie for team 2.
 2. Reminded each other to fill out the team survey
+
+## 2017.10.06
+1. Team attended optional lecture on debugging analog circuitry instead of having a team meeting.
