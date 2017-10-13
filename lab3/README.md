@@ -4,7 +4,7 @@
 * Take at least two external inputs to the FPGA and display them on a screen
 * React to an external input to the FPGA of their choice and generate a short ‘tune’ consisting of at least three tones to a speaker via an 8-bit DAC
 
-## Grading Criteria
+#### Grading Criteria
 1 point: Reading external inputs to FPGA  
 1 point: Correctly updating a 4-bit array dependent on the inputs  
 1 point: Drawing one box on the screen  
@@ -21,6 +21,16 @@
 
 
 ## Graphics
+
+### Setup
+
+### Simple Drawings
+
+### Memory System for Blocks in Grid
+
+### Communcation method between Arduino and FPGA
+
+### Voltage Divider
 
 
 ## Acoustics
