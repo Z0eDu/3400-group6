@@ -96,6 +96,9 @@ if __name__ == '__main__':
 
 We ran this script on an input file consisting of the frequencies of the notes in a C scale, and it produced a file containing the DDS increments in hex. Then, we synthesized that into another Verilog ROM, just as above. The DDS module then incremented the index into the increment ROM every second, causing the output frequencies to change to the desired frequencies. With this, we played a C scale:
 
+### Playing Arbitrary Songs
+
+While we didn't have time for this lab, we can easily generalize the scale approach above to play (at significantly reduced quality) any song. To do so, take the song, and break the samples into groups of some fixed length, probably 0.1 s. Take the Fourier transform of each section, and select the dominant 8 frequencies. Assemble these into a file with 1 frequency per line (8 lines of frequencies that occur at the same time, then the next 8, and so on). Run the increment generation script on the file. Then, modify the Verilog code to instantiate 8 DDS modules, each one reading from a different initial index in the increment file, and incrementing the index by 8 each each 0.1 s. Average the outputs from all 8 (which is not as not that bad: sign extend all to 11 bits, add them, and then bit shift the result right by 3 bits). Output this to the DAC.
 
 
 ## Work Distribution
