@@ -54,6 +54,17 @@ Using what we had learned, we were able to split our screen in half and set them
 
 ### Memory System for Blocks in Grid
 
+Once we were able to draw a single square, we then needed to implement an array in order to store color values for the inclusion of multiple squares. For this, the 2x2 8-bit `grid_array` was used to store 4 different colors. Instead of using if-statements to determine which color in `grid_array` to select, we used the binary properties of the X and Y coordinates. The 7th index of our position variables is 0 within 0-127, 1 within 128-255, 0 again within 256-383, and so on . These binary values were to selected indexes in `grid_array`, assigning the color at each pixel and creating a repeating pattern of 128x128 pixel squares. 
+
+```verilog
+PIXEL_COLOR <= grid_array[PIXEL_COORD_X[7]][PIXEL_COORD_Y[7]];
+```
+
+Later, a conditional statment so that values larger than the 255 would be black, therefore eliminating the repeating pattern. The result image can be seen below.
+
+<img src="https://docs.google.com/uc?id=0B4-ue266N8b0VVVFcEhKWEFMNGs" width="350">   <img src="https://docs.google.com/uc?id=0B4-ue266N8b0N0psVlBvb2o2dU0" width="350">
+
+
 ### Communcation method between Arduino and FPGA
 
 ### Voltage Divider
