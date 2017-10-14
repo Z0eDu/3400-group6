@@ -45,6 +45,7 @@ The first thing we wanted to work on after setup was to draw a simple image. Fro
 The block diagram below demonstrates how the FPGA code interacts with the VGA display. 
 
 <img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoQlpTX3ZOUmg2eHM" width="600">
+
 (Credit: ECE 3400 course website)
 
 Using what we had learned, we were able to split our screen in half and set them as two different colors, and also draw a basic square in the top left corner of the screen as shown. 
