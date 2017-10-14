@@ -62,7 +62,7 @@ PIXEL_COLOR <= grid_array[PIXEL_COORD_X[7]][PIXEL_COORD_Y[7]];
 
 Later, a conditional statment so that values larger than the 255 would be black, therefore eliminating the repeating pattern. The result image can be seen below.
 
-<img src="https://docs.google.com/uc?id=0B4-ue266N8b0VVVFcEhKWEFMNGs" width="350">   <img src="https://docs.google.com/uc?id=0B4-ue266N8b0N0psVlBvb2o2dU0" width="350">
+<img src="https://docs.google.com/uc?id=0B4-ue266N8b0VVVFcEhKWEFMNGs" width="350"> 
 
 
 ### Communcation method between Arduino and FPGA
