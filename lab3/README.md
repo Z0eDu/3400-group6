@@ -21,12 +21,19 @@
 
 
 ## Graphics
+### Setup
 
 For our setup, we had to connect the FPGA to the monitor. To do this, we used a VGA connector that connects to GPIO pins xxx on the FPGA, and then a VGA cable to connect the FPGA to the VGA switch. The VGA switch allows us to go between the computer and the FPGA input. 
+
+<img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoaTVfRHVFYTdCUU0" width="800">
 
 Since the VGA cable is composed of three analog wires and the FPGA produces a 3.3V digital output, a resistive 8-bit Digital-to-Analog Converter (DAC) was provided. Using the DAC, the 8-bits for each color signal (3 red, 3 green, 2 blue) from the FPGA are converted into the three different RGB color 0-1V analog signals. 
 
 The resistor values chosen for the VGA connector are based upon the R-2R DAC resistor network which directly converts the  parallel FPGA digital signal into an analog output. 
+
+<img src="https://sub.allaboutcircuits.com/images/quiz/03999x01.png">
+
+(Credit: https://www.allaboutcircuits.com/worksheets/digital-to-analog-conversion/)
 
 For red and green, since the signals are 3 bits wide, the resistor values chosen were approximately 270 Ohm, 550 Ohm, and 1200 Ohm. This is because 1200 Ohm is approximately twice 550 Ohm, and 550 Ohm is approximately twice 270 Ohm. Likewise, for the blue, since the signal is 2 bits wide, the respective values are 270 Ohm and 550 Ohm.
 
@@ -37,10 +44,12 @@ The first thing we wanted to work on after setup was to draw a simple image. Fro
 
 The block diagram below demonstrates how the FPGA code interacts with the VGA display. 
 
+<img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoQlpTX3ZOUmg2eHM" width="600">
 (Credit: ECE 3400 course website)
 
-Using what we had learned, we were able to split our screen in half and set them as two different colors, and also draw a basic square in the top left corner of the screen. 
+Using what we had learned, we were able to split our screen in half and set them as two different colors, and also draw a basic square in the top left corner of the screen as shown. 
 
+<img src="https://docs.google.com/uc?id=0B4-ue266N8b0b25pRmlQeW1Pc0k" width="350">   <img src="https://docs.google.com/uc?id=0B4-ue266N8b0N0psVlBvb2o2dU0" width="350">
 
 ### Memory System for Blocks in Grid
 
