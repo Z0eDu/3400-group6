@@ -109,7 +109,7 @@ end
 
 Here is the square wave that this code outputs:
 
-<img src="https://docs.google.com/uc?id=0B-CRHiExsEzBS21icTE2U19ZajQ" width="600">
+<img src="https://docs.google.com/uc?id=0B-CRHiExsEzBS21icTE2U19ZajQ" width="400">
 
 ### Sine Table Generation
 
