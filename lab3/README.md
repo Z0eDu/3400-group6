@@ -69,9 +69,11 @@ end
 
 Now to prepare for external inputs, the wires `highlighted_x` and `highlighted_y` were connected to GPIO_124 and GPIO_126. Before assigning PIXEL_COLOR, it checks if it is within the highlighted region. If so, the color will be red, rather than its grid_array color.
 
-```if (PIXEL_COORD_X[7] == highlighted_x && PIXEL_COORD_Y[7] == highlighted_y) begin
+```verilog
+if (PIXEL_COORD_X[7] == highlighted_x && PIXEL_COORD_Y[7] == highlighted_y) begin
 	PIXEL_COLOR <= `RED;
 end
+```
 
 ### Communcation method between Arduino and FPGA
 
