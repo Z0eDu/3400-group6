@@ -72,6 +72,45 @@ Later, a conditional statment so that values larger than the 255 would be black,
 
 ## Acoustics
 
+### GPIO Setup and Square Wave Generation
+
+We imported the template given in the lab handout as a starting point for our Direct Digital Synthesis.  This only requried us to map our  pins and wire the up the FPGA outputs.  To make our lives easier, we mapped the 8-bit output to pins 9-23 odd on the FPGA on GPIO 0.  Here the DDS_DRIVER module implementation within the DE0_NANO module:
+
+```verilog
+DDS_DRIVER dds(
+	.RESET(reset),
+	.CLOCK(CLOCK_25),
+	.DAC_OUT({GPIO_1_D[23], GPIO_1_D[21], GPIO_1_D[19], GPIO_1_D[17], GPIO_1_D[15], GPIO_1_D[13], GPIO_1_D[11], GPIO_1_D[09]})
+);
+```
+
+We then took the output from the FPGA and used an 8-bit DAC to convert the signal from an 8-bit representation to a voltage level from 0-3.3V (shown below).
+
+<img src="https://docs.google.com/uc?id=0B1QvEdmy23tjRGdRNWFkWDhaeTQ" width="600">
+
+After setting up the GPIO pins with the DAC, we were ready to create a square wave.  In the DDS_DRIVER module, we toggled the output from low to high at a specific frequency.  Since the DE0_NANO module uses a 25 MHz clock, we had to find a way to reduce the frequency at which we outputted the square wave.  In order to do so, we used the following always block.  The key is a counter that counts up to 1000 (thus only toggling the output once for every 1000 positive edges of the clock).  This translates to a 25 MHz / 2 / 1000 = 12.5 kHz signal.  The factor of two comes in because we are only toggling at the positive edge of the clock, not on both edges.  When the counter hits 1000, we reset it and toggle output; otherwise, we simply increment the counter.
+
+```verilog
+always @(posedge CLOCK) begin
+	if (RESET) begin
+		OUT <= 8'b0;
+		counter <= 32'b0;
+	end
+		
+	else begin
+		if (counter == 32'd1000) begin
+			counter <= 32'b0;
+			OUT <= ~OUT;
+		end
+		else counter <= counter + 1;
+	end
+end
+```
+
+Here is the square wave that this code outputs:
+
+<img src="https://docs.google.com/uc?id=0B-CRHiExsEzBS21icTE2U19ZajQ" width="600">
+
 ### Sine Table Generation
 
 We generated a table of a single period of a sine wave, with 256 points ranging from 0 to 255 using python:
