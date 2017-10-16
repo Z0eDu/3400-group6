@@ -77,7 +77,43 @@ end
 
 ### Communcation method between Arduino and FPGA
 
+To communicate between the Arduino and the FPGA, the first thing we did was to write a program that reads whether the input pin is high or low, and to output that to another pin.
+
+```
+  pinMode(5, INPUT);
+  pinMode(6, INPUT);
+  pinMode(3, OUTPUT);
+  pinMode(4, OUTPUT);
+```
+```
+ if (digitalRead(5) == HIGH){
+    digitalWrite(3, HIGH);
+    Serial.println("Pin 5 = 1");
+  } else {
+    digitalWrite(3, LOW);
+    Serial.println("Pin 5 = 0");
+  }
+  if (digitalRead(6) == HIGH){
+    digitalWrite(4, HIGH);
+    Serial.println("Pin 6 = 1");
+  } else{
+    digitalWrite(4,LOW);
+    Serial.println("Pin6 = 0");
+  }
+```
+
+We tested that by printing to the serial monitor. Once we knew everything was working, then we built our voltage divider, so that we could connect the Arduino to the FPGA.
+
+
 ### Voltage Divider
+
+We had to build two voltage dividers, one for the x-coordinate pin and the other for the y coordinate pin. To build the voltage divider, we used a 1k and 2k resistor because 5V * (2/1+3) = 3.3V, which is the amount of voltage the FPGA operates at. Once we built the voltage divider. We uploaded the code to the arduino, and wired everything.
+
+<img src="https://docs.google.com/uc?id=0B4-ue266N8b0MXNhandpSGtvQmM" width="350"> 
+
+We connected the output pins, so that they would be the inputs into the voltage divider. We then connected the outputs of the voltage divider to the pins on GPIO_131 and GPIO_133. We moved the wires on the breadboard from high to low so that we could test move the square around the screen.
+<iframe src="https://drive.google.com/file/d/0B4-ue266N8b0a1NadVJoVkViY2c/preview" width="640" height="480"></iframe>
+
 
 
 ## Acoustics
