@@ -23,7 +23,7 @@
 ## Graphics
 ### Setup
 
-For our setup, we had to connect the FPGA to the monitor. To do this, we used a VGA connector that connects to GPIO pins 9, 11, 13, 15, 17, 19, 21, 23 on the FPGA, and then a VGA cable to connect the FPGA to the VGA switch. The VGA switch allows us to go between the computer and the FPGA input. 
+For our setup, we had to connect the FPGA to the monitor. To do this, we used a VGA connector that connects to GPIO pins xxx on the FPGA, and then a VGA cable to connect the FPGA to the VGA switch. The VGA switch allows us to go between the computer and the FPGA input. 
 
 <img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoaTVfRHVFYTdCUU0" width="800">
 
@@ -107,7 +107,7 @@ We tested that by printing to the serial monitor. Once we knew everything was wo
 
 ### Voltage Divider
 
-We had to build two voltage dividers, one for the x-coordinate pin and the other for the y-coordinate pin. To build the voltage divider, we used a 1k and 2k resistor because 5V * (2/1+2) = 3.3V, which is the amount of voltage the FPGA operates at. Once we built the voltage divider. We uploaded the code to the arduino, and wired everything.
+We had to build two voltage dividers, one for the x-coordinate pin and the other for the y coordinate pin. To build the voltage divider, we used a 1k and 2k resistor because 5V * (2/1+3) = 3.3V, which is the amount of voltage the FPGA operates at. Once we built the voltage divider. We uploaded the code to the arduino, and wired everything.
 
 <img src="https://docs.google.com/uc?id=0B4-ue266N8b0MXNhandpSGtvQmM" width="350">
 
@@ -216,9 +216,16 @@ if __name__ == '__main__':
             print(hex(int(2**32*float(line)/25e6))[2:].zfill(8))
 ```
 
-We ran this script on an input file consisting of the frequencies of the notes in a C scale, and it produced a file containing the DDS increments in hex. Then, we synthesized that into another Verilog ROM, just as above. The DDS module then incremented the index into the increment ROM every second, causing the output frequencies to change to the desired frequencies. With this, we played a C scale:
+We ran this script on an input file consisting of the frequencies of the notes in a C scale, and it produced a file containing the DDS increments in hex. The increments were calculated according to the following formula.
+
+
+<img src="https://docs.google.com/uc?id=0B1QvEdmy23tjcTF3VEtrOVhTUzA" width="600">
+
+
+Then, we synthesized that into another Verilog ROM, just as above. The DDS module then incremented the index into the increment ROM every second, causing the output frequencies to change to the desired frequencies. With this, we played a C scale:
 
 <iframe src="https://drive.google.com/file/d/0B1QvEdmy23tjRHNLdEx6V1U1RFk/preview" width="640" height="480"></iframe>
+
 
 ### Playing Arbitrary Songs
 
@@ -227,9 +234,9 @@ While we didn't have time for this lab, we can easily generalize the scale appro
 
 ## Work Distribution
 
-*   Ayomi: Wrote the Arduino code for the the x,y input from Arduino to FPGA
+*   Ayomi:
 *   Drew:
-*   Emily: Initial box drawings
-*   Eric: Mapping of pixel coordinates 
+*   Emily:
+*   Eric:
 *   Jacob:
 *   Joo Yeon:
