@@ -234,9 +234,9 @@ While we didn't have time for this lab, we can easily generalize the scale appro
 
 ## Work Distribution
 
-*   Ayomi:
-*   Drew:
-*   Emily:
-*   Eric:
-*   Jacob:
-*   Joo Yeon:
+*   Ayomi: Wrote the Arduino code for the the x,y input from Arduino to FPGA
+*   Drew: GPIO setup and Square wave generation
+*   Emily: Initial box drawings
+*   Eric: Mapping of pixel coordinates
+*   Jacob: Sine tablem, scale generation, and playing arbitrary songs 
+*   Joo Yeon: Tone generation
