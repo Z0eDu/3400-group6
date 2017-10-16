@@ -219,7 +219,7 @@ if __name__ == '__main__':
 We ran this script on an input file consisting of the frequencies of the notes in a C scale, and it produced a file containing the DDS increments in hex. The increments were calculated according to the following formula.
 
 
-<img src="https://docs.google.com/uc?id=0B1QvEdmy23tjcTF3VEtrOVhTUzA" width="600">
+<img src="https://docs.google.com/uc?id=0B1QvEdmy23tjcTF3VEtrOVhTUzA">
 
 
 Then, we synthesized that into another Verilog ROM, just as above. The DDS module then incremented the index into the increment ROM every second, causing the output frequencies to change to the desired frequencies. With this, we played a C scale:
