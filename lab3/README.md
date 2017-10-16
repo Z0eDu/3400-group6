@@ -201,6 +201,15 @@ module sine_rom
 endmodule
 ```
 
+The DDS module inputted counter[31:24] and CLOCK to the sine table module and connected the output to the DAC_OUT.
+
+```verilog
+sine_rom #(8, 8) sineTable(counter[31:24], CLOCK, DAC_OUT);
+```
+
+We used only the highest bits of the counter as the address. Same with the square wave generation, since DE0_NANO module uses a 25 MHz clock, we had to output the sine wave at lower frequency. 
+
+
 ### Scale Generation
 
 Once we got pure sine generation working, we added the capability to play arbitrary frequencies in sequence. For that, we used another python script:
@@ -218,9 +227,7 @@ if __name__ == '__main__':
 
 We ran this script on an input file consisting of the frequencies of the notes in a C scale, and it produced a file containing the DDS increments in hex. The increments were calculated according to the following formula.
 
-
 <img src="https://docs.google.com/uc?id=0B1QvEdmy23tjcTF3VEtrOVhTUzA" width = "200">
-
 
 Then, we synthesized that into another Verilog ROM, just as above. The DDS module then incremented the index into the increment ROM every second, causing the output frequencies to change to the desired frequencies. With this, we played a C scale:
 
