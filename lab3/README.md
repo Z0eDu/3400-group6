@@ -201,14 +201,28 @@ module sine_rom
 endmodule
 ```
 
-The DDS module inputted counter[31:24] and CLOCK to the sine table module and connected the output to the DAC_OUT.
+### DDS
+
+The Direct Digital Synthesis (DDS)  module inputted `counter[31:24]` and CLOCK to the sine table module and connected the output to the `DAC_OUT`.
 
 ```verilog
 sine_rom #(8, 8) sineTable(counter[31:24], CLOCK, DAC_OUT);
 ```
 
-We used only the highest bits of the counter as the address. Same with the square wave generation, since DE0_NANO module uses a 25 MHz clock, we had to output the sine wave at lower frequency. 
+We used only the highest bits of the counter as the address. This is because the sine table was 256 entires long, but counter was a 32 bit integer. By making coutner a 32 bit integer however, we get significant frequency rage. By modifying the increment, the amount by which we incremented counter each 25 MHz clock tick, we could control the frequency output. The increments were calculated according to the following formula:
 
+<img src="https://docs.google.com/uc?id=0B1QvEdmy23tjcTF3VEtrOVhTUzA" width = "200">
+
+Where phi is the increment, f is the desired sine output frequency, and f_s is the sampling frequency. The verilog block for doing this increment is:
+```verilog
+always@(posedge CLOCK) begin
+    if (RESET) begin
+        counter <= 0;
+    else begin
+        counter <= counter + increment;
+    end
+end
+```
 
 ### Scale Generation
 
@@ -225,10 +239,7 @@ if __name__ == '__main__':
             print(hex(int(2**32*float(line)/25e6))[2:].zfill(8))
 ```
 
-We ran this script on an input file consisting of the frequencies of the notes in a C scale, and it produced a file containing the DDS increments in hex. The increments were calculated according to the following formula.
-
-<img src="https://docs.google.com/uc?id=0B1QvEdmy23tjcTF3VEtrOVhTUzA" width = "200">
-
+We ran this script on an input file consisting of the frequencies of the notes in a C scale, and it produced a file containing the DDS increments in hex. 
 Then, we synthesized that into another Verilog ROM, just as above. The DDS module then incremented the index into the increment ROM every second, causing the output frequencies to change to the desired frequencies. With this, we played a C scale:
 
 <iframe src="https://drive.google.com/file/d/0B1QvEdmy23tjRHNLdEx6V1U1RFk/preview" width="640" height="480"></iframe>
