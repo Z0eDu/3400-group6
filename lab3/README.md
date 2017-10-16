@@ -65,7 +65,7 @@ else begin
 end
 ```
 
-<img src="https://docs.google.com/uc?id=0B4-ue266N8b0VVVFcEhKWEFMNGs" width="640"> 
+<img src="https://docs.google.com/uc?id=0B4-ue266N8b0VVVFcEhKWEFMNGs" width="350"> 
 
 Now to prepare for external inputs, the wires `highlighted_x` and `highlighted_y` were connected to GPIO_124 and GPIO_126. Before assigning PIXEL_COLOR, it checks if it is within the highlighted region. If so, the color will be red, rather than its grid_array color.
 
@@ -109,7 +109,7 @@ We tested that by printing to the serial monitor. Once we knew everything was wo
 
 We had to build two voltage dividers, one for the x-coordinate pin and the other for the y coordinate pin. To build the voltage divider, we used a 1k and 2k resistor because 5V * (2/1+3) = 3.3V, which is the amount of voltage the FPGA operates at. Once we built the voltage divider. We uploaded the code to the arduino, and wired everything.
 
-<img src="https://docs.google.com/uc?id=0B4-ue266N8b0MXNhandpSGtvQmM" width="640"> 
+<iframe src="https://drive.google.com/file/d/0B4-ue266N8b0MXNhandpSGtvQmM/preview" width="640" height="480"></iframe>
 
 We connected the output pins, so that they would be the inputs into the voltage divider. We then connected the outputs of the voltage divider to the pins on GPIO_131 and GPIO_133. We moved the wires on the breadboard from high to low so that we could test move the square around the screen.
 <iframe src="https://drive.google.com/file/d/0B4-ue266N8b0a1NadVJoVkViY2c/preview" width="640" height="480"></iframe>
