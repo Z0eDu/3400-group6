@@ -14,8 +14,8 @@ def main():
 
     im = Image.open(args.img)
     im.thumbnail(size, Image.ANTIALIAS)
-    for x in range(0, 128):
-        for y in range(0, 128):
+    for y in range(0, 128):
+        for x in range(0, 128):
             color = (0, 0, 0)
             if x < im.size[0] and y < im.size[1]:
                 color = im.getpixel((x,y))[0:3]
