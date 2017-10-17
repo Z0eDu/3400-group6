@@ -144,26 +144,32 @@ void loop(void)
     unsigned char new_data;
     unsigned char pos = 4;
     unsigned char state = 0;
+    int start = 0;
     
     new_data =  pos << 3 | state;
 
+    if (start == 0) {
+      start = 1;
+
+      // Send the maze in a single payload
+      printf("Now sending the maze!\n");
+      bool ok = radio.write( maze, sizeof(maze) );
+      
+      if (ok)
+        printf("ok...");
+      else
+        printf("failed.\n\r");
+    }
+
     // Take the time, and send it.  This will block until complete
     printf("Now sending new map data\n");
-    /*bool update = radio.write( &new_data, sizeof(unsigned char) );
+    bool update = radio.write( &new_data, sizeof(unsigned char) );
 
      if (update)
       printf("ok update...");
     else
-      printf("failed update.\n\r");*/
+      printf("failed update.\n\r");
 
-    // Send the maze in a single payload
-    printf("Now sending the maze!\n");
-    bool ok = radio.write( maze, sizeof(maze) );
-
-    if (ok)
-      printf("ok...");
-    else
-      printf("failed.\n\r");
 
     // Now, continue listening
     radio.startListening();
@@ -229,8 +235,8 @@ void loop(void)
         delay(20);
 
       }
-/*
-      while (!doneU  && start == 1){
+
+      while (!doneU){
         // Fetch the payload, and see if this was the last one.
         doneU = radio.read( &got_data, sizeof(unsigned char) );
 
@@ -244,19 +250,19 @@ void loop(void)
         printf("%d" , location );
         printf("\n");
 
-        //got_maze[x][y] = location;
+        got_maze[y][x] = location;
 
         // Print the maze
 
         printf("Updated Maze \n");
-        for (int i=0; i < 5; i++) {
-          for (int j=0; j < 4; j++) {
+        for (int i=0; i < 4; i++) {
+          for (int j=0; j < 5; j++) {
             printf("%d ", got_maze[i][j]);
           }
           printf("\n");
         }
       }
-      */
+      
 
       // First, stop listening so we can talk
       radio.stopListening();
