@@ -136,8 +136,8 @@ module DE0_NANO(
 	
 	
 	assign vga_ram_waddr = arduino_in[4:0];
-	assign vga_ram_we = 1'b1;
-	assign arduino_data = arduino_in[6:5];
+	assign vga_ram_we = arduino_in[5];
+	assign arduino_data = arduino_in[7:6];
 	
 	always @(*) begin
 		case (arduino_data)
@@ -192,7 +192,9 @@ module DE0_NANO(
 	end
 	
 	always @(posedge CLOCK_25) begin
-		if (vga_ram_rsp == `GREEN) PIXEL_COLOR <= kirstin_out;
+		if      (vga_ram_rsp == `GREEN) PIXEL_COLOR <= kirstin_out;
+		else if (vga_ram_rsp == `RED)   PIXEL_COLOR <= donald_out;
+		else if (vga_ram_rsp == `BLUE) PIXEL_COLOR <= sonic_out;
 		else PIXEL_COLOR <= vga_ram_rsp;
 	end
 	
