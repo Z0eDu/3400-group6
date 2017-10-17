@@ -20,7 +20,8 @@ def main():
             if x < im.size[0] and y < im.size[1]:
                 color = im.getpixel((x,y))[0:3]
             r, g, b = color
-            hexc = r << 5 | g << 3 | (b >> 1)
+            # print(color)
+            hexc = (r >> 5) << 5 | (g >> 5) << 3 | (b >> 6)
             print(hex(hexc)[2:])
 
 if __name__ == '__main__':
