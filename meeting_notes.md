@@ -30,3 +30,7 @@
 
 ## 2017.10.06
 1. Team attended optional lecture on debugging analog circuitry instead of having a team meeting.
+
+## 2017.10.20
+1. Decided to start working on milestone 3 next week.
+1. talked about finishing lab 4.
