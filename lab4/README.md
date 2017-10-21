@@ -1,8 +1,10 @@
 # Lab 4: Radio Communication and Map Drawing
 
 ### Objectives
-* Take at least two external inputs to the FPGA and display them on a screen
-* React to an external input to the FPGA of their choice and generate a short ‘tune’ consisting of at least three tones to a speaker via an 8-bit DAC
+* Extend work from Lab 3 to use the FLPA draw a full maze on VGA monitor
+* Update VGA monitor with information received from radio
+* Get robot and video controller to talk to each other to simulate actual maze information 
+
 
 #### Grading
 2 points: Sending information wirelessly between Arduino’s  
