@@ -35,11 +35,98 @@ Instead of sending (x,y) coordinates to determine the position of the robot in t
 
 <img src="https://docs.google.com/uc?id=0B0-yVGdr0Ewod3hvaVg2UWw5X1E" width="300">
 
-<img src="https://docs.google.com/uc?id=" width="350">
-
 Each message that Arduino A transmits to Arduino B is a 8-bit unsigned char that denotes robot position, state, and a clock bit. The 8-bit message is broken down as follows. The lower two least-significant bits differentiates between three states: current robot position, explored, and unexplored -- with decimal values 0, 1, and 2 respectively. The third bit is a clock line that we lower as the Arduino is writing all the bits to the FPGA, and the brought high once all the bits are written. The last most-significant bits indicate the position of the grid, with decimal values 0 to 19 as shown in our grid above. 
 
-<img src="https://docs.google.com/uc?id=0B0-yVGdr0EwocnlMbHItclEwR1k" width="450">
+<img src="https://docs.google.com/uc?id=0B0-yVGdr0EwocnlMbHItclEwR1k" width="600">
+
+In communicating to the FPGA, we first set 8 output pins on the Arduino, one for each bit in the message. The idea is such that there is a separate line for each bit and the FPGA will read if the bit is either a 0 or 1 and update the map/robot position and states accordingly. Since digital pin 0 and 1 are used for serial communication on the Arduino, we mapped bit 0 and bit 1 of our message to digital pin 8, and analog pin 1 respectively. 
+
+```cpp
+
+ // Output pin setup
+  pinMode(8, OUTPUT);
+  pinMode(A1, OUTPUT);
+  pinMode(2, OUTPUT);
+  pinMode(3, OUTPUT);
+  pinMode(4, OUTPUT);
+  pinMode(5, OUTPUT);
+  pinMode(6, OUTPUT);
+  pinMode(7, OUTPUT);
+
+```
+
+#### Transmit Code  
+
+Two nested for loops are used to send our updated robot position. In this example, we iterate through the entire 4 x 5 maze and have the robot visit each grid. The message containing the location and state is packed so it can be sent int a single payload. Since the five most-significant bits contain the location, it is left-shifted three bits and then OR-ed with the state (```new_data =  i << 3 | state```, where i is the location).
+
+```cpp
+    unsigned char new_data;
+    unsigned char pos;
+    unsigned char state;
+    bool update;
+
+  for (int j = 0; j < 20; j++) {
+    for (int i = 0; i < 20; i++) {
+      
+      if (i == j){
+        state = 0; // current robot state
+      } else if (i < j) {
+        state = 1; // explored
+      } else {
+        state = 2; // unexplored
+      }
+      
+      new_data =  i << 3 | state;
+      printf("Now sending new robot update\n");
+      
+      update = false; 
+      while (!update) {
+      update = radio.write( &new_data, sizeof(unsigned char) );
+      Serial.println(update);
+      }
+      
+    }
+    delay(100);
+  }
+  ```
+
+
+#### Receive Code  
+On the receive end, there is a continuos loop in which the radio checks to see if there is a payload that was sent. The data received is stored in ```got_data```, and then each bit is read using ```bitRead(got_data, x)```, where ```x``` is the respective bit. For each bit, we check to see if the bit is a 0 or a 1, and then write to the pin output so it can be read by the FPGA using a ternary operator.
+
+Since the third bit of our message is used as the clock line, we write the clock bit to be low, write all the outputs to the FPGA, and then raise the clock bit high. 
+
+
+```cpp
+    // if there is data ready
+    if ( radio.available() )
+    {
+      unsigned char got_data;
+      bool doneU = false;
+      
+      while (!doneU){
+        // Fetch the payload, and see if this was the last one.
+        doneU = radio.read( &got_data, sizeof(unsigned char) );
+        printf("%d", got_data);
+
+        // Clock low
+        digitalWrite(2, LOW);
+
+        // State bits
+        bitRead(got_data, 0) ? digitalWrite(8, HIGH) : digitalWrite(8, LOW);
+        bitRead(got_data, 1) ? digitalWrite(A1, HIGH) : digitalWrite(A1, LOW);
+        // Location bits
+        bitRead(got_data, 3) ? digitalWrite(3, HIGH) : digitalWrite(3, LOW);
+        bitRead(got_data, 4) ? digitalWrite(4, HIGH) : digitalWrite(4, LOW);
+        bitRead(got_data, 5) ? digitalWrite(5, HIGH) : digitalWrite(5, LOW);
+        bitRead(got_data, 6) ? digitalWrite(6, HIGH) : digitalWrite(6, LOW);
+        bitRead(got_data, 7) ? digitalWrite(7, HIGH) : digitalWrite(7, LOW);
+
+        // Clock high
+        digitalWrite(2, HIGH);
+        
+      }
+```
 
 
 ## FPGA
