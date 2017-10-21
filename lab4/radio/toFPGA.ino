@@ -52,32 +52,21 @@ const char* role_friendly_name[] = { "invalid", "Ping out", "Pong back"};
 // The role of the current running sketch
 role_e role = role_pong_back;
 
-//
-// Maze
-//
-/*unsigned char maze[4][5] =
-{
-  3, 3, 3, 3, 3,
-  3, 1, 1, 1, 3,
-  3, 2, 0, 1, 2,
-  3, 1, 3, 1, 3
-};*/
-
-
 void setup(void)
 {
   //
   // Print preamble
   //
 
-  pinMode(1, OUTPUT);
+  // Output pin setup
+  pinMode(8, OUTPUT);
+  pinMode(A1, OUTPUT);
   pinMode(2, OUTPUT);
   pinMode(3, OUTPUT);
   pinMode(4, OUTPUT);
   pinMode(5, OUTPUT);
   pinMode(6, OUTPUT);
   pinMode(7, OUTPUT);
-  pinMode(8, OUTPUT);
 
   
   Serial.begin(57600);
@@ -106,7 +95,6 @@ void setup(void)
   // optionally, reduce the payload size.  seems to
   // improve reliability
   //radio.setPayloadSize(8);
-
   //
   // Open pipes to other nodes for communication
   //
@@ -152,28 +140,33 @@ void loop(void)
     radio.stopListening();
 
     unsigned char new_data;
-    unsigned char pos = 4;
-    unsigned char state = 0;
-    //int start = 0;
-    
-    new_data =  pos << 3 | state;
+    unsigned char pos;
+    unsigned char state;
+    bool update;
 
-    /*if (start == 0) {
-      //start = 1;
-
-      // Send the maze in a single payload
-      printf("Now sending the maze!\n");
-      bool ok = radio.write( maze, sizeof(maze) );
+  for (int j = 0; j < 20; j++) {
+    for (int i = 0; i < 20; i++) {
       
-      if (ok)
-        printf("ok...");
-      else
-        printf("failed.\n\r");
-    }*/
-
-    // Take the time, and send it.  This will block until complete
-    printf("Now sending new map data\n");
-    bool update = radio.write( &new_data, sizeof(unsigned char) );
+      if (i == j){
+        state = 0; // current robot state
+      } else if (i < j) {
+        state = 1; // visited
+      } else {
+        state = 2; // unexplored
+      }
+      
+      new_data =  i << 3 | state;
+      printf("Now sending new robot update\n");
+      
+      update = false; 
+      while (!update) {
+      update = radio.write( &new_data, sizeof(unsigned char) );
+      Serial.println(update);
+      }
+      
+    }
+    delay(100);
+  }
 
      if (update)
       printf("ok update...");
@@ -199,12 +192,6 @@ void loop(void)
     else
     {
       printf("Success!");
-//      // Grab the response, compare, and send to debugging spew
-//      unsigned long got_time;
-//      radio.read( &got_time, sizeof(unsigned long) );
-//
-//      // Spew it
-//      printf("Got response %lu, round-trip delay: %lu\n\r",got_time,millis()-got_time);
     }
 
     // Try again 1s later
@@ -220,62 +207,32 @@ void loop(void)
     // if there is data ready
     if ( radio.available() )
     {
-      //unsigned char got_maze[4][5];
       unsigned char got_data;
-      //unsigned char start = 0;
-      //bool done = false;
       bool doneU = false;
       
-      /*while (!done)
-      {
-        
-        // Fetch the payload.
-        done = radio.read( got_maze, sizeof(got_maze) );
-
-        // Print the maze
-        for (int i=0; i < 4; i++) {
-          for (int j=0; j < 5; j++) {
-            printf("%d ", got_maze[i][j]);
-          }
-          printf("\n");
-        }
-
-        // Delay just a little bit to let the other unit
-        // make the transition to receiver
-        delay(20);
-
-      }*/
-
       while (!doneU){
         // Fetch the payload, and see if this was the last one.
         doneU = radio.read( &got_data, sizeof(unsigned char) );
+        printf("%d", got_data);
 
-        
-        
-        bitRead(got_data, 0) ? digitalWrite(0, HIGH) : digitalWrite(0, LOW);
-        bitRead(got_data, 1) ? digitalWrite(1, HIGH) : digitalWrite(1, LOW);
-        bitRead(got_data, 2) ? digitalWrite(2, HIGH) : digitalWrite(2, LOW);
+        // Clock low
+        digitalWrite(2, LOW);
+
+        // State bits
+        bitRead(got_data, 0) ? digitalWrite(8, HIGH) : digitalWrite(8, LOW);
+        bitRead(got_data, 1) ? digitalWrite(A1, HIGH) : digitalWrite(A1, LOW);
+        // Location bits
         bitRead(got_data, 3) ? digitalWrite(3, HIGH) : digitalWrite(3, LOW);
         bitRead(got_data, 4) ? digitalWrite(4, HIGH) : digitalWrite(4, LOW);
         bitRead(got_data, 5) ? digitalWrite(5, HIGH) : digitalWrite(5, LOW);
         bitRead(got_data, 6) ? digitalWrite(6, HIGH) : digitalWrite(6, LOW);
         bitRead(got_data, 7) ? digitalWrite(7, HIGH) : digitalWrite(7, LOW);
 
-
-        //got_maze[x][y] = location;
-
-        // Print the maze
-
-        /*printf("Updated Maze \n");
-        for (int i=0; i < 4; i++) {
-          for (int j=0; j < 5; j++) {
-            printf("%d ", got_maze[i][j]);
-          }
-          printf("\n");
-        }*/
+        // Clock high
+        digitalWrite(2, HIGH);
+        
       }
       
-
       // First, stop listening so we can talk
       radio.stopListening();
 
