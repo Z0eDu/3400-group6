@@ -1,4 +1,6 @@
-# Cornell ECE 3400 Fall 2017: Group 6
+---
+title: Flying Rabbits: ECE 3400 Fall 2017 Group 6
+---
 
 ## Members
 
