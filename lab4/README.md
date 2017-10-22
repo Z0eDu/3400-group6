@@ -29,6 +29,51 @@
 
 ### Sending New Information Only
 
+First, We create a 8-bit unsigned char then created two int values one called location and the other called state. We set new_data equal to the pos left-shifted the three bits and OR-ed with the state. This way the most significant 5-bits are the position, and the last 3 are the state.
+
+```
+unsigned char new_data;
+unsigned char pos = 4;
+unsigned char state = 0;
+int start = 0;
+    
+new_data =  pos << 3 | state;
+```
+
+We changed the new radio.write so that it sends the new data.
+
+```
+    printf("Now sending new map data\n");
+    bool update = radio.write( &new_data, sizeof(unsigned char) );
+
+     if (update)
+      printf("ok update...");
+    else
+      printf("failed update.\n\r");
+```
+
+Lastly, we changed the while loop, so that it would send the new information, and make the changes to the maze. Using the information we got from got_data, we figured out the location and changed that positon in the maze. Since location was only a single value, we broke it up to represent the row and column. We set the maze position equal to the decimal value of position, to confirm that it was receiving the right information.
+
+ ```
+ doneU = radio.read( &got_data, sizeof(unsigned char) );
+
+ unsigned char location = got_data >> 3;
+
+ int y = location / 5;
+ int x = location % 5;
+        
+ printf("Location: ");
+ printf("%d" , location );
+ printf("\n");
+
+ got_maze[y][x] = location;
+ ```
+
+Here is what the serial monitor of the receiver printed out.
+
+<img src="https://docs.google.com/uc?id=0B4-ue266N8b0ODRVeDNCaTBEN0E" width="300">
+
+
 ### Sending Robot Position
 
 Instead of sending (x,y) coordinates to determine the position of the robot in the 4 x 5 maze, we decided that we would send integer positions to denote robot position. Each square of the maze will be numbered as follows:
