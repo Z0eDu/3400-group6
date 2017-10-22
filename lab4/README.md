@@ -185,6 +185,7 @@ Since the third bit of our message is used as the clock line, we write the clock
 #### Dual port RAM
 
 ### Communication Protocol
+We mapped the display for our 4x5 grid by giving each square a number that we could write using the above 8-bit data sent by the radio. Starting in the upper left corner and going across the row, we numbered each square from 0-19, which we wrote in the 5-bit location section of the data. The write enable bit allowed us to effectively clock our updates to the screen rather than interfering previous and preceding messages.  Before we added this, we would get random intermediate squares to be modified, as if we were changing the inputs slowly by hand. We used the color portion of the data to differentiate how we should modify the square at the given location. Each combination of the 2-bit section was mapped to colors, and then later images (see below).
 
 ### Displaying Images
 
