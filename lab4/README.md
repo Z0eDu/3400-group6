@@ -223,7 +223,7 @@ module DONALD_DUCK
 endmodule
 ```
 
-See [`img_to_rom.py`](img_to_rom.py) for the python script.
+See [`img_to_rom.py`](https://github.com/sunemily/3400-group6/blob/master/lab4/vga/img_to_rom.py) for the python script.
 
 
 ## Work Distribution
