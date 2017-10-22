@@ -225,6 +225,19 @@ endmodule
 
 See [`img_to_rom.py`](https://github.com/sunemily/3400-group6/blob/master/lab4/vga/img_to_rom.py) for the python script.
 
+We were able to display Donald Duck, Sonic the Hedgehog (not pictured), and Kirstin Petersen:
+
+<img src="https://docs.google.com/uc?id=0B1r9QYTd8YNrZllET0hCXzhmT00" width="300">
+
+<img src="https://docs.google.com/uc?id=0B1r9QYTd8YNrVWJXNVo0NVVQNkk" width="300">
+
+
+## Final Result
+
+<iframe src="https://drive.google.com/file/d/0B1r9QYTd8YNrd3luMFFmTWxhdTg/preview" width="640" height="480"></iframe>
+
+Kirstin represents the robot as it explores the map, Sonic represents the unexplored areas, and Donald represents explored areas.
+
 
 ## Work Distribution
 
