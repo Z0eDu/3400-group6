@@ -71,9 +71,7 @@ Lastly, we changed the while loop, so that it would send the new information, an
 
 Here is what the serial monitor of the receiver printed out.
 
-<img src="https://docs.google.com/uc?id=0B4-ue266N8b0ODRVeDNCaTBEN0E">
-
-<iframe src="https://drive.google.com/file/d/0B4-ue266N8b0ODRVeDNCaTBEN0E/preview" width="640" height="480"></iframe>
+<img src="https://docs.google.com/uc?id=0B4-ue266N8b0ODRVeDNCaTBEN0E"  width="640" height="480">
 
 Here is a video showing that we were sending the information wirelessly.
 
