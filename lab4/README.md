@@ -31,7 +31,7 @@
 
 First, We create a 8-bit unsigned char then created two int values one called location and the other called state. We set new_data equal to the pos left-shifted the three bits and OR-ed with the state. This way the most significant 5-bits are the position, and the last 3 are the state.
 
-```
+```cpp
 unsigned char new_data;
 unsigned char pos = 4;
 unsigned char state = 0;
@@ -42,7 +42,7 @@ new_data =  pos << 3 | state;
 
 We changed the new radio.write so that it sends the new data.
 
-```
+```cpp
     printf("Now sending new map data\n");
     bool update = radio.write( &new_data, sizeof(unsigned char) );
 
@@ -54,7 +54,7 @@ We changed the new radio.write so that it sends the new data.
 
 Lastly, we changed the while loop, so that it would send the new information, and make the changes to the maze. Using the information we got from got_data, we figured out the location and changed that positon in the maze. Since location was only a single value, we broke it up to represent the row and column. We set the maze position equal to the decimal value of position, to confirm that it was receiving the right information.
 
- ```
+ ```cpp
  doneU = radio.read( &got_data, sizeof(unsigned char) );
 
  unsigned char location = got_data >> 3;
@@ -72,6 +72,10 @@ Lastly, we changed the while loop, so that it would send the new information, an
 Here is what the serial monitor of the receiver printed out.
 
 <img src="https://docs.google.com/uc?id=0B4-ue266N8b0ODRVeDNCaTBEN0E" width="300">
+
+Here is a video showing that we were sending the information wirelessly.
+
+<iframe src="https://drive.google.com/file/d/18rVIUlMtZgDl6QTX3NCYy8VCqUEpkdbZGw/preview" width="640" height="480"></iframe>
 
 
 ### Sending Robot Position
