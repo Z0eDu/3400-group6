@@ -180,9 +180,19 @@ Since the third bit of our message is used as the clock line, we write the clock
 
 ## FPGA
 
+### Communication Protocol
+We mapped the display for our 4x5 grid by giving each square a number that we could write using the above 8-bit data sent by the radio. Starting in the upper left corner and going across the row, we numbered each square from 0-19 as in the diagram in the radio section, which we wrote in the 5-bit location section of the data. The write enable bit allowed us to effectively clock our updates to the screen rather than interfering previous and preceding messages.  Before we added this, we would get random intermediate squares to be modified, as if we were changing the inputs slowly by hand. We used the color portion of the data to differentiate how we should modify the square at the given location. Each combination of the 2-bit section was mapped to colors, and then later images (see below), that correspond to the state of each square (current position, explored, and unexplored).
+
+We parsed the input from the Arduino according to the protocol as such.  The vga_ram_waddr corresponds to the square to which we are writing in the RAM. The vga_ram_we bit is the write enable bit that we used for clocking.  Both of these are inputted into our VGA_ROM module to write, and later read from, memory. Arduino_data contains the state of the robot as described above.
+```verilog
+assign vga_ram_waddr = arduino_in[4:0];
+assign vga_ram_we = arduino_in[5];
+assign arduino_data = arduino_in[7:6];
+```
+
 ### Verilog
 
-We separated the maze grid into a full 4x5 grid with each edge 120 pixels long. This was done by defining the pixel numbers of the edges and assigning the correct grid coordinate numbers according to the range that the pixel coordinate numbers are in.
+We separated the maze grid into a full 4x5 grid with each edge 120 pixels long. This was done by defining the pixel numbers of the edges and assigning the correct grid coordinate numbers according to the range that the pixel coordinate numbers are in. Using nested if statements, we were able to determine which square the current pixel is in by finding if it was outside the range of each square edge for both the x and y directions. After determining which square edge the pixel was in, we assigned it a decimal value corresponding to its row or column number (zero-aligned).
 
 ```verilog
 `define SQUARE_EDGE_0 120
@@ -207,10 +217,20 @@ if      (PIXEL_COORD_Y < `SQUARE_EDGE_0) grid_coord_y = 5'd0;
 end
 ```
 
+From the above, we were able to continue to map the coordinates of each pixel to correspond to the square numbers from 0-19. The vga_ram_raddr holds this number, and it is essentially the column number (x coordinate) offset by 5 times the row number (the y coordinate). Here, we use bogus numbers such as 31 if the x or y coordinates are out of range. This allows us to read the state of this square from the RAM so we can color this pixel.
+```verilog
+		if      (grid_coord_x == 5'd5)          vga_ram_raddr = 5'd31;
+		else if (grid_coord_y == 5'd0)          vga_ram_raddr = grid_coord_x;
+		else if (grid_coord_y == 5'd1)          vga_ram_raddr = grid_coord_x + 5;
+		else if (grid_coord_y == 5'd2)          vga_ram_raddr = grid_coord_x + 10;
+		else if (grid_coord_y == 5'd3)          vga_ram_raddr = grid_coord_x + 15;
+		else                                    vga_ram_raddr = 5'd31;
+```
+
 
 #### Dual port RAM
 
-We created a simple Dual Port RAM with separate read/write addresses in order to save and read the state of each grid.
+We created a simple Dual Port RAM with separate read/write addresses in order to save and read the state of each grid. The write_addr and read_addr indices in the RAM correspond to a square on the grid and thus hold the values 0-19. Here is where we implemented clocking.  We only write to the RAM if the Arduino sends the write enable bit high. This ensures that nothing gets overwritten when we are sending information to the FPGA. Also note that we are able to read on every positive edge of the clock.
 
 ```verilog
 module VGA_RAM
@@ -231,22 +251,12 @@ module VGA_RAM
 		if (we)
 			ram[write_addr] <= data;
 
-		// Read (if read_addr == write_addr, return OLD data).	To return
-		// NEW data, use = (blocking write) rather than <= (non-blocking write)
-		// in the write assignment.	 NOTE: NEW data may require extra bypass
-		// logic around the RAM.
 		q <= ram[read_addr];
 	end
 
 endmodule
 ```
-The signal sent from arduino was separated into parts according to the protocol. 
-```verilog
-assign vga_ram_waddr = arduino_in[4:0];
-assign vga_ram_we = arduino_in[5];
-assign arduino_data = arduino_in[7:6];
-```
-The write data was a corresponding color with the arduino data.
+The data that we write to the RAM corresponds to a color, which indicates the state for a given square.  This vga_ram_write is what we pass into the VGA_RAM module as the data for each square so we can keep track of the states of all squares in memory.
 ```verilog
 always @(*) begin
 		case (arduino_data)
@@ -258,16 +268,8 @@ always @(*) begin
 		endcase
 end	
 ```
-The read address was induced from the grid coordinate numbers.
-```verilog
-		if      (grid_coord_x == 5'd5)          vga_ram_raddr = 5'd31;
-		else if (grid_coord_y == 5'd0)          vga_ram_raddr = grid_coord_x;
-		else if (grid_coord_y == 5'd1)          vga_ram_raddr = grid_coord_x + 5;
-		else if (grid_coord_y == 5'd2)          vga_ram_raddr = grid_coord_x + 10;
-		else if (grid_coord_y == 5'd3)          vga_ram_raddr = grid_coord_x + 15;
-		else                                    vga_ram_raddr = 5'd31;
-```
-The separated arduino signals were connected to the vga_ram.
+
+The separated arduino signals were connected to the vga_ram (shown here for reference).
 ```verilog
 VGA_RAM vga_ram (
 		.data(vga_ram_write),
@@ -278,10 +280,6 @@ VGA_RAM vga_ram (
 	   .q(vga_ram_rsp)
 	);
 ```
-
-
-### Communication Protocol
-We mapped the display for our 4x5 grid by giving each square a number that we could write using the above 8-bit data sent by the radio. Starting in the upper left corner and going across the row, we numbered each square from 0-19, which we wrote in the 5-bit location section of the data. The write enable bit allowed us to effectively clock our updates to the screen rather than interfering previous and preceding messages.  Before we added this, we would get random intermediate squares to be modified, as if we were changing the inputs slowly by hand. We used the color portion of the data to differentiate how we should modify the square at the given location. Each combination of the 2-bit section was mapped to colors, and then later images (see below).
 
 ### Displaying Images
 
