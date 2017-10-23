@@ -1,19 +1,9 @@
 # Lab 4: Radio Communication and Map Drawing
 
 ### Objectives
-* Extend work from Lab 3 to use the FPGA draw a full maze on VGA monitor
+* Extend work from Lab 3 to use the FPGA to draw a full maze on VGA monitor
 * Update VGA monitor with information received from radio
 * Get robot and video controller to talk to each other to simulate actual maze information
-
-
-#### Grading
-2 points: Sending information wirelessly between Arduino’s  
-2 points: Sending the entire maze wirelessly  
-3 points: Updating the maze array, dependent only on the updated robot information  
-1 point: Displaying a full 4-by-5 grid array on the screen  
-3 points: Communicating maze information from the Arduino to the FPGA  
-2 points: Display the robot location on the screen  
-2 points: Distinguish what sites have been visited and which haven’t on the screen  
 
 ## Teams
 **Team 1 (Radio)**: Ayomi, Emily, Eric
@@ -373,9 +363,9 @@ Kirstin represents the robot as it explores the map, Sonic represents the unexpl
 
 ## Work Distribution
 
-*   Ayomi:
+*   Ayomi: Radio, sending new information only
 *   Drew: Verilog code, voltage dividers
-*   Emily:
-*   Eric:
+*   Emily: Radio, sending robot position 
+*   Eric: Radio, sending entire maze
 *   Jacob: Verilog code, python scripts
 *   Joo Yeon: Verilog code
