@@ -182,7 +182,7 @@ Since the third bit of our message is used as the clock line, we write the clock
 
 ### Verilog
 
-We separated the maze grid into a full 4x5 grid with each edge 120 pixels long. This was done by setting the pixel numbers of the edges and assigning the correct grid coordinate numbers according to the range that the pixel coordinate numbers are in.
+We separated the maze grid into a full 4x5 grid with each edge 120 pixels long. This was done by defining the pixel numbers of the edges and assigning the correct grid coordinate numbers according to the range that the pixel coordinate numbers are in.
 
 ```verilog
 `define SQUARE_EDGE_0 120
