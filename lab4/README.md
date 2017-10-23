@@ -24,8 +24,17 @@
 ## Radio
 
 ### Setup
+To begin, we obtained the six hardware materials we would for communication. This was 2 Arduino Unos, two Nordic nRF24L01+ transceivers, and two 2 radio breakout boards. The breakout boards with transceivers were then connected to pins 9-13, ground, and the 3.3V power supply for both arduinos.
+
+For software setup, the RF24 Arduino library was installed and the supplied GettingStarted.ino files were downloaded. Using the formula given on the website, we found our channnel numbers to be 18 and 19, or 12 and 13 in hex. We then modified our channel numbers in getting started as follows:
+```cpp
+const uint64_t pipes[2] = { 0x0000000012LL, 0x0000000013LL };
+```
+We then uploaded GettingStarted to both arduinos and, using the serial monitors, set one to transmit and one to recieve to ensure we had communication.
 
 ### Sending Entire Maze
+
+After communication was established, we were ready to send the maze. 
 
 ### Sending New Information Only
 
