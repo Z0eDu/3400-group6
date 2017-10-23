@@ -182,42 +182,32 @@ Since the third bit of our message is used as the clock line, we write the clock
 
 ### Verilog
 
-
 #### Dual port RAM
-
-We created a simple Dual Port RAM with separate read/write addresses in order to save and read the state of each grid.
-
-```verilog
-module VGA_RAM
-#(parameter DATA_WIDTH=8, parameter ADDR_WIDTH=5)
-(
-	input [(DATA_WIDTH-1):0] data,
-	input [(ADDR_WIDTH-1):0] read_addr, write_addr,
-	input we, clk,
-	output reg [(DATA_WIDTH-1):0] q
-);
-
-	// Declare the RAM variable
-	reg [DATA_WIDTH-1:0] ram[2**ADDR_WIDTH-1:0];
-
-	always @ (posedge clk)
-	begin
-		// Write
-		if (we)
-			ram[write_addr] <= data;
-
-		// Read (if read_addr == write_addr, return OLD data).	To return
-		// NEW data, use = (blocking write) rather than <= (non-blocking write)
-		// in the write assignment.	 NOTE: NEW data may require extra bypass
-		// logic around the RAM.
-		q <= ram[read_addr];
-	end
-
-endmodule
-```
 
 ### Communication Protocol
 We mapped the display for our 4x5 grid by giving each square a number that we could write using the above 8-bit data sent by the radio. Starting in the upper left corner and going across the row, we numbered each square from 0-19, which we wrote in the 5-bit location section of the data. The write enable bit allowed us to effectively clock our updates to the screen rather than interfering previous and preceding messages.  Before we added this, we would get random intermediate squares to be modified, as if we were changing the inputs slowly by hand. We used the color portion of the data to differentiate how we should modify the square at the given location. Each combination of the 2-bit section was mapped to colors, and then later images (see below).
+
+We manipulated the data as such in the DE0_NANO module:
+
+```Verilog
+assign vga_ram_waddr = arduino_in[4:0];
+assign vga_ram_we = arduino_in[5];
+assign arduino_data = arduino_in[7:6];
+```
+Arduino_in is the 8-bit data from the Arduino. Note that the FPGA receives the data differently than shown in the diagram above. The loacation, which is stored in the vga_ram_waddr, is contained in the 5 lowest bits.  The 5th bit becomes the write enable, which again allows for clocking. Both the vga_ram_waddr and the vga_ram_we are inputted into the VGA_RAM module to allow us to read and write from memory. The arduino_data variable is where we store the 2-bit state of the square.
+
+The following excerpt from the VGA_RAM module shows how we handled clocking. The write_addr and read_addr variables are the square numbers from 0-19 that are sent by the Arduino.  Data is the indicator for the status of the square and tells what image or color it should show. We are able to read at every clock edge, but we only want to write when the Arduino is sending a write enable signal (as mentioned above).
+
+```verilog
+always @ (posedge clk)
+begin
+	// Write
+	if (we)
+		ram[write_addr] <= data;
+		
+	q <= ram[read_addr];
+end
+```
 
 ### Displaying Images
 
