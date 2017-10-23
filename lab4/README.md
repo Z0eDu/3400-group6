@@ -240,6 +240,45 @@ module VGA_RAM
 
 endmodule
 ```
+The signal sent from arduino was separated into parts according to the protocol. 
+```verilog
+assign vga_ram_waddr = arduino_in[4:0];
+assign vga_ram_we = arduino_in[5];
+assign arduino_data = arduino_in[7:6];
+```
+The write data was a corresponding color with the arduino data.
+```verilog
+always @(*) begin
+		case (arduino_data)
+			2'd0: vga_ram_write = `GREEN;
+			2'd1: vga_ram_write = `RED;
+			2'd2: vga_ram_write = `BLUE;
+			2'd3: vga_ram_write = `ORANGE;
+			default: vga_ram_write = `BLACK;
+		endcase
+end	
+```
+The read address was induced from the grid coordinate numbers.
+```verilog
+		if      (grid_coord_x == 5'd5)          vga_ram_raddr = 5'd31;
+		else if (grid_coord_y == 5'd0)          vga_ram_raddr = grid_coord_x;
+		else if (grid_coord_y == 5'd1)          vga_ram_raddr = grid_coord_x + 5;
+		else if (grid_coord_y == 5'd2)          vga_ram_raddr = grid_coord_x + 10;
+		else if (grid_coord_y == 5'd3)          vga_ram_raddr = grid_coord_x + 15;
+		else                                    vga_ram_raddr = 5'd31;
+```
+The separated arduino signals were connected to the vga_ram.
+```verilog
+VGA_RAM vga_ram (
+		.data(vga_ram_write),
+	   .read_addr(vga_ram_raddr),
+		.write_addr(vga_ram_waddr),
+	   .we(vga_ram_we),
+		.clk(CLOCK_25),
+	   .q(vga_ram_rsp)
+	);
+```
+
 
 ### Communication Protocol
 We mapped the display for our 4x5 grid by giving each square a number that we could write using the above 8-bit data sent by the radio. Starting in the upper left corner and going across the row, we numbered each square from 0-19, which we wrote in the 5-bit location section of the data. The write enable bit allowed us to effectively clock our updates to the screen rather than interfering previous and preceding messages.  Before we added this, we would get random intermediate squares to be modified, as if we were changing the inputs slowly by hand. We used the color portion of the data to differentiate how we should modify the square at the given location. Each combination of the 2-bit section was mapped to colors, and then later images (see below).
