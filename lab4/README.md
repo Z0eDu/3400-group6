@@ -34,7 +34,35 @@ We then uploaded GettingStarted to both arduinos and, using the serial monitors,
 
 ### Sending Entire Maze
 
-After communication was established, we were ready to send the maze. 
+After communication was established, we were ready to send the maze. First we initialized an arbitrary 4x5 maze to send.
+```cpp
+unsigned char maze[4][5] =
+{
+  3, 3, 3, 3, 3,
+  3, 1, 1, 1, 3,
+  3, 2, 0, 1, 2,
+  3, 1, 3, 1, 3
+};
+```
+On the transmitter side, the code was added to send this data:
+```cpp
+      bool ok = radio.write( maze, sizeof(maze) );
+      
+      if (ok)
+        printf("ok...");
+      else
+        printf("failed.\n\r");
+```
+Then the radio read was added to the receiver:
+```cpp
+ while (!done) {
+        done = radio.read( got_maze, sizeof(got_maze) );
+	}
+```
+Then to make this data readable, a for-loop was created to read and print through all the values in got_maze. Here is the final product.
+
+<iframe src="https://drive.google.com/file/d/1ugxnGpxkmuRaxVPf9SKYErIXR39YX2M9JQ/preview" width="640" height="480"></iframe>
+
 
 ### Sending New Information Only
 
