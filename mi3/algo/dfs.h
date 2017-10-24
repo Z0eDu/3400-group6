@@ -10,7 +10,7 @@
 #define DIR_COUNT 4
 
 // Represents state of a square
-enum { UNVISITED, VISITED, OBSTACLE };
+enum { UNVISITED, VISITED, OBSTACLE, ISOLATED };
 
 // Absolute directions.
 // North: lower row, same column
@@ -94,12 +94,21 @@ int dfs_relative_offset(int base_dir, int total_dir);
  * Effect: moves the robot to the next location, and returns the relative
  * direction
  * it should move in to get there.
+ * Returns: -1 when the entire maze explored.
  */
 int dfs_at_intersection(explore_t* state);
 
 /**
+ * Effect: called after dfs_at_intersection returns -1 to mark some positions
+ * as isloated.
+ */
+void dfs_finalize(explore_t* state);
+
+/**
  * Effect: prints the grid.
- * ? represents unvisited, + represents visited, X represents obstacle.
+ * ? represents unvisited, + represents visited, X represents obstacle, #
+ * represents an isolated space (unreachable). dfs_finalize has to be called to
+ * get that.
  * The robot is represented by ^, <, >, v, which points in the direction of the
  * robot.
  */

@@ -1,7 +1,7 @@
 sim: dfs.o sim.c
-	gcc sim.c dfs.o -Wall -Werror -o sim
+	gcc sim.c dfs.o -Wall -Werror -Wswitch-enum -o sim
 dfs.o: dfs.c dfs.h
-	gcc -c dfs.c -Wall -Werror -o dfs.o
+	gcc -c dfs.c -Wall -Werror -Wswitch-enum -o dfs.o
 format: dfs.c
 	clang-format -i --style=google dfs.c dfs.h sim.c
 clean:

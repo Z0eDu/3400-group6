@@ -117,6 +117,16 @@ int dfs_at_intersection(explore_t* state) {
   return rel_dir;
 }
 
+void dfs_finalize(explore_t* state) {
+  for (size_t row = 0; row < MAP_ROWS; row++) {
+    for (size_t col = 0; col < MAP_COLS; col++) {
+      if (state->visited[row][col] == UNVISITED) {
+        state->visited[row][col] = ISOLATED;
+      }
+    }
+  }
+}
+
 void dfs_print_grid(const explore_t* state) {
   for (size_t row = 0; row < MAP_ROWS; row++) {
     for (size_t col = 0; col < MAP_COLS; col++) {
@@ -147,6 +157,9 @@ void dfs_print_grid(const explore_t* state) {
             break;
           case OBSTACLE:
             printf(" X ");
+            break;
+          case ISOLATED:
+            printf(" # ");
             break;
           default:
             printf("   ");
