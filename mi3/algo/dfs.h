@@ -130,4 +130,9 @@ void dfs_finalize(explore_t* state);
  */
 void dfs_print_grid(const explore_t* state);
 
+/**
+ * Prints the treasures at each location.
+ */
+void dfs_print_treasure(const explore_t* state);
+
 #endif /* end of include guard:  */

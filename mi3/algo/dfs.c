@@ -181,3 +181,27 @@ void dfs_print_grid(const explore_t* state) {
     printf("\n");
   }
 }
+
+void dfs_print_treasure(const explore_t* state) {
+  for (size_t row = 0; row < MAP_ROWS; row++) {
+    for (size_t col = 0; col < MAP_COLS; col++) {
+      switch (state->treasure[row][col]) {
+        case TREASURE_NO:
+          printf(" 0 ");
+          break;
+        case TREASURE_7KHZ:
+          printf(" 7 ");
+          break;
+        case TREASURE_12KHZ:
+          printf(" 12 ");
+          break;
+        case TREASURE_17KHZ:
+          printf(" 17 ");
+          break;
+        default:
+          printf("   ");
+      }
+    }
+    printf("\n");
+  }
+}
