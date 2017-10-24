@@ -12,10 +12,14 @@ void delay_and_clear() {
 int main(int argc, char** argv) {
   explore_t state;
   dfs_init(&state, 0, 0, NORTH);
-  dfs_mark_obstacle(&state, 1, 1);
-  dfs_mark_obstacle(&state, 0, 2);
-  dfs_mark_obstacle(&state, 2, 2);
-  dfs_mark_obstacle(&state, 1, 3);
+  dfs_mark_obstacle(&state, 1, 1, NORTH);
+  dfs_mark_obstacle(&state, 1, 1, EAST);
+  dfs_mark_obstacle(&state, 1, 1, SOUTH);
+  dfs_mark_obstacle(&state, 1, 1, WEST);
+
+  dfs_mark_obstacle(&state, 1, 4, WEST);
+  dfs_mark_obstacle(&state, 2, 4, WEST);
+  dfs_mark_obstacle(&state, 3, 4, WEST);
 
   clear();
   int last_rel_dir;

@@ -13,21 +13,54 @@ void dfs_init(explore_t* state, int start_row, int start_col, int start_dir) {
       state->treasure[row][col] = TREASURE_NO;
     }
   }
+  for (size_t row = 0; row < MAP_ROWS + 1; row++) {
+    for (size_t col = 0; col < MAP_COLS + 1; col++) {
+      state->obstacles[row][col].north = NO_WALL;
+      state->obstacles[row][col].west = NO_WALL;
+    }
+  }
+  for (size_t col = 0; col < MAP_COLS + 1; col++) {
+    state->obstacles[0][col].north = WALL;
+    state->obstacles[MAP_ROWS][col].north = WALL;
+  }
+  for (size_t row = 0; row < MAP_ROWS + 1; row++) {
+    state->obstacles[row][0].west = WALL;
+    state->obstacles[row][MAP_COLS].west = WALL;
+  }
   state->cur_pos.dir = start_dir;
   state->cur_pos.row = start_row;
   state->cur_pos.col = start_col;
   state->stack_head = 0;
 }
 
-void dfs_mark_obstacle(explore_t* state, int row, int col) {
-  state->visited[row][col] = OBSTACLE;
+void dfs_mark_obstacle(explore_t* state, int row, int col, int dir) {
+  if (row < 0 || row >= MAP_ROWS + 1 || col < 0 || col >= MAP_COLS + 1) {
+    return;
+  }
+
+  if (dir == NORTH) {
+    state->obstacles[row][col].north = WALL;
+  } else if (dir == WEST) {
+    state->obstacles[row][col].west = WALL;
+  } else if (dir == SOUTH) {
+    state->obstacles[row + 1][col].north = WALL;
+  } else if (dir == EAST) {
+    state->obstacles[row][col + 1].west = WALL;
+  }
 }
 
 void dfs_mark_rel_obstacle(explore_t* state, int rel_dir) {
-  point_t loc;
-  if (dfs_get_offset(state, rel_dir, &loc)) {
-    dfs_mark_obstacle(state, loc.row, loc.col);
+  int abs_dir = dfs_resolve_dir(state, rel_dir);
+  int row = state->cur_pos.row;
+  int col = state->cur_pos.col;
+  if (abs_dir == SOUTH) {
+    row++;
+    abs_dir = NORTH;
+  } else if (abs_dir == EAST) {
+    col++;
+    abs_dir = WEST;
   }
+  dfs_mark_obstacle(state, row, col, abs_dir);
 }
 
 void dfs_mark_treasure(explore_t* state, int treasure) {
@@ -74,9 +107,27 @@ int dfs_get_offset(explore_t* state, int rel_dir, point_t* out) {
   return dfs_in_bounds(row, col);
 }
 
+int dfs_obstacle_between(explore_t* state, const point_t* source,
+                         const point_t* terminal) {
+  int abs_dir = dfs_absolute_direction(source, terminal);
+  switch (abs_dir) {
+    case NORTH:
+      return state->obstacles[source->row][source->col].north == WALL;
+    case EAST:
+      return state->obstacles[terminal->row][terminal->col].west == WALL;
+    case SOUTH:
+      return state->obstacles[terminal->row][terminal->col].north == WALL;
+    case WEST:
+      return state->obstacles[source->row][source->col].west == WALL;
+    default:
+      return 1;
+  }
+}
+
 int dfs_should_explore(explore_t* state, int rel_dir, point_t* out) {
   return dfs_get_offset(state, rel_dir, out) &&
-         state->visited[out->row][out->col] == UNVISITED;
+         !dfs_obstacle_between(state, &state->cur_pos, out) &&
+         state->visited[out->row][out->col] != VISITED;
 }
 
 int dfs_point_loc_equals(const point_t* a, int row, int col) {
@@ -140,44 +191,65 @@ void dfs_finalize(explore_t* state) {
 }
 
 void dfs_print_grid(const explore_t* state) {
-  for (size_t row = 0; row < MAP_ROWS; row++) {
-    for (size_t col = 0; col < MAP_COLS; col++) {
-      if (dfs_point_loc_equals(&state->cur_pos, row, col)) {
-        switch (state->cur_pos.dir) {
-          case NORTH:
-            printf(" ^ ");
-            break;
-          case EAST:
-            printf(" > ");
-            break;
-          case SOUTH:
-            printf(" v ");
-            break;
-          case WEST:
-            printf(" < ");
-            break;
-          default:
-            printf("   ");
+  for (size_t row = 0; row < MAP_ROWS + 1; row++) {
+    for (size_t col = 0; col < MAP_COLS + 1; col++) {
+      if (state->obstacles[row][col].north == WALL) {
+        if (col == MAP_COLS) {
+          printf("**");
+        } else {
+          printf("*****");
         }
       } else {
-        switch (state->visited[row][col]) {
-          case VISITED:
-            printf(" + ");
-            break;
-          case UNVISITED:
-            printf(" ? ");
-            break;
-          case OBSTACLE:
-            printf(" X ");
-            break;
-          case ISOLATED:
-            printf(" # ");
-            break;
-          default:
-            printf("   ");
-        }
+        printf("     ");
       }
     }
+    printf("\n");
+    for (size_t col = 0; col < MAP_COLS + 1; col++) {
+      if (row != MAP_ROWS && state->obstacles[row][col].west == WALL) {
+        printf("| ");
+      } else {
+        printf("  ");
+      }
+
+      if (row != MAP_ROWS && col != MAP_COLS) {
+        if (dfs_point_loc_equals(&state->cur_pos, row, col)) {
+          switch (state->cur_pos.dir) {
+            case NORTH:
+              printf("^");
+              break;
+            case EAST:
+              printf(">");
+              break;
+            case SOUTH:
+              printf("v");
+              break;
+            case WEST:
+              printf("<");
+              break;
+            default:
+              printf(" ");
+          }
+        } else {
+          switch (state->visited[row][col]) {
+            case VISITED:
+              printf("+");
+              break;
+            case UNVISITED:
+              printf("?");
+              break;
+            case ISOLATED:
+              printf("#");
+              break;
+            default:
+              printf(" ");
+          }
+        }
+      } else {
+        printf(" ");
+      }
+      printf("  ");
+    }
+
     printf("\n");
   }
 }
