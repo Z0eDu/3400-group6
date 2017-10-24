@@ -31,6 +31,8 @@ typedef struct {
 // Represents the state of a DFS exploration
 typedef struct {
   int visited[MAP_ROWS][MAP_COLS];
+  // -1 indicates no treasure
+  int treasure[MAP_ROWS][MAP_COLS];
   point_t stack[MAX_STACK_DEPTH];
   int stack_head;
   point_t cur_pos;
@@ -46,6 +48,12 @@ void dfs_init(explore_t* state, int start_row, int start_col, int start_dir);
  * Effect: marks an obstacle on the grid, at the specified location
  */
 void dfs_mark_obstacle(explore_t* state, int row, int col);
+
+/**
+ * Effect: marks an obstacle at a space adjacent to the robot in the specified
+ * relative direction.
+ */
+void dfs_mark_rel_obstacle(explore_t* state, int rel_dir);
 
 /**
  * Returns: true if the specified location is in bounds

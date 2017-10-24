@@ -10,6 +10,7 @@ void dfs_init(explore_t* state, int start_row, int start_col, int start_dir) {
   for (size_t row = 0; row < MAP_ROWS; row++) {
     for (size_t col = 0; col < MAP_COLS; col++) {
       state->visited[row][col] = UNVISITED;
+      state->treasure[row][col] = -1;
     }
   }
   state->cur_pos.dir = start_dir;
@@ -20,6 +21,13 @@ void dfs_init(explore_t* state, int start_row, int start_col, int start_dir) {
 
 void dfs_mark_obstacle(explore_t* state, int row, int col) {
   state->visited[row][col] = OBSTACLE;
+}
+
+void dfs_mark_rel_obstacle(explore_t* state, int rel_dir) {
+  point_t loc;
+  if (dfs_get_offset(state, rel_dir, &loc)) {
+    dfs_mark_obstacle(state, loc.row, loc.col);
+  }
 }
 
 int dfs_in_bounds(int row, int col) {
