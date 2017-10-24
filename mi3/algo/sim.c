@@ -1,5 +1,13 @@
 #include <stdio.h>
+#include <unistd.h>
 #include "dfs.h"
+
+void clear() { printf("\033[H\033[J"); }
+
+void delay_and_clear() {
+  sleep(1);
+  clear();
+}
 
 int main(int argc, char** argv) {
   explore_t state;
@@ -9,6 +17,7 @@ int main(int argc, char** argv) {
   dfs_mark_obstacle(&state, 2, 2);
   dfs_mark_obstacle(&state, 1, 3);
 
+  clear();
   int last_rel_dir;
   do {
     printf("State:\n");
@@ -31,9 +40,11 @@ int main(int argc, char** argv) {
         printf("   ");
     }
     printf("\n");
+    delay_and_clear();
   } while ((last_rel_dir = dfs_at_intersection(&state)) != -1);
 
   dfs_finalize(&state);
   printf("Done:\n");
   dfs_print_grid(&state);
+  delay_and_clear();
 }
