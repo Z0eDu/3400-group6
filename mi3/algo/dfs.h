@@ -11,6 +11,7 @@
 
 // Represents state of a square
 enum { UNVISITED, VISITED, OBSTACLE, ISOLATED };
+enum { TREASURE_NO, TREASURE_7KHZ, TREASURE_12KHZ, TREASURE_17KHZ };
 
 // Absolute directions.
 // North: lower row, same column
@@ -54,6 +55,13 @@ void dfs_mark_obstacle(explore_t* state, int row, int col);
  * relative direction.
  */
 void dfs_mark_rel_obstacle(explore_t* state, int rel_dir);
+
+/**
+ * Effect: marks that the current location has a treasure of type treasure.
+ * Should be one of:
+ * { TREASURE_NO, TREASURE_7KHZ, TREASURE_12KHZ, TREASURE_17KHZ }
+ */
+void dfs_mark_treasure(explore_t* state, int treasure);
 
 /**
  * Returns: true if the specified location is in bounds
