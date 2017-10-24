@@ -47,4 +47,5 @@ int main(int argc, char** argv) {
   printf("Done:\n");
   dfs_print_grid(&state);
   delay_and_clear();
+  sleep(10);
 }
