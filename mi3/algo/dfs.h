@@ -1,0 +1,108 @@
+#ifndef GROUP_6_3400_DFS
+#define GROUP_6_3400_DFS
+
+// Size of map
+#define MAP_ROWS 4
+#define MAP_COLS 5
+// Maximum size of the stack while performing the DFS
+#define MAX_STACK_DEPTH (MAP_ROWS * MAP_COLS)
+// Number of directions
+#define DIR_COUNT 4
+
+// Represents state of a square
+enum { UNVISITED, VISITED, OBSTACLE };
+
+// Absolute directions.
+// North: lower row, same column
+// East: same row, higher column
+// South: higher row, same column
+// West: same row, lower column
+enum { NORTH = 0, EAST, SOUTH, WEST };
+// Relative directions
+enum { FORWARDS = 0, RIGHT, BACKWARDS, LEFT };
+
+// Represents a point and direction
+typedef struct {
+  int row;
+  int col;
+  int dir;
+} point_t;
+
+// Represents the state of a DFS exploration
+typedef struct {
+  int visited[MAP_ROWS][MAP_COLS];
+  point_t stack[MAX_STACK_DEPTH];
+  int stack_head;
+  point_t cur_pos;
+} explore_t;
+
+/**
+ * Effect: initializes a DFS state, with the robot starting in the given
+ * start location, with the given absolute direction.
+ */
+void dfs_init(explore_t* state, int start_row, int start_col, int start_dir);
+
+/**
+ * Effect: marks an obstacle on the grid, at the specified location
+ */
+void dfs_mark_obstacle(explore_t* state, int row, int col);
+
+/**
+ * Returns: true if the specified location is in bounds
+ */
+int dfs_in_bounds(int row, int col);
+
+/**
+ * Returns: the absolute direction which is the result of resolving rel_dir
+ * with respect to the robot's current direction.
+ */
+int dfs_resolve_dir(explore_t* state, int rel_dir);
+
+/**
+ * Computes: the location as a result of moving the rover in the specified
+ * relative direction from its current location.
+ * Stores the result in out.
+ * Returns: true if the location is valid, false otherwise.
+ */
+int dfs_get_offset(explore_t* state, int rel_dir, point_t* out);
+
+/**
+ * Computes: the location as a result of moving the rover in the specified
+ * relative direction from its current location.
+ * Stores the result in out.
+ * Returns: true if the location is valid and unvisited, false otherwise.
+ */
+int dfs_should_explore(explore_t* state, int rel_dir, point_t* out);
+
+/**
+ * Returns: true if the row and column equal the value stored in the point.
+ */
+int dfs_point_loc_equals(const point_t* a, int row, int col);
+
+/**
+ * Returns: the absolute direction the robot must travel in to move from source
+ * to terminal.
+ */
+int dfs_absolute_direction(const point_t* source, const point_t* terminal);
+
+/**
+ * Returns: the relative direction from base_dir to total_dir.
+ */
+int dfs_relative_offset(int base_dir, int total_dir);
+
+/**
+ * Effect: moves the robot to the next location, and returns the relative
+ * direction
+ * it should move in to get there.
+ */
+int dfs_at_intersection(explore_t* state);
+
+/**
+ * Effect: prints the grid.
+ * ? represents unvisited, + represents visited, X represents obstacle.
+ * The robot is represented by ^, <, >, v, which points in the direction of the
+ * robot.
+ */
+void dfs_print_grid(const explore_t* state);
+
+#endif /* end of include guard:  */

@@ -1,6 +1,8 @@
-a.out: dfs.c
-	gcc dfs.c -Wall -Werror
+sim: dfs.o sim.c
+	gcc sim.c dfs.o -Wall -Werror -o sim
+dfs.o: dfs.c dfs.h
+	gcc -c dfs.c -Wall -Werror -o dfs.o
 format: dfs.c
-	clang-format -i --style=google dfs.c
+	clang-format -i --style=google dfs.c dfs.h sim.c
 clean:
-	rm -f a.out
+	rm -f *.o sim

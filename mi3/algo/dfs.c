@@ -1,33 +1,10 @@
-// #ifndef GROUP_6_3400_DFS
-// #define GROUP_6_3400_DFS
-
+#include "dfs.h"
 #include <stdio.h>
 
-#define MAP_ROWS 4
-#define MAP_COLS 5
-#define MAX_STACK_DEPTH (MAP_ROWS * MAP_COLS)
-#define DIR_COUNT 4
-
-enum { UNVISITED, VISITED, OBSTACLE };
-
-enum { NORTH = 0, EAST, SOUTH, WEST };
-enum { FORWARDS = 0, RIGHT, BACKWARDS, LEFT };
-
-const int DIRECTIONS[DIR_COUNT] = {FORWARDS, RIGHT, BACKWARDS, LEFT};
+// The directions
+const int DIRECTIONS[DIR_COUNT] = {NORTH, EAST, SOUTH, WEST};
+// The relative directions
 const int RELATIVE_DIRECTIONS[DIR_COUNT] = {FORWARDS, RIGHT, BACKWARDS, LEFT};
-
-typedef struct {
-  int row;
-  int col;
-  int dir;
-} point_t;
-
-typedef struct {
-  int visited[MAP_ROWS][MAP_COLS];
-  point_t stack[MAX_STACK_DEPTH];
-  int stack_head;
-  point_t cur_pos;
-} explore_t;
 
 void dfs_init(explore_t* state, int start_row, int start_col, int start_dir) {
   for (size_t row = 0; row < MAP_ROWS; row++) {
@@ -179,36 +156,3 @@ void dfs_print_grid(const explore_t* state) {
     printf("\n");
   }
 }
-
-int main(int argc, char** argv) {
-  explore_t state;
-  dfs_init(&state, 0, 0, NORTH);
-  dfs_mark_obstacle(&state, 1, 1);
-  dfs_mark_obstacle(&state, 0, 2);
-
-  int last_rel_dir;
-  do {
-    printf("State:\n");
-    dfs_print_grid(&state);
-    printf("Going: ");
-    switch (last_rel_dir) {
-      case FORWARDS:
-        printf(" F ");
-        break;
-      case RIGHT:
-        printf(" R ");
-        break;
-      case BACKWARDS:
-        printf(" B ");
-        break;
-      case LEFT:
-        printf(" L ");
-        break;
-      default:
-        printf("   ");
-    }
-    printf("\n");
-  } while ((last_rel_dir = dfs_at_intersection(&state)) != -1);
-}
-
-// #endif /* end of include guard:  */

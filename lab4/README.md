@@ -1,19 +1,9 @@
 # Lab 4: Radio Communication and Map Drawing
 
 ### Objectives
-* Extend work from Lab 3 to use the FPGA draw a full maze on VGA monitor
+* Extend work from Lab 3 to use the FPGA to draw a full maze on VGA monitor
 * Update VGA monitor with information received from radio
 * Get robot and video controller to talk to each other to simulate actual maze information
-
-
-#### Grading
-2 points: Sending information wirelessly between Arduino’s  
-2 points: Sending the entire maze wirelessly  
-3 points: Updating the maze array, dependent only on the updated robot information  
-1 point: Displaying a full 4-by-5 grid array on the screen  
-3 points: Communicating maze information from the Arduino to the FPGA  
-2 points: Display the robot location on the screen  
-2 points: Distinguish what sites have been visited and which haven’t on the screen  
 
 ## Teams
 **Team 1 (Radio)**: Ayomi, Emily, Eric
@@ -24,8 +14,45 @@
 ## Radio
 
 ### Setup
+To begin, we obtained the six hardware materials we would for communication. This was 2 Arduino Unos, two Nordic nRF24L01+ transceivers, and two 2 radio breakout boards. The breakout boards with transceivers were then connected to pins 9-13, ground, and the 3.3V power supply for both arduinos.
+
+For software setup, the RF24 Arduino library was installed and the supplied GettingStarted.ino files were downloaded. Using the formula given on the website, we found our channnel numbers to be 18 and 19, or 12 and 13 in hex. We then modified our channel numbers in getting started as follows:
+```cpp
+const uint64_t pipes[2] = { 0x0000000012LL, 0x0000000013LL };
+```
+We then uploaded GettingStarted to both arduinos and, using the serial monitors, set one to transmit and one to recieve to ensure we had communication.
 
 ### Sending Entire Maze
+
+After communication was established, we were ready to send the maze. First we initialized an arbitrary 4x5 maze to send.
+```cpp
+unsigned char maze[4][5] =
+{
+  3, 3, 3, 3, 3,
+  3, 1, 1, 1, 3,
+  3, 2, 0, 1, 2,
+  3, 1, 3, 1, 3
+};
+```
+On the transmitter side, the code was added to send this data:
+```cpp
+      bool ok = radio.write( maze, sizeof(maze) );
+      
+      if (ok)
+        printf("ok...");
+      else
+        printf("failed.\n\r");
+```
+Then the radio read was added to the receiver:
+```cpp
+ while (!done) {
+        done = radio.read( got_maze, sizeof(got_maze) );
+	}
+```
+Then to make this data readable, a for-loop was created to read and print through all the values in got_maze. Here is the final product.
+
+<iframe src="https://drive.google.com/file/d/1ugxnGpxkmuRaxVPf9SKYErIXR39YX2M9JQ/preview" width="640" height="480"></iframe>
+
 
 ### Sending New Information Only
 
@@ -180,11 +207,106 @@ Since the third bit of our message is used as the clock line, we write the clock
 
 ## FPGA
 
+### Communication Protocol
+We mapped the display for our 4x5 grid by giving each square a number that we could write using the above 8-bit data sent by the radio. Starting in the upper left corner and going across the row, we numbered each square from 0-19 as in the diagram in the radio section, which we wrote in the 5-bit location section of the data. The write enable bit allowed us to effectively clock our updates to the screen rather than interfering previous and preceding messages.  Before we added this, we would get random intermediate squares to be modified, as if we were changing the inputs slowly by hand. We used the color portion of the data to differentiate how we should modify the square at the given location. Each combination of the 2-bit section was mapped to colors, and then later images (see below), that correspond to the state of each square (current position, explored, and unexplored).
+
+We parsed the input from the Arduino according to the protocol as such.  The vga_ram_waddr corresponds to the square to which we are writing in the RAM. The vga_ram_we bit is the write enable bit that we used for clocking.  Both of these are inputted into our VGA_ROM module to write, and later read from, memory. Arduino_data contains the state of the robot as described above.
+```verilog
+assign vga_ram_waddr = arduino_in[4:0];
+assign vga_ram_we = arduino_in[5];
+assign arduino_data = arduino_in[7:6];
+```
+
 ### Verilog
+
+We separated the maze grid into a full 4x5 grid with each edge 120 pixels long. This was done by defining the pixel numbers of the edges and assigning the correct grid coordinate numbers according to the range that the pixel coordinate numbers are in. Using nested if statements, we were able to determine which square the current pixel is in by finding if it was outside the range of each square edge for both the x and y directions. After determining which square edge the pixel was in, we assigned it a decimal value corresponding to its row or column number (zero-aligned).
+
+```verilog
+`define SQUARE_EDGE_0 120
+`define SQUARE_EDGE_1 240
+`define SQUARE_EDGE_2 360
+`define SQUARE_EDGE_3 480
+`define SQUARE_EDGE_4 600
+
+always @(*) begin
+if      (PIXEL_COORD_X < `SQUARE_EDGE_0) grid_coord_x = 5'd0;
+		else if (PIXEL_COORD_X < `SQUARE_EDGE_1) grid_coord_x = 5'd1;
+		else if (PIXEL_COORD_X < `SQUARE_EDGE_2) grid_coord_x = 5'd2;
+		else if (PIXEL_COORD_X < `SQUARE_EDGE_3) grid_coord_x = 5'd3;
+		else if (PIXEL_COORD_X < `SQUARE_EDGE_4) grid_coord_x = 5'd4;
+		else                                    grid_coord_x = 5'd5;	
+		
+if      (PIXEL_COORD_Y < `SQUARE_EDGE_0) grid_coord_y = 5'd0;
+		else if (PIXEL_COORD_Y < `SQUARE_EDGE_1) grid_coord_y = 5'd1;
+		else if (PIXEL_COORD_Y < `SQUARE_EDGE_2) grid_coord_y = 5'd2;
+		else if (PIXEL_COORD_Y < `SQUARE_EDGE_3) grid_coord_y = 5'd3;
+		else                                    grid_coord_y = 5'd5;
+end
+```
+
+From the above, we were able to continue to map the coordinates of each pixel to correspond to the square numbers from 0-19. The vga_ram_raddr holds this number, and it is essentially the column number (x coordinate) offset by 5 times the row number (the y coordinate). Here, we use bogus numbers such as 31 if the x or y coordinates are out of range. This allows us to read the state of this square from the RAM so we can color this pixel.
+```verilog
+		if      (grid_coord_x == 5'd5)          vga_ram_raddr = 5'd31;
+		else if (grid_coord_y == 5'd0)          vga_ram_raddr = grid_coord_x;
+		else if (grid_coord_y == 5'd1)          vga_ram_raddr = grid_coord_x + 5;
+		else if (grid_coord_y == 5'd2)          vga_ram_raddr = grid_coord_x + 10;
+		else if (grid_coord_y == 5'd3)          vga_ram_raddr = grid_coord_x + 15;
+		else                                    vga_ram_raddr = 5'd31;
+```
+
 
 #### Dual port RAM
 
-### Communication Protocol
+We created a simple Dual Port RAM with separate read/write addresses in order to save and read the state of each grid. The write_addr and read_addr indices in the RAM correspond to a square on the grid and thus hold the values 0-19. Here is where we implemented clocking.  We only write to the RAM if the Arduino sends the write enable bit high. This ensures that nothing gets overwritten when we are sending information to the FPGA. Also note that we are able to read on every positive edge of the clock.
+
+```verilog
+module VGA_RAM
+#(parameter DATA_WIDTH=8, parameter ADDR_WIDTH=5)
+(
+	input [(DATA_WIDTH-1):0] data,
+	input [(ADDR_WIDTH-1):0] read_addr, write_addr,
+	input we, clk,
+	output reg [(DATA_WIDTH-1):0] q
+);
+
+	// Declare the RAM variable
+	reg [DATA_WIDTH-1:0] ram[2**ADDR_WIDTH-1:0];
+
+	always @ (posedge clk)
+	begin
+		// Write
+		if (we)
+			ram[write_addr] <= data;
+
+		q <= ram[read_addr];
+	end
+
+endmodule
+```
+The data that we write to the RAM corresponds to a color, which indicates the state for a given square.  This vga_ram_write is what we pass into the VGA_RAM module as the data for each square so we can keep track of the states of all squares in memory.
+```verilog
+always @(*) begin
+		case (arduino_data)
+			2'd0: vga_ram_write = `GREEN;
+			2'd1: vga_ram_write = `RED;
+			2'd2: vga_ram_write = `BLUE;
+			2'd3: vga_ram_write = `ORANGE;
+			default: vga_ram_write = `BLACK;
+		endcase
+end	
+```
+
+The separated arduino signals were connected to the vga_ram (shown here for reference).
+```verilog
+VGA_RAM vga_ram (
+		.data(vga_ram_write),
+	   .read_addr(vga_ram_raddr),
+		.write_addr(vga_ram_waddr),
+	   .we(vga_ram_we),
+		.clk(CLOCK_25),
+	   .q(vga_ram_rsp)
+	);
+```
 
 ### Displaying Images
 
@@ -241,9 +363,9 @@ Kirstin represents the robot as it explores the map, Sonic represents the unexpl
 
 ## Work Distribution
 
-*   Ayomi:
+*   Ayomi: Radio, sending new information only
 *   Drew: Verilog code, voltage dividers
-*   Emily:
-*   Eric:
+*   Emily: Radio, sending robot position 
+*   Eric: Radio, sending entire maze
 *   Jacob: Verilog code, python scripts
 *   Joo Yeon: Verilog code
