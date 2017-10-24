@@ -21,6 +21,10 @@ int main(int argc, char** argv) {
   dfs_mark_obstacle(&state, 2, 4, WEST);
   dfs_mark_obstacle(&state, 3, 4, WEST);
 
+  dfs_mark_obstacle(&state, 3, 0, NORTH);
+  dfs_mark_obstacle(&state, 3, 1, NORTH);
+  dfs_mark_obstacle(&state, 3, 2, NORTH);
+
   clear();
   int last_rel_dir;
   do {
