@@ -2,7 +2,7 @@
 #define LEFT_IN A3
 #define RIGHT_IN A2
 #define RIGHT_OUT A1
-#define LINE_P 5
+#define LINE_P 8
 
 #define SERVO_LEFT 10
 #define SERVO_RIGHT 11
@@ -110,13 +110,23 @@ void rotate90(int dir) {
   //Serial.println("GOING");
   //lineFollow(10000);
   drive(10, 10);
-  delay(2000);
+  delay(300);
   Serial.println("STOPPING");
   drive(0,0);
   int vl = dir * DRIVE_TURN_SPEED;
   int vr = - dir * DRIVE_TURN_SPEED;
   Serial.println("TURNING");
   drive(vl, vr);
+
+  if(dir) {
+    while(nsr(LEFT_OUT) > 40);
+    while(nsr(LEFT_IN) > 40);
+
+  }
+  else {
+    while(nsr(RIGHT_OUT) > 40);
+    while(nsr(RIGHT_IN) > 40);
+  }
 //
 //  while (lineStatus() == LINE_FOLLOW_GOOD) {
 //    delay(REGULATION_DELAY);
@@ -124,7 +134,7 @@ void rotate90(int dir) {
 //  while (lineStatus() != LINE_FOLLOW_GOOD) {
 //    delay(REGULATION_DELAY);
 //  }
-  delay(1700);
+  //delay(850);
   drive(0, 0);
 }
 
@@ -175,7 +185,25 @@ float getDistance(int PINNAME) {
 }
 
 void loop() {
-  stopAtWall();
+  //stopAtWall();
+  delay(1000);
+  while(1){
+    lineFollow();
+    drive(0,0);
+    delay(500);
+  
+    rotate90(-1);
+
+    lineFollow();
+    drive(0,0);
+    delay(500);
+  
+    rotate90(1);
+
+  }
+//
+//  lineFollow();
+//  drive(0,0);
   
   //figureEight();
   /*
