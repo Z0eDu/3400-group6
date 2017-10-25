@@ -195,12 +195,12 @@ void dfs_print_grid(const explore_t* state) {
     for (size_t col = 0; col < MAP_COLS + 1; col++) {
       if (state->obstacles[row][col].north == WALL) {
         if (col == MAP_COLS) {
-          printf("**");
+          printf("*");
         } else {
-          printf("*****");
+          printf("****");
         }
       } else {
-        printf("     ");
+        printf("    ");
       }
     }
     printf("\n");
@@ -247,7 +247,7 @@ void dfs_print_grid(const explore_t* state) {
       } else {
         printf(" ");
       }
-      printf("  ");
+      printf(" ");
     }
 
     printf("\n");
