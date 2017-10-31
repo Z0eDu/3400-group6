@@ -1,8 +1,8 @@
-#define LEFT_OUT A4
+#define LEFT_OUT A5
 #define LEFT_IN A3
 #define RIGHT_IN A2
-#define RIGHT_OUT A1
-#define LINE_P 5
+#define RIGHT_OUT A5
+#define LINE_P 8
 
 #define SERVO_LEFT 10
 #define SERVO_RIGHT 11
@@ -25,15 +25,35 @@
 #define DRIVE_TURN_SPEED 10
 #define DRIVE_MAX 180
 
+#define MUX A5 //input pin setup
+#define MUX_sel0 2
+#define MUX_sel1 3
+#define MUX_sel2 4
+
+#define MIC_st 0
+#define LEFT_OUT_st 0
+#define RIGHT_OUT_st 1
+#define WALL_LEFT_st 3
+#define WALL_RIGHT_st 4
+#define WALL_FRONT_st 5
+
 #include <Servo.h>
 Servo servo_left;
 Servo servo_right;
-
+int Mux_State;
 
 void setup() {
+  muxSelect(MIC_st);
   Serial.begin(9600);
   servo_left.attach(SERVO_LEFT);
   servo_right.attach(SERVO_RIGHT);
+}
+
+void muxSelect(int state){
+   Mux_State = state;
+   digitalWrite(MUX_sel0, bitRead(state,0) ? HIGH : LOW);
+   digitalWrite(MUX_sel1, bitRead(state,1) ? HIGH : LOW);
+   digitalWrite(MUX_sel2, bitRead(state,2) ? HIGH : LOW);
 }
 
 // Effect: drives each motor at the given normalized velocity
@@ -77,12 +97,18 @@ int lineError() {
 // LINE_FOLLOW_STOP: at intersection
 // LINE_FOLLOW_GOOD: not at intersection
 int lineStatus() {
+  muxSelect(LEFT_OUT_st);
   int left = nsr(LEFT_OUT);
+  Serial.println("linestatus mux select");
+  Serial.println(Mux_State);
+  muxSelect(RIGHT_OUT_st);
   int right = nsr(RIGHT_OUT);
   Serial.print("ls : ");
   Serial.print(left);
   Serial.print(" ");
   Serial.println(right);
+  Serial.print("mux_state");
+  Serial.println(Mux_State);
   if (left < LINE_THRESHOLD && right < LINE_THRESHOLD) {
     return LINE_FOLLOW_STOP;
   } else {
@@ -110,13 +136,29 @@ void rotate90(int dir) {
   //Serial.println("GOING");
   //lineFollow(10000);
   drive(10, 10);
-  delay(2000);
+  delay(300);
   Serial.println("STOPPING");
   drive(0,0);
   int vl = dir * DRIVE_TURN_SPEED;
   int vr = - dir * DRIVE_TURN_SPEED;
   Serial.println("TURNING");
   drive(vl, vr);
+
+  if(dir) {
+    muxSelect(LEFT_OUT_st);
+    Serial.println("rotate");
+    Serial.println(Mux_State);
+    Serial.println(A5);
+    while(nsr(LEFT_OUT) > 40);
+    while(nsr(LEFT_IN) > 40);
+
+  }
+  else {
+    muxSelect(RIGHT_OUT_st);
+    Serial.println(A5);
+    while(nsr(RIGHT_OUT) > 40);
+    while(nsr(RIGHT_IN) > 40);
+  }
 //
 //  while (lineStatus() == LINE_FOLLOW_GOOD) {
 //    delay(REGULATION_DELAY);
@@ -124,7 +166,7 @@ void rotate90(int dir) {
 //  while (lineStatus() != LINE_FOLLOW_GOOD) {
 //    delay(REGULATION_DELAY);
 //  }
-  delay(1700);
+  //delay(850);
   drive(0, 0);
 }
 
@@ -175,7 +217,26 @@ float getDistance(int PINNAME) {
 }
 
 void loop() {
-  stopAtWall();
+  //stopAtWall();
+  delay(1000);
+  while(1){
+    lineFollow();
+    drive(0,0);
+    delay(500);
+  
+    rotate90(-1);
+
+    lineFollow();
+    drive(0,0);
+    delay(500);
+
+  
+    rotate90(1);
+
+  }
+//
+//  lineFollow();
+//  drive(0,0);
   
   //figureEight();
   /*
