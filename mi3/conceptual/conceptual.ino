@@ -1,10 +1,10 @@
 #define LEFT_IN A0
-#define RIGHT_IN A1
+#define RIGHT_IN A
 #define TREASURE_7K A2
 #define TREASURE_12K A3
 #define TREASURE_17K A4
 #define MUX A5 //input pin setup
-#define MUX_sel0 A5
+#define MUX_sel0  
 #define MUX_sel1 A5
 #define MUX_sel2 A5
 
@@ -54,13 +54,12 @@ void setup() {
 }
 
 void muxSelect(int state){
-   if(state==0){
-     MUX_sel0 -> 0
-     MUX_sel1 -> 0
-     MUX_sel2 -> 0
-   }
-   turning -> outer line sensors 
-   wall detector
+    Mux_State =
+    MUX_sel0 -> bitRead(state,0)
+    MUX_sel1 -> bitRead(state,1)
+    MUX_sel2 -> bitRead(state,1)
+   digitalWrite(Mux_sel0, bitRead(state,0) ? HIGH: LOW)
+   
    }
 }
 
@@ -205,6 +204,10 @@ float getDistance(int PINNAME) {
 }
 
 void loop() {
+  while listen for MIC
+  {}
+  now look for intersection with RIGHT_OUT
+  if RIGHT_OUT
   stopAtWall();
   
   //figureEight();

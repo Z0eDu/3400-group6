@@ -38,7 +38,7 @@
 #define WALL_FRONT_st 5
 
 #include <Servo.h>
-#include "algo/dfs.h"
+#include "dfs.h"
 Servo servo_left;
 Servo servo_right;
 int Mux_State;
@@ -110,7 +110,7 @@ int lineStatus() {
   Serial.println(right);
   Serial.print("mux_state");
   Serial.println(Mux_State);
-  if (left < LINE_THRESHOLD && right < LINE_THRESHOLD) {
+  if (left < LINE_THRESHOLD || right < LINE_THRESHOLD) {
     return LINE_FOLLOW_STOP;
   } else {
     return LINE_FOLLOW_GOOD;
@@ -239,6 +239,8 @@ void loop() {
   while ((last_rel_dir = dfs_at_intersection(&state)) != -1) {
     switch (last_rel_dir) {
       case FORWARDS:
+        drive(10,10);
+        delay(500);
         break;
       case RIGHT:
         rotate90(1);
@@ -250,7 +252,6 @@ void loop() {
       case LEFT:
         rotate90(-1);
         break;
-      default:
     }
 
     lineFollow();
