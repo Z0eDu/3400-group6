@@ -10,8 +10,9 @@
 #define DIR_COUNT 4
 
 // Represents state of a square
-enum { UNVISITED, VISITED, OBSTACLE, ISOLATED };
+enum { UNVISITED, VISITED, ISOLATED };
 enum { TREASURE_NO, TREASURE_7KHZ, TREASURE_12KHZ, TREASURE_17KHZ };
+enum { WALL, NO_WALL };
 
 // Absolute directions.
 // North: lower row, same column
@@ -21,6 +22,11 @@ enum { TREASURE_NO, TREASURE_7KHZ, TREASURE_12KHZ, TREASURE_17KHZ };
 enum { NORTH = 0, EAST, SOUTH, WEST };
 // Relative directions
 enum { FORWARDS = 0, RIGHT, BACKWARDS, LEFT };
+
+typedef struct {
+  int north;
+  int west;
+} wall_t;
 
 // Represents a point and direction
 typedef struct {
@@ -32,6 +38,7 @@ typedef struct {
 // Represents the state of a DFS exploration
 typedef struct {
   int visited[MAP_ROWS][MAP_COLS];
+  wall_t obstacles[MAP_ROWS + 1][MAP_COLS + 1];
   // -1 indicates no treasure
   int treasure[MAP_ROWS][MAP_COLS];
   point_t stack[MAX_STACK_DEPTH];
@@ -48,7 +55,7 @@ void dfs_init(explore_t* state, int start_row, int start_col, int start_dir);
 /**
  * Effect: marks an obstacle on the grid, at the specified location
  */
-void dfs_mark_obstacle(explore_t* state, int row, int col);
+void dfs_mark_obstacle(explore_t* state, int row, int col, int dir);
 
 /**
  * Effect: marks an obstacle at a space adjacent to the robot in the specified
@@ -81,6 +88,9 @@ int dfs_resolve_dir(explore_t* state, int rel_dir);
  * Returns: true if the location is valid, false otherwise.
  */
 int dfs_get_offset(explore_t* state, int rel_dir, point_t* out);
+
+int dfs_obstacle_between(explore_t* state, const point_t* source,
+                         const point_t* terminal);
 
 /**
  * Computes: the location as a result of moving the rover in the specified

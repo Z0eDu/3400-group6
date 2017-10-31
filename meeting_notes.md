@@ -33,4 +33,9 @@
 
 ## 2017.10.20
 1. Decided to start working on milestone 3 next week.
-1. talked about finishing lab 4.
+2. talked about finishing lab 4.
+
+## 2017.10.27
+1. Talked about how to finish milestone 3.
+2. Talked about how to implement mux and simulation code.
+3. Described how we would indicate when the track is complete.
