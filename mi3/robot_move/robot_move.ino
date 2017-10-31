@@ -38,6 +38,7 @@
 #define WALL_FRONT_st 5
 
 #include <Servo.h>
+#include "algo/dfs.h"
 Servo servo_left;
 Servo servo_right;
 int Mux_State;
@@ -202,7 +203,7 @@ void figureEight() {
 void stopAtWall() {
   while (getDistance(1) > 7)
     drive(10, 10);
-    
+
   drive(0,0);
 }
 
@@ -218,25 +219,56 @@ float getDistance(int PINNAME) {
 
 void loop() {
   //stopAtWall();
-  delay(1000);
-  while(1){
-    lineFollow();
-    drive(0,0);
-    delay(500);
-  
-    rotate90(-1);
+
+  explore_t state;
+  dfs_init(&state, 0, 0, SOUTH);
+  // dfs_mark_obstacle(&state, 1, 1, NORTH);
+  // dfs_mark_obstacle(&state, 1, 1, EAST);
+  // dfs_mark_obstacle(&state, 1, 1, SOUTH);
+  // dfs_mark_obstacle(&state, 1, 1, WEST);
+  //
+  // dfs_mark_obstacle(&state, 1, 4, WEST);
+  // dfs_mark_obstacle(&state, 2, 4, WEST);
+  // dfs_mark_obstacle(&state, 3, 4, WEST);
+  //
+  // dfs_mark_obstacle(&state, 3, 0, NORTH);
+  // dfs_mark_obstacle(&state, 3, 1, NORTH);
+  // dfs_mark_obstacle(&state, 3, 2, NORTH);
+
+  int last_rel_dir;
+  while ((last_rel_dir = dfs_at_intersection(&state)) != -1) {
+    switch (last_rel_dir) {
+      case FORWARDS:
+        break;
+      case RIGHT:
+        rotate90(1);
+        break;
+      case BACKWARDS:
+        rotate90(-1);
+        rotate90(-1);
+        break;
+      case LEFT:
+        rotate90(-1);
+        break;
+      default:
+    }
 
     lineFollow();
     drive(0,0);
     delay(500);
-  
-    rotate90(1);
-
   }
+
+  dfs_finalize(&state);
+  // printf("Done:\n");
+  // dfs_print_grid(&state);
+  // delay_and_clear();
+  // sleep(10);
+
+  while(1);
 //
 //  lineFollow();
 //  drive(0,0);
-  
+
   //figureEight();
   /*
   Serial.println("Starting!");
