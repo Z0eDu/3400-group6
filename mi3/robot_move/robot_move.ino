@@ -16,6 +16,8 @@
 #define LINE_WHITE 500
 #define LINE_THRESHOLD 40
 
+#define DISTANCE_THRESHOLD 20
+
 #define DRIVE_NEUTRAL_LEFT 94
 #define DRIVE_NEUTRAL_RIGHT 86
 #define DRIVE_SCALE_FWD 180
@@ -200,16 +202,18 @@ void figureEight() {
 }
 
 
-void stopAtWall() {
-  while (getDistance(1) > 7)
-    drive(10, 10);
-
-  drive(0,0);
-}
+//void stopAtWall() {
+//  while (getDistance(1) > 7)
+//    drive(10, 10);
+//
+//  drive(0,0);
+//}
 
 //return the distance from the wall
 float getDistance(int PINNAME) {
+//  muxSelect(muxsel);
   float val = analogRead(PINNAME);   //read the value
+//  Serial.println(val);
   val = val * 5 /1023;               //convert the output to volts
 
   float cm = (12.9895 - .42*val) / (val+.0249221);   //convert the output to distance from wall (cm)
@@ -235,12 +239,32 @@ void loop() {
   // dfs_mark_obstacle(&state, 3, 1, NORTH);
   // dfs_mark_obstacle(&state, 3, 2, NORTH);
 
+//  while(1) {
+//    float ld = getDistance(A0);
+//    float rd = getDistance(A1);
+//    float fd = getDistance(A4);
+//    Serial.print("foobar: ");
+//    Serial.print(ld);
+//    Serial.print("  ");
+//    Serial.print(rd);
+//     Serial.print("  ");
+//    Serial.print(fd);
+//     Serial.println("  ");
+//  }
+
   int last_rel_dir;
   while ((last_rel_dir = dfs_at_intersection(&state)) != -1) {
+    drive(0,0);
+    float ld = (getDistance(A0) + getDistance(A0) + getDistance(A0) + getDistance(A0) + getDistance(A0)) / 5;
+    float rd = ( getDistance(A1) +  getDistance(A1) +  getDistance(A1) +  getDistance(A1) +  getDistance(A1)) / 5;
+    float fd = (getDistance(A4) + getDistance(A4) + getDistance(A4) + getDistance(A4) + getDistance(A4)) / 5;
+    if (ld < DISTANCE_THRESHOLD) dfs_mark_rel_obstacle(&state, LEFT);
+    if (rd < DISTANCE_THRESHOLD) dfs_mark_rel_obstacle(&state, RIGHT);
+    if (fd < DISTANCE_THRESHOLD) dfs_mark_rel_obstacle(&state, FORWARDS);
     switch (last_rel_dir) {
       case FORWARDS:
         drive(10,10);
-        delay(500);
+        delay(300);
         break;
       case RIGHT:
         rotate90(1);
