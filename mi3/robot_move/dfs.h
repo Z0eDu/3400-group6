@@ -127,6 +127,12 @@ int dfs_absolute_direction(const point_t* source, const point_t* terminal);
 int dfs_relative_offset(int base_dir, int total_dir);
 
 /**
+ * Param:  state the state
+ * Returns: 1 if no more unvisited reachable squares, 0 otherwise.
+ */
+int dfs_done(explore_t* state);
+
+/**
  * Effect: moves the robot to the next location, and returns the relative
  * direction
  * it should move in to get there.

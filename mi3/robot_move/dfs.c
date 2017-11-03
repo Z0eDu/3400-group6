@@ -150,8 +150,32 @@ int dfs_relative_offset(int base_dir, int total_dir) {
   return (total_dir - base_dir + DIR_COUNT) % DIR_COUNT;
 }
 
+int dfs_done(explore_t* state) {
+  // Go back through the stack, and look for squares with unvisted
+  // neighbors
+  state->stack[state->stack_head++] = state->cur_pos;
+  int result = 1;
+  for (int i = state->stack_head - 1; i >= 0 && result; i--) {
+    state->cur_pos = state->stack[i];
+    for (int i = 0; i < DIR_COUNT && result; i++) {
+      point_t target;
+      if (dfs_should_explore(state, RELATIVE_DIRECTIONS[i], &target)) {
+        result = 0;
+      }
+    }
+  }
+
+  state->cur_pos = state->stack[--state->stack_head];
+  return result;
+}
+
 int dfs_at_intersection(explore_t* state) {
   state->visited[state->cur_pos.row][state->cur_pos.col] = VISITED;
+
+  // If we've visited every reachable square
+  if (dfs_done(state)) {
+    return -1;
+  }
 
   // Look at all the neighbors
   for (int i = 0; i < DIR_COUNT; i++) {
