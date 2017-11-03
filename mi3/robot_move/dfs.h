@@ -6,7 +6,7 @@ extern "C" {
 #endif
 
 #ifndef ALGO_IN_SIMULATION
-#define PRINT(...) Serial.println(__VA_ARGS__)
+#define PRINT(...) Serial.print(__VA_ARGS__)
 #else
 #define PRINT(...) printf(__VA_ARGS__)
 #endif
