@@ -158,9 +158,9 @@ void figureEight() {
 
 
 void stopAtWall() {
-  while (getDistance(1) > 7)
+  while (getDistance(A1) > 7) {
     drive(10, 10);
-    
+  }
   drive(0,0);
 }
 

@@ -14,7 +14,7 @@
 
 #define LINE_BLACK 900
 #define LINE_WHITE 500
-#define LINE_THRESHOLD 40
+#define LINE_THRESHOLD 80 
 
 #define DISTANCE_THRESHOLD 20
 
@@ -75,9 +75,9 @@ void drive(int left, int right) {
 // Returns: a normalized line sensor reading. 0 means black, 255 means white.
 byte nsr(int pin) {
   int raw = analogRead(pin);
-  Serial.print(pin);
-  Serial.print(": ");
-  Serial.println(raw);
+//    Serial.print(pin);
+//    Serial.print(": ");
+//    Serial.println(255 - map(constrain(raw, LINE_WHITE, LINE_BLACK), LINE_WHITE, LINE_BLACK, 0, 255));
   return 255 - map(constrain(raw, LINE_WHITE, LINE_BLACK), LINE_WHITE, LINE_BLACK, 0, 255);
 }
 
@@ -88,11 +88,11 @@ byte nsr(int pin) {
 int lineError() {
   int left = nsr(LEFT_IN);
   int right = nsr(RIGHT_IN);
-  Serial.print(left);
-  Serial.print(" ");
-  Serial.print(right);
-  Serial.print(" ");
-  Serial.println(left - right);
+//  Serial.print(left);
+//  Serial.print(" ");
+//  Serial.print(right);
+//  Serial.print(" ");
+//  Serial.println(left - right);
   return left - right;
 }
 
@@ -102,16 +102,20 @@ int lineError() {
 int lineStatus() {
   muxSelect(LEFT_OUT_st);
   int left = nsr(LEFT_OUT);
-  Serial.println("linestatus mux select");
-  Serial.println(Mux_State);
+//  Serial.print("left: ");
+//  Serial.println(left);
+//  Serial.println("linestatus mux select");
+//  Serial.println(Mux_State);
   muxSelect(RIGHT_OUT_st);
   int right = nsr(RIGHT_OUT);
-  Serial.print("ls : ");
-  Serial.print(left);
-  Serial.print(" ");
-  Serial.println(right);
-  Serial.print("mux_state");
-  Serial.println(Mux_State);
+//  Serial.print("right: ");
+//  Serial.println(right);
+//  Serial.print("ls : ");
+//  Serial.print(left);
+//  Serial.print(" ");
+//  Serial.println(right);
+//  Serial.print("mux_state");
+//  Serial.println(Mux_State);
   if (left < LINE_THRESHOLD || right < LINE_THRESHOLD) {
     return LINE_FOLLOW_STOP;
   } else {
@@ -126,9 +130,9 @@ int lineStatus() {
 void drive(int dir) {
   int vl = LINE_P * dir / 255 + DRIVE_FORWARDS;
   int vr =  - LINE_P * dir / 255 + DRIVE_FORWARDS;
-  Serial.print(vl);
-  Serial.print(", ");
-  Serial.println(vr);
+//  Serial.print(vl);
+//  Serial.print(", ");
+//  Serial.println(vr);
   drive(vl, vr);
 }
 
@@ -140,26 +144,26 @@ void rotate90(int dir) {
   //lineFollow(10000);
   drive(10, 10);
   delay(300);
-  Serial.println("STOPPING");
+//  Serial.println("STOPPING");
   drive(0,0);
   int vl = dir * DRIVE_TURN_SPEED;
   int vr = - dir * DRIVE_TURN_SPEED;
-  Serial.println("TURNING");
+//  Serial.println("TURNING");
   drive(vl, vr);
 
   if(dir) {
     muxSelect(LEFT_OUT_st);
-    Serial.println("rotate");
-    Serial.println(Mux_State);
-    Serial.println(A5);
-    while(nsr(LEFT_OUT) > 40);
+//    Serial.println("rotate");
+//    Serial.println(Mux_State);
+//    Serial.println(A5);
+    while(nsr(LEFT_OUT) > 100);
     while(nsr(LEFT_IN) > 40);
 
   }
   else {
     muxSelect(RIGHT_OUT_st);
-    Serial.println(A5);
-    while(nsr(RIGHT_OUT) > 40);
+//    Serial.println(A5);
+    while(nsr(RIGHT_OUT) > 100);
     while(nsr(RIGHT_IN) > 40);
   }
 //
@@ -223,7 +227,6 @@ float getDistance(int PINNAME) {
 
 void loop() {
   //stopAtWall();
-
   explore_t state;
   dfs_init(&state, 0, 0, SOUTH);
   // dfs_mark_obstacle(&state, 1, 1, NORTH);
@@ -255,12 +258,26 @@ void loop() {
   int last_rel_dir;
   while ((last_rel_dir = dfs_at_intersection(&state)) != -1) {
     drive(0,0);
-    float ld = (getDistance(A0) + getDistance(A0) + getDistance(A0) + getDistance(A0) + getDistance(A0)) / 5;
-    float rd = ( getDistance(A1) +  getDistance(A1) +  getDistance(A1) +  getDistance(A1) +  getDistance(A1)) / 5;
-    float fd = (getDistance(A4) + getDistance(A4) + getDistance(A4) + getDistance(A4) + getDistance(A4)) / 5;
-    if (ld < DISTANCE_THRESHOLD) dfs_mark_rel_obstacle(&state, LEFT);
-    if (rd < DISTANCE_THRESHOLD) dfs_mark_rel_obstacle(&state, RIGHT);
-    if (fd < DISTANCE_THRESHOLD) dfs_mark_rel_obstacle(&state, FORWARDS);
+    Serial.println("Intersection");
+    float ld = getDistance(A0);// + getDistance(A0) + getDistance(A0) + getDistance(A0) + getDistance(A0)) / 5;
+    Serial.println(ld);
+    float rd = getDistance(A1);// +  getDistance(A1) +  getDistance(A1) +  getDistance(A1) +  getDistance(A1)) / 5;
+    Serial.println(rd);
+    float fd = getDistance(A4);// + getDistance(A4) + getDistance(A4) + getDistance(A4) + getDistance(A4)) / 5;
+    Serial.println(fd);
+    if (getDistance(A0) < DISTANCE_THRESHOLD) {
+      dfs_mark_rel_obstacle(&state, LEFT);
+      Serial.println("mark left");
+    }
+    if(getDistance(A1) < DISTANCE_THRESHOLD) {
+      dfs_mark_rel_obstacle(&state, RIGHT);
+      Serial.println("mark right");
+    }
+    if (getDistance(A4) < DISTANCE_THRESHOLD) {
+      dfs_mark_rel_obstacle(&state, FORWARDS);
+      Serial.println("mark forward");
+    }
+    delay(100);
     switch (last_rel_dir) {
       case FORWARDS:
         drive(10,10);
