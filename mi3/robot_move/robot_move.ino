@@ -301,7 +301,7 @@ void loop() {
   }
 
   dfs_finalize(&state);
-  // printf("Done:\n");
+  // PRINT("Done:\n");
   // dfs_print_grid(&state);
   // delay_and_clear();
   // sleep(10);

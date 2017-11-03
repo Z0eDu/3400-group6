@@ -150,8 +150,32 @@ int dfs_relative_offset(int base_dir, int total_dir) {
   return (total_dir - base_dir + DIR_COUNT) % DIR_COUNT;
 }
 
+int dfs_done(explore_t* state) {
+  // Go back through the stack, and look for squares with unvisted
+  // neighbors
+  state->stack[state->stack_head++] = state->cur_pos;
+  int result = 1;
+  for (int i = state->stack_head - 1; i >= 0 && result; i--) {
+    state->cur_pos = state->stack[i];
+    for (int i = 0; i < DIR_COUNT && result; i++) {
+      point_t target;
+      if (dfs_should_explore(state, RELATIVE_DIRECTIONS[i], &target)) {
+        result = 0;
+      }
+    }
+  }
+
+  state->cur_pos = state->stack[--state->stack_head];
+  return result;
+}
+
 int dfs_at_intersection(explore_t* state) {
   state->visited[state->cur_pos.row][state->cur_pos.col] = VISITED;
+
+  // If we've visited every reachable square
+  if (dfs_done(state)) {
+    return -1;
+  }
 
   // Look at all the neighbors
   for (int i = 0; i < DIR_COUNT; i++) {
@@ -195,62 +219,62 @@ void dfs_print_grid(const explore_t* state) {
     for (size_t col = 0; col < MAP_COLS + 1; col++) {
       if (state->obstacles[row][col].north == WALL) {
         if (col == MAP_COLS) {
-          printf("*");
+          PRINT("*");
         } else {
-          printf("****");
+          PRINT("****");
         }
       } else {
-        printf("    ");
+        PRINT("    ");
       }
     }
-    printf("\n");
+    PRINT("\n");
     for (size_t col = 0; col < MAP_COLS + 1; col++) {
       if (row != MAP_ROWS && state->obstacles[row][col].west == WALL) {
-        printf("| ");
+        PRINT("| ");
       } else {
-        printf("  ");
+        PRINT("  ");
       }
 
       if (row != MAP_ROWS && col != MAP_COLS) {
         if (dfs_point_loc_equals(&state->cur_pos, row, col)) {
           switch (state->cur_pos.dir) {
             case NORTH:
-              printf("^");
+              PRINT("^");
               break;
             case EAST:
-              printf(">");
+              PRINT(">");
               break;
             case SOUTH:
-              printf("v");
+              PRINT("v");
               break;
             case WEST:
-              printf("<");
+              PRINT("<");
               break;
             default:
-              printf(" ");
+              PRINT(" ");
           }
         } else {
           switch (state->visited[row][col]) {
             case VISITED:
-              printf("+");
+              PRINT("+");
               break;
             case UNVISITED:
-              printf("?");
+              PRINT("?");
               break;
             case ISOLATED:
-              printf("#");
+              PRINT("#");
               break;
             default:
-              printf(" ");
+              PRINT(" ");
           }
         }
       } else {
-        printf(" ");
+        PRINT(" ");
       }
-      printf(" ");
+      PRINT(" ");
     }
 
-    printf("\n");
+    PRINT("\n");
   }
 }
 
@@ -259,21 +283,21 @@ void dfs_print_treasure(const explore_t* state) {
     for (size_t col = 0; col < MAP_COLS; col++) {
       switch (state->treasure[row][col]) {
         case TREASURE_NO:
-          printf(" 0 ");
+          PRINT(" 0 ");
           break;
         case TREASURE_7KHZ:
-          printf(" 7 ");
+          PRINT(" 7 ");
           break;
         case TREASURE_12KHZ:
-          printf(" 12 ");
+          PRINT(" 12 ");
           break;
         case TREASURE_17KHZ:
-          printf(" 17 ");
+          PRINT(" 17 ");
           break;
         default:
-          printf("   ");
+          PRINT("   ");
       }
     }
-    printf("\n");
+    PRINT("\n");
   }
 }

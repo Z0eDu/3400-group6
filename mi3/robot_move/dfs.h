@@ -1,9 +1,15 @@
-#ifdef __cplusplus
-extern "C" {
- 
-#endif
 #ifndef GROUP_6_3400_DFS
 #define GROUP_6_3400_DFS
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#ifndef ALGO_IN_SIMULATION
+#define PRINT(...) Serial.print(__VA_ARGS__)
+#else
+#define PRINT(...) printf(__VA_ARGS__)
+#endif
 
 // Size of map
 #define MAP_ROWS 4
@@ -121,6 +127,12 @@ int dfs_absolute_direction(const point_t* source, const point_t* terminal);
 int dfs_relative_offset(int base_dir, int total_dir);
 
 /**
+ * Param:  state the state
+ * Returns: 1 if no more unvisited reachable squares, 0 otherwise.
+ */
+int dfs_done(explore_t* state);
+
+/**
  * Effect: moves the robot to the next location, and returns the relative
  * direction
  * it should move in to get there.
@@ -149,8 +161,8 @@ void dfs_print_grid(const explore_t* state);
  */
 void dfs_print_treasure(const explore_t* state);
 
-#endif /* end of include guard:  */
-
 #ifdef __cplusplus
-} // extern "C"
+}  // extern "C"
 #endif
+
+#endif /* end of include guard:  */
