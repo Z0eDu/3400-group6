@@ -5,11 +5,12 @@
 extern "C" {
 #endif
 
-#ifndef ALGO_IN_SIMULATION
-#define PRINT(...) Serial.print(__VA_ARGS__)
-#else
-#define PRINT(...) printf(__VA_ARGS__)
-#endif
+//#ifndef ALGO_IN_SIMULATION
+//#define PRINT(...) Serial.print(__VA_ARGS__)
+//#else
+//#define PRINT(...) printf(__VA_ARGS__)
+//#endif
+#define PRINT(...)
 
 // Size of map
 #define MAP_ROWS 4

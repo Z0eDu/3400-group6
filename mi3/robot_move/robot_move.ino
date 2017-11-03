@@ -50,6 +50,12 @@ void setup() {
   Serial.begin(9600);
   servo_left.attach(SERVO_LEFT);
   servo_right.attach(SERVO_RIGHT);
+  pinMode(A2, INPUT);
+  pinMode(A3, INPUT);
+  pinMode(A5, INPUT);
+  pinMode(2, OUTPUT);
+  pinMode(3, OUTPUT);
+  pinMode(4, OUTPUT);
 }
 
 void muxSelect(int state){
@@ -75,9 +81,6 @@ void drive(int left, int right) {
 // Returns: a normalized line sensor reading. 0 means black, 255 means white.
 byte nsr(int pin) {
   int raw = analogRead(pin);
-//    Serial.print(pin);
-//    Serial.print(": ");
-//    Serial.println(255 - map(constrain(raw, LINE_WHITE, LINE_BLACK), LINE_WHITE, LINE_BLACK, 0, 255));
   return 255 - map(constrain(raw, LINE_WHITE, LINE_BLACK), LINE_WHITE, LINE_BLACK, 0, 255);
 }
 
@@ -88,11 +91,6 @@ byte nsr(int pin) {
 int lineError() {
   int left = nsr(LEFT_IN);
   int right = nsr(RIGHT_IN);
-//  Serial.print(left);
-//  Serial.print(" ");
-//  Serial.print(right);
-//  Serial.print(" ");
-//  Serial.println(left - right);
   return left - right;
 }
 
@@ -102,20 +100,14 @@ int lineError() {
 int lineStatus() {
   muxSelect(LEFT_OUT_st);
   int left = nsr(LEFT_OUT);
-//  Serial.print("left: ");
-//  Serial.println(left);
-//  Serial.println("linestatus mux select");
-//  Serial.println(Mux_State);
+    Serial.print("left: ");
+    Serial.println(left);
   muxSelect(RIGHT_OUT_st);
+  
   int right = nsr(RIGHT_OUT);
-//  Serial.print("right: ");
-//  Serial.println(right);
-//  Serial.print("ls : ");
-//  Serial.print(left);
-//  Serial.print(" ");
-//  Serial.println(right);
-//  Serial.print("mux_state");
-//  Serial.println(Mux_State);
+    Serial.print("right: ");
+    Serial.println(right);
+
   if (left < LINE_THRESHOLD || right < LINE_THRESHOLD) {
     return LINE_FOLLOW_STOP;
   } else {
@@ -139,6 +131,61 @@ void drive(int dir) {
 // Effect: rotates the robot 90 degrees
 // dir = -1: left
 // dir = 1: right
+
+void rotate180() {
+  //Serial.println("GOING");
+  //lineFollow(10000);
+  drive(10, 10);
+  delay(300);
+//  Serial.println("STOPPING");
+  drive(0,0);
+  int dir = -1;
+  int vl = dir * DRIVE_TURN_SPEED;
+  int vr = - dir * DRIVE_TURN_SPEED;
+//  Serial.println("TURNING");
+  drive(vl, vr);
+
+  if(dir) {
+    muxSelect(LEFT_OUT_st);
+//    Serial.println("rotate");
+//    Serial.println(Mux_State);
+//    Serial.println(A5);
+    while(nsr(LEFT_OUT) > 70);
+    while(nsr(RIGHT_IN) > 40);
+
+  }
+  else {
+    muxSelect(RIGHT_OUT_st);
+//    Serial.println(A5);
+    while(nsr(RIGHT_OUT) > 70);
+    while(nsr(LEFT_IN) > 40);
+  }
+
+//  Serial.println("TURNING");
+  drive(10, 10);
+
+  delay(100);
+  drive(vl, vr);
+  
+  if(dir) {
+    muxSelect(LEFT_OUT_st);
+//    Serial.println("rotate");
+//    Serial.println(Mux_State);
+//    Serial.println(A5);
+    while(nsr(LEFT_OUT) > 70);
+    while(nsr(RIGHT_IN) > 40);
+
+  }
+  else {
+    muxSelect(RIGHT_OUT_st);
+//    Serial.println(A5);
+    while(nsr(RIGHT_OUT) > 70);
+    while(nsr(LEFT_IN) > 40);
+  }
+  drive(0, 0);
+}
+
+
 void rotate90(int dir) {
   //Serial.println("GOING");
   //lineFollow(10000);
@@ -156,15 +203,15 @@ void rotate90(int dir) {
 //    Serial.println("rotate");
 //    Serial.println(Mux_State);
 //    Serial.println(A5);
-    while(nsr(LEFT_OUT) > 100);
-    while(nsr(LEFT_IN) > 40);
+    while(nsr(LEFT_OUT) > 70);
+    while(nsr(RIGHT_IN) > 40);
 
   }
   else {
     muxSelect(RIGHT_OUT_st);
 //    Serial.println(A5);
-    while(nsr(RIGHT_OUT) > 100);
-    while(nsr(RIGHT_IN) > 40);
+    while(nsr(RIGHT_OUT) > 70);
+    while(nsr(LEFT_IN) > 40);
   }
 //
 //  while (lineStatus() == LINE_FOLLOW_GOOD) {
@@ -227,11 +274,11 @@ float getDistance(int PINNAME) {
 
 void markWalls(explore_t* state) {
   float ld = getDistance(A0);// + getDistance(A0) + getDistance(A0) + getDistance(A0) + getDistance(A0)) / 5;
-  Serial.println(ld);
+  //Serial.println(ld);
   float rd = getDistance(A1);// +  getDistance(A1) +  getDistance(A1) +  getDistance(A1) +  getDistance(A1)) / 5;
-  Serial.println(rd);
+  //Serial.println(rd);
   float fd = getDistance(A4);// + getDistance(A4) + getDistance(A4) + getDistance(A4) + getDistance(A4)) / 5;
-  Serial.println(fd);
+  //Serial.println(fd);
   if (getDistance(A0) < DISTANCE_THRESHOLD) {
     dfs_mark_rel_obstacle(state, LEFT);
     Serial.println("mark left");
@@ -247,6 +294,22 @@ void markWalls(explore_t* state) {
 }
 
 void loop() {
+  
+//  while(1) {
+//     
+//     muxSelect(LEFT_OUT_st);
+//     Serial.print("left: ");
+//     Serial.println(nsr(LEFT_OUT));
+//     delay(1000);
+//     
+//     muxSelect(RIGHT_OUT_st);
+//    
+//     Serial.print("right: ");
+//     Serial.println(nsr(RIGHT_OUT));
+//     delay(1000);
+//     
+//     
+//  }
   //stopAtWall();
   explore_t state;
   dfs_init(&state, 0, 0, SOUTH);
@@ -312,8 +375,7 @@ void loop() {
         rotate90(1);
         break;
       case BACKWARDS:
-        rotate90(-1);
-        rotate90(-1);
+        rotate180();
         break;
       case LEFT:
         rotate90(-1);
@@ -331,7 +393,7 @@ void loop() {
   // dfs_print_grid(&state);
   // delay_and_clear();
   // sleep(10);
-
+  Serial.println("DONE");
   while(1);
 //
 //  lineFollow();
