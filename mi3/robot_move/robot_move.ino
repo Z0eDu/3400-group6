@@ -14,7 +14,7 @@
 
 #define LINE_BLACK 900
 #define LINE_WHITE 500
-#define LINE_THRESHOLD 80 
+#define LINE_THRESHOLD 80
 
 #define DISTANCE_THRESHOLD 20
 
@@ -225,6 +225,27 @@ float getDistance(int PINNAME) {
   return cm;
 }
 
+void markWalls(explore_t* state) {
+  float ld = getDistance(A0);// + getDistance(A0) + getDistance(A0) + getDistance(A0) + getDistance(A0)) / 5;
+  Serial.println(ld);
+  float rd = getDistance(A1);// +  getDistance(A1) +  getDistance(A1) +  getDistance(A1) +  getDistance(A1)) / 5;
+  Serial.println(rd);
+  float fd = getDistance(A4);// + getDistance(A4) + getDistance(A4) + getDistance(A4) + getDistance(A4)) / 5;
+  Serial.println(fd);
+  if (getDistance(A0) < DISTANCE_THRESHOLD) {
+    dfs_mark_rel_obstacle(state, LEFT);
+    Serial.println("mark left");
+  }
+  if(getDistance(A1) < DISTANCE_THRESHOLD) {
+    dfs_mark_rel_obstacle(state, RIGHT);
+    Serial.println("mark right");
+  }
+  if (getDistance(A4) < DISTANCE_THRESHOLD) {
+    dfs_mark_rel_obstacle(state, FORWARDS);
+    Serial.println("mark forward");
+  }
+}
+
 void loop() {
   //stopAtWall();
   explore_t state;
@@ -255,10 +276,32 @@ void loop() {
 //     Serial.println("  ");
 //  }
 
+  markWalls(&state);
   int last_rel_dir;
   while ((last_rel_dir = dfs_at_intersection(&state)) != -1) {
     drive(0,0);
     Serial.println("Intersection");
+    Serial.print("State:\n");
+    dfs_print_grid(&state);
+    Serial.print("Going: ");
+    switch (last_rel_dir) {
+      case FORWARDS:
+        Serial.print(" F ");
+        break;
+      case RIGHT:
+        Serial.print(" R ");
+        break;
+      case BACKWARDS:
+        Serial.print(" B ");
+        break;
+      case LEFT:
+        Serial.print(" L ");
+        break;
+      default:
+        Serial.print("   ");
+    }
+    Serial.print("\n");
+    
     delay(100);
     switch (last_rel_dir) {
       case FORWARDS:
@@ -280,25 +323,7 @@ void loop() {
     lineFollow();
     drive(0,0);
     delay(500);
-
-    float ld = getDistance(A0);// + getDistance(A0) + getDistance(A0) + getDistance(A0) + getDistance(A0)) / 5;
-    Serial.println(ld);
-    float rd = getDistance(A1);// +  getDistance(A1) +  getDistance(A1) +  getDistance(A1) +  getDistance(A1)) / 5;
-    Serial.println(rd);
-    float fd = getDistance(A4);// + getDistance(A4) + getDistance(A4) + getDistance(A4) + getDistance(A4)) / 5;
-    Serial.println(fd);
-    if (getDistance(A0) < DISTANCE_THRESHOLD) {
-      dfs_mark_rel_obstacle(&state, LEFT);
-      Serial.println("mark left");
-    }
-    if(getDistance(A1) < DISTANCE_THRESHOLD) {
-      dfs_mark_rel_obstacle(&state, RIGHT);
-      Serial.println("mark right");
-    }
-    if (getDistance(A4) < DISTANCE_THRESHOLD) {
-      dfs_mark_rel_obstacle(&state, FORWARDS);
-      Serial.println("mark forward");
-    }
+    markWalls(&state);
   }
 
   dfs_finalize(&state);
