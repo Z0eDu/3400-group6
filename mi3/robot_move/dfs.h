@@ -1,9 +1,9 @@
-#ifdef __cplusplus
-extern "C" {
- 
-#endif
 #ifndef GROUP_6_3400_DFS
 #define GROUP_6_3400_DFS
+
+#ifdef __cplusplus
+extern "C" { 
+#endif
 
 // Size of map
 #define MAP_ROWS 4
@@ -149,8 +149,9 @@ void dfs_print_grid(const explore_t* state);
  */
 void dfs_print_treasure(const explore_t* state);
 
-#endif /* end of include guard:  */
-
 #ifdef __cplusplus
 } // extern "C"
 #endif
+
+#endif /* end of include guard:  */
+
