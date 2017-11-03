@@ -259,24 +259,6 @@ void loop() {
   while ((last_rel_dir = dfs_at_intersection(&state)) != -1) {
     drive(0,0);
     Serial.println("Intersection");
-    float ld = getDistance(A0);// + getDistance(A0) + getDistance(A0) + getDistance(A0) + getDistance(A0)) / 5;
-    Serial.println(ld);
-    float rd = getDistance(A1);// +  getDistance(A1) +  getDistance(A1) +  getDistance(A1) +  getDistance(A1)) / 5;
-    Serial.println(rd);
-    float fd = getDistance(A4);// + getDistance(A4) + getDistance(A4) + getDistance(A4) + getDistance(A4)) / 5;
-    Serial.println(fd);
-    if (getDistance(A0) < DISTANCE_THRESHOLD) {
-      dfs_mark_rel_obstacle(&state, LEFT);
-      Serial.println("mark left");
-    }
-    if(getDistance(A1) < DISTANCE_THRESHOLD) {
-      dfs_mark_rel_obstacle(&state, RIGHT);
-      Serial.println("mark right");
-    }
-    if (getDistance(A4) < DISTANCE_THRESHOLD) {
-      dfs_mark_rel_obstacle(&state, FORWARDS);
-      Serial.println("mark forward");
-    }
     delay(100);
     switch (last_rel_dir) {
       case FORWARDS:
@@ -298,6 +280,25 @@ void loop() {
     lineFollow();
     drive(0,0);
     delay(500);
+
+    float ld = getDistance(A0);// + getDistance(A0) + getDistance(A0) + getDistance(A0) + getDistance(A0)) / 5;
+    Serial.println(ld);
+    float rd = getDistance(A1);// +  getDistance(A1) +  getDistance(A1) +  getDistance(A1) +  getDistance(A1)) / 5;
+    Serial.println(rd);
+    float fd = getDistance(A4);// + getDistance(A4) + getDistance(A4) + getDistance(A4) + getDistance(A4)) / 5;
+    Serial.println(fd);
+    if (getDistance(A0) < DISTANCE_THRESHOLD) {
+      dfs_mark_rel_obstacle(&state, LEFT);
+      Serial.println("mark left");
+    }
+    if(getDistance(A1) < DISTANCE_THRESHOLD) {
+      dfs_mark_rel_obstacle(&state, RIGHT);
+      Serial.println("mark right");
+    }
+    if (getDistance(A4) < DISTANCE_THRESHOLD) {
+      dfs_mark_rel_obstacle(&state, FORWARDS);
+      Serial.println("mark forward");
+    }
   }
 
   dfs_finalize(&state);
