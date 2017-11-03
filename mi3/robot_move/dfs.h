@@ -2,7 +2,13 @@
 #define GROUP_6_3400_DFS
 
 #ifdef __cplusplus
-extern "C" { 
+extern "C" {
+#endif
+
+#ifndef ALGO_IN_SIMULATION
+#define PRINT(...) Serial.println(__VA_ARGS__)
+#else
+#define PRINT(...) printf(__VA_ARGS__)
 #endif
 
 // Size of map
@@ -150,8 +156,7 @@ void dfs_print_grid(const explore_t* state);
 void dfs_print_treasure(const explore_t* state);
 
 #ifdef __cplusplus
-} // extern "C"
+}  // extern "C"
 #endif
 
 #endif /* end of include guard:  */
-

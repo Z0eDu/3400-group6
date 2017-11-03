@@ -195,62 +195,62 @@ void dfs_print_grid(const explore_t* state) {
     for (size_t col = 0; col < MAP_COLS + 1; col++) {
       if (state->obstacles[row][col].north == WALL) {
         if (col == MAP_COLS) {
-          printf("*");
+          PRINT("*");
         } else {
-          printf("****");
+          PRINT("****");
         }
       } else {
-        printf("    ");
+        PRINT("    ");
       }
     }
-    printf("\n");
+    PRINT("\n");
     for (size_t col = 0; col < MAP_COLS + 1; col++) {
       if (row != MAP_ROWS && state->obstacles[row][col].west == WALL) {
-        printf("| ");
+        PRINT("| ");
       } else {
-        printf("  ");
+        PRINT("  ");
       }
 
       if (row != MAP_ROWS && col != MAP_COLS) {
         if (dfs_point_loc_equals(&state->cur_pos, row, col)) {
           switch (state->cur_pos.dir) {
             case NORTH:
-              printf("^");
+              PRINT("^");
               break;
             case EAST:
-              printf(">");
+              PRINT(">");
               break;
             case SOUTH:
-              printf("v");
+              PRINT("v");
               break;
             case WEST:
-              printf("<");
+              PRINT("<");
               break;
             default:
-              printf(" ");
+              PRINT(" ");
           }
         } else {
           switch (state->visited[row][col]) {
             case VISITED:
-              printf("+");
+              PRINT("+");
               break;
             case UNVISITED:
-              printf("?");
+              PRINT("?");
               break;
             case ISOLATED:
-              printf("#");
+              PRINT("#");
               break;
             default:
-              printf(" ");
+              PRINT(" ");
           }
         }
       } else {
-        printf(" ");
+        PRINT(" ");
       }
-      printf(" ");
+      PRINT(" ");
     }
 
-    printf("\n");
+    PRINT("\n");
   }
 }
 
@@ -259,21 +259,21 @@ void dfs_print_treasure(const explore_t* state) {
     for (size_t col = 0; col < MAP_COLS; col++) {
       switch (state->treasure[row][col]) {
         case TREASURE_NO:
-          printf(" 0 ");
+          PRINT(" 0 ");
           break;
         case TREASURE_7KHZ:
-          printf(" 7 ");
+          PRINT(" 7 ");
           break;
         case TREASURE_12KHZ:
-          printf(" 12 ");
+          PRINT(" 12 ");
           break;
         case TREASURE_17KHZ:
-          printf(" 17 ");
+          PRINT(" 17 ");
           break;
         default:
-          printf("   ");
+          PRINT("   ");
       }
     }
-    printf("\n");
+    PRINT("\n");
   }
 }
