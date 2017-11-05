@@ -45,6 +45,11 @@ int lineStatus() {
 
 
 ## Maze Exploration Algorithm
+
+We used a depth first search to explore the maze. Unlike a standard depth first search, it terminates as soon as the whole maze is explored instead of returning to the starting point.
+
+We implemented the algorithm in C, in [`dfs.c`](robot_move/dfs.c). [`sim.c`](sim.c)
+
 <script type="text/javascript" src="https://asciinema.org/a/3V5Omsrkrczqsp4YI2fZJ9qUo.js" id="asciicast-3V5Omsrkrczqsp4YI2fZJ9qUo" async data-size="big"></script>
 
 
