@@ -2,6 +2,8 @@
 
 ## Mux Implementation
 
+While integrating the robot, we realized that the number of analog inputs we are using is larger than the number of analog input ports. Therefore we decided to use a mux to share a analog input port.
+
 ```cpp
 void muxSelect(int state){
    Mux_State = state;
