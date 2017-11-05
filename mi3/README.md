@@ -2,7 +2,8 @@
 
 ## Mux Implementation
 
-While integrating the robot, we realized that the number of analog inputs we are using is larger than the number of analog input ports. Therefore we decided to use a mux to share a analog input port.
+While integrating the robot, we realized that the number of analog inputs we are using is larger than the number of analog input ports.
+We always need inputs from the inner two line sensors for line following and the three treasure detecting sensors. There are only 6 analog input ports, so the microphone, the outer two line sensors, and the three wall sensors have to share the last analog input port. Therefore we decided to use a mux to choose which one will use it.
 
 ```cpp
 void muxSelect(int state){
