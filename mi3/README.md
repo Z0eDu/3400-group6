@@ -48,7 +48,15 @@ int lineStatus() {
 
 We used a depth first search to explore the maze. Unlike a standard depth first search, it terminates as soon as the whole maze is explored instead of returning to the starting point.
 
-We implemented the algorithm in C, in [`dfs.c`](robot_move/dfs.c). [`sim.c`](sim.c)
+We implemented the algorithm in C, in [`dfs.c`](robot_move/dfs.c). [`sim.c`](sim.c) uses the DFS functions to simulate the robot navigating through a maze, and prints out a pretty ASCII art map. Our robot, in [`robot_move.ino`](robot_move/robot_move.ino) does exactly the same thing as the simulator, except it actually moves the robot! By writing our algorithm in C, which can run on the Arduino, and using the code for the simulator as well as the actual implementation on the robot, we halved the time and effort it would have taken had we built the robot code separately from the algorithm.
+
+While the [`dfs.c`](robot_move/dfs.c) file is rather long (about 300 lines of dense algorithmic C), the main features it provides are:
+* `void dfs_mark_rel_obstacle(explore_t* state, int rel_dir)`: marks an obstacle (wall) at the given relative direction from the current robot position.
+* `void dfs_mark_treasure(explore_t* state, int treasure)`: marks a treasure with the specified frequency at the current robot position
+* `int dfs_at_intersection(explore_t* state)`: computes the direction the robot should go next. Called when the robot is at an intersection to decide which way to turn. Returns `FORWARDS`, `RIGHT`, `BACKWARDS`, or `LEFT`. Returns -1 when maze exploration is complete (as soon as there are no more reachable squares that have not been visited).
+* `void dfs_finalize(explore_t* state)`: marks on the map which squares are reachable and which are not.
+
+The following clip shows the output of our simulation on a sample maze. The robot is indicated by the `^`, `>`, `<`, and `v` symbols, which indicate it's direction of movement. Unexplored squares are represented by a `?`, and explored spaces are represented by a `+`. Once the robot is done mapping the maze, unreachable areas are indicated by a `#`. Walls are indicated by either `|` or `*` depending on their orientation.
 
 <script type="text/javascript" src="https://asciinema.org/a/3V5Omsrkrczqsp4YI2fZJ9qUo.js" id="asciicast-3V5Omsrkrczqsp4YI2fZJ9qUo" async data-size="big"></script>
 
