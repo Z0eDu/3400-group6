@@ -1,4 +1,4 @@
-# Milestone 3: 
+# Milestone 3:
 
 ## Mux Implementation
 
@@ -26,7 +26,7 @@ These are the state values for the analog inputs.
 #define WALL_FRONT_st 5
 ```
 
-Whenever we had to use one of the microphone, the outer two line sensors, and the three wall sensors, we included a line muxSelect(the sensor_st) to change the mux select value. 
+Whenever we had to use one of the microphone, the outer two line sensors, and the three wall sensors, we included a line muxSelect(the sensor_st) to change the mux select value.
 
 ```cpp
 int lineStatus() {
@@ -34,7 +34,7 @@ int lineStatus() {
   int left = nsr(LEFT_OUT);
   muxSelect(RIGHT_OUT_st);
   int right = nsr(RIGHT_OUT);
-  
+
   if (left < LINE_THRESHOLD || right < LINE_THRESHOLD) {
     return LINE_FOLLOW_STOP;
   } else {
@@ -45,14 +45,14 @@ int lineStatus() {
 
 
 ## Maze Exploration Algorithm
-<script type="text/javascript" src="https://asciinema.org/a/lCf5EbSOk9DVuMELJmQMCry2a.js" id="asciicast-lCf5EbSOk9DVuMELJmQMCry2a" async></script>
+<script type="text/javascript" src="https://asciinema.org/a/3V5Omsrkrczqsp4YI2fZJ9qUo.js" id="asciicast-3V5Omsrkrczqsp4YI2fZJ9qUo" async data-size="big"></script>
 
 
 ## Work Distribution
 
-*   Ayomi: 
-*   Drew: 
+*   Ayomi:
+*   Drew:
 *   Emily:  
 *   Eric: Mux hardware implementation
 *   Jacob: Maze exploration algorithm
-*   Joo Yeon: Mux software implementation 
+*   Joo Yeon: Mux software implementation
