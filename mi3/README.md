@@ -42,7 +42,7 @@ int lineStatus() {
   }
 }
 ```
-
+Since we figured out that the mux increased the normalized line sensor reading, we increased the threshold value for the outer line sensors.
 
 ## Maze Exploration Algorithm
 
