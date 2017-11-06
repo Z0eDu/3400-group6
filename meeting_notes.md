@@ -39,3 +39,6 @@
 1. Talked about how to finish milestone 3.
 2. Talked about how to implement mux and simulation code.
 3. Described how we would indicate when the track is complete.
+
+## 2017.11.3
+1. Team met in lab and worked on debugging the mux and wall detections during the meeting.
