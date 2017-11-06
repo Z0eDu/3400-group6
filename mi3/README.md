@@ -8,7 +8,7 @@ As we had to integrate the code from line following and wall detection, we natur
 
 <img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoV2ZNczVQX0NRQWc"  width="400">
 
-We decided to use a 3-to-8 mux to be able to accomodate multiple analog sensors. For this milestone, we were able to get the mux to correctly select between our two outer line sensors, and had the two inner line sensors and three wall sensors connected directly to the Arduino. The analog pin mappings are shown below.
+We decided to use a 8-to-1 mux to be able to accomodate multiple analog sensors. For this milestone, we were able to get the mux to correctly select between our two outer line sensors, and had the two inner line sensors and three wall sensors connected directly to the Arduino. The analog pin mappings are shown below.
 
 <img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoWnpIUXJWX2h6SlU"  width="400">
 
