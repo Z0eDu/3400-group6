@@ -69,12 +69,53 @@ JENNIE PUT YOUR VIDEO HERE
 
 And here is a video of a DFS of a maze with walls:
 
-DREW PUT YOUR VIDEO HERE
+<iframe src="https://drive.google.com/file/d/0ByCM4xElwbIeN3FodElQUE9VSzQ/preview" width="640" height="480"></iframe>
+
+As you can see, the robot failed to completely traverse the maze because it simply missed the last turn and thought it moved two more intersections. This was due to the degradation of the accuracy of our line sensors when putting them through the mux. We increased thresholds but still could not get the same consistency. However, we were able to improve the consistency markedly from when we first hooked up the mux. The major issue was that we forgot to set up the digital select pins for output, and we did not select the analog pin for input on the Arduino to receive the output of our mux. Not doing this caused our mux to only output one of the inputs despite switching the select signals at varying rates and give other weird results. 
+
+In addition, in this video is is clear that the robot's 180 degree turn was very bad, so we went back in and changed it from simply two left turns to have a specific function to turn 180 degrees. This allowed us to reduce the amount that the robot goes forward when turning, and reduced the 180 degree turning radius for the robot. Here is the function, followed by a video of how it works. 
+
+```cpp
+void rotate180() {
+  //drive forward for 300 ms
+  drive(10, 10);     
+  delay(300);
+  drive(0,0);      
+  
+  //start driving with the left wheel going backward and the right going forward
+  int dir = -1;
+  int vl = dir * DRIVE_TURN_SPEED;
+  int vr = - dir * DRIVE_TURN_SPEED;
+  drive(vl, vr);
+   
+  //drive until the outer right sensor gets to the line, 
+  //then until the left inner sensor gets to the line
+ 
+  muxSelect(RIGHT_OUT_st);
+  while(nsr(RIGHT_OUT) > 70);
+  while(nsr(LEFT_IN) > 40);
+   
+  //drive forward for 100 ms
+  drive(10, 10);
+  delay(100);
+  
+  //turn again in the same way as before
+  drive(vl, vr);
+  
+  muxSelect(RIGHT_OUT_st);
+  while(nsr(RIGHT_OUT) > 70);
+  while(nsr(LEFT_IN) > 40);
+  
+  drive(0, 0);
+}
+```
+
+<iframe src="https://drive.google.com/file/d/0ByCM4xElwbIeelR5dkJXaXBtY1U/preview" width="640" height="480"></iframe>
 
 ## Work Distribution
 
 *   Ayomi:
-*   Drew:
+*   Drew: Robot with walled in maze demo/challenges with maze exploration
 *   Emily:  
 *   Eric: Mux hardware implementation
 *   Jacob: Maze exploration algorithm
