@@ -127,7 +127,7 @@ void rotate180() {
 }
 ```
 
-<iframe src="https://drive.google.com/file/d/0ByCM4xElwbIeelR5dkJXaXBtY1U/preview" width="480" height="480"></iframe>
+<iframe src="https://drive.google.com/file/d/0ByCM4xElwbIeelR5dkJXaXBtY1U/preview" width="640" height="480"></iframe>
 
 ## Work Distribution
 
