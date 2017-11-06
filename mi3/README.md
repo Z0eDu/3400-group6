@@ -6,11 +6,13 @@
 
 As we had to integrate the code from line following and wall detection, we naturally had to integrate the line sensors and IR sensors onto our robot. We preserved our sensor configurations from Milestone 1 and 2 because it was effective and worked well. For line detection, four line sensors are used: the inner 2 sensors are used for line following, and the outer 2 sensors are used to detect intersections. For wall detection, three sensors are used and are positioned on the front, left, and right of the robot respectively. 
 
-[insert graphic]
+<img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoV2ZNczVQX0NRQWc"  width="400">
 
-We decided to use a 3-to-8 mux to be able to accomodate multiple analog sensors. For this milestone, we were able to get the mux to correctly select between our two outer line sensors, and had the two inner line sensors and three wall sensors connected directly to the Arduino.
+We decided to use a 3-to-8 mux to be able to accomodate multiple analog sensors. For this milestone, we were able to get the mux to correctly select between our two outer line sensors, and had the two inner line sensors and three wall sensors connected directly to the Arduino. The analog pin mappings are shown below.
 
-[insert graphic]
+<img src="https://docs.google.com/uc?id=0B0-yVGdr0EwoWnpIUXJWX2h6SlU"  width="400">
+
+To power the robot, we had all the sensors connected to the Arduino 5V, which was provided by the 9V battery. The two servos were connected to the 5V provided by the battery pack. The two rails share a common ground that is connected to the Arduino ground. 
 
 
 ## Mux Implementation
