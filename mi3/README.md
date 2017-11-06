@@ -19,8 +19,8 @@ These are the state values for the analog inputs.
 
 ```cpp
 #define MIC_st 0
-#define LEFT_OUT_st 0
-#define RIGHT_OUT_st 1
+#define LEFT_OUT_st 1
+#define RIGHT_OUT_st 2
 #define WALL_LEFT_st 3
 #define WALL_RIGHT_st 4
 #define WALL_FRONT_st 5
@@ -43,6 +43,8 @@ int lineStatus() {
 }
 ```
 Since we figured out that the mux increased the normalized line sensor reading, we increased the threshold value for the outer line sensors.
+
+On the robot, the output of the mux was connected to analog pin A5. Both VCC and GND were connected to the arduinos corresponding 5V output and ground, the enable was set to ground as well. The outer line sensors and wall sensors were then rewired to input pins 1-5. The select pins were wired to digital pins 2-4 on the arduino. After testing the values with and without the mux, it became apparent the values were being affected by the mux. We resolved this by simply changing the threshold, but this may have also been caused by it being a used mux. Testing of this mux's functionality before the project will ensue.
 
 ## Maze Exploration Algorithm
 
