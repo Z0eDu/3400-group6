@@ -1,5 +1,18 @@
 # Milestone 3:
 
+## Code Integration 
+
+## Sensor Integration
+
+As we had to integrate the code from line following and wall detection, we naturally had to integrate the line sensors and IR sensors onto our robot. We preserved our sensor configurations from Milestone 1 and 2 because it was effective and worked well. For line detection, four line sensors are used: the inner 2 sensors are used for line following, and the outer 2 sensors are used to detect intersections. For wall detection, three sensors are used and are positioned on the front, left, and right of the robot respectively. 
+
+[insert graphic]
+
+We decided to use a 3-to-8 mux to be able to accomodate multiple analog sensors. For this milestone, we were able to get the mux to correctly select between our two outer line sensors, and had the two inner line sensors and three wall sensors connected directly to the Arduino.
+
+[insert graphic]
+
+
 ## Mux Implementation
 
 While integrating the robot, we realized that we need to use more analog inputs than the number of analog input ports.
@@ -116,9 +129,9 @@ void rotate180() {
 
 ## Work Distribution
 
-*   Ayomi:
+*   Ayomi: Code integration
 *   Drew: Robot with walled in maze demo/challenges with maze exploration
-*   Emily:  
+*   Emily: Sensor integration and tuning
 *   Eric: Mux hardware implementation
 *   Jacob: Maze exploration algorithm
 *   Joo Yeon: Mux software implementation
