@@ -2,7 +2,7 @@
 
 ## Code Integration 
 
-The first thing we did was integrate our code from the different labs and milestones. We added the relevant parts to a new file. We remapped the pins and created global constant variables that each part would need, so that the robot could use the line sensors and wall sensors at the same time. We connected the two inside line sensors directly to the arduino at the analog pins A2 and A3. The two outside line sensors we connected to a mux, and the output is the analog pin A5 on the arduino.
+The first thing we did was integrate our code from the different labs and milestones: in particular the line following code from Milestone 1 and the wall detection from Milestone 2. We added the relevant parts to a new file. We remapped the pins and created global constant variables that each sensor would need, so that the robot could use the line sensors and wall sensors at the same time. We connected the two inside line sensors directly to the Arduino at the analog pins A2 and A3. The two outside line sensors we connected to a mux, and the output is the analog pin A5 on the Arduino.
 ```
 #define LEFT_OUT A5
 #define LEFT_IN A3
@@ -89,14 +89,14 @@ While the [`dfs.c`](robot_move/dfs.c) file is rather long (about 300 lines of de
 * `int dfs_at_intersection(explore_t* state)`: computes the direction the robot should go next. Called when the robot is at an intersection to decide which way to turn. Returns `FORWARDS`, `RIGHT`, `BACKWARDS`, or `LEFT`. Returns -1 when maze exploration is complete (as soon as there are no more reachable squares that have not been visited).
 * `void dfs_finalize(explore_t* state)`: marks on the map which squares are reachable and which are not.
 
-The following clip shows the output of our simulation on a sample maze. The robot is represented by the `^`, `>`, `<`, and `v` symbols, which indicate its direction of movement (it moves in the direction of the pointy part of the symbol). Unexplored squares are represented by a `?`, and explored spaces are represented by a `+`. Once the robot is done mapping the maze, unreachable areas are indicated by a `#`. Walls are indicated by either `|` or `*` depending on their orientation.
+The following clip shows the output of our simulation on a sample maze. The robot is represented by the `^`, `>`, `<`, and `v` symbols, which indicate its direction of movement (it moves in the direction of the pointy part of the symbol). Unexplored squares are represented by a `?`, and explored spaces are represented by a `+`. Once the robot is done mapping the maze, unreachable areas are indicated by a `#`. Walls are indicated by either `|` or `*` depending on their orientation. The indicator that shows the robot is done exploring is when the robot stops. This is a valid indication because it otherwise would continue moving in simulation.
 
 <script type="text/javascript" src="https://asciinema.org/a/3V5Omsrkrczqsp4YI2fZJ9qUo.js" id="asciicast-3V5Omsrkrczqsp4YI2fZJ9qUo" async data-size="big"></script>
 
 
 ## Demo
 
-We ran our algorithm on the robot, and overall it worked very nicely! Here is a video of a full depth first search of a maze with no walls:
+We ran our algorithm on the robot, and overall it worked very nicely! Here is a video of a full depth first search of a maze with no walls. As with simulation, the indicator that shows the robot is done exploring is when the robot stops. This is a valid indication that is both simple and straightforward to understand.
 
 <iframe src="https://drive.google.com/file/d/0B1QvEdmy23tjajdXOE5tTVB2aFE/preview" width="640" height="480"></iframe>
 
