@@ -14,12 +14,12 @@
 
 #define LINE_BLACK 900
 #define LINE_WHITE 500
-#define LINE_THRESHOLD 80
+#define LINE_THRESHOLD 40
 
 #define DISTANCE_THRESHOLD 20
 
-#define DRIVE_NEUTRAL_LEFT 94
-#define DRIVE_NEUTRAL_RIGHT 86
+#define DRIVE_NEUTRAL_LEFT 95
+#define DRIVE_NEUTRAL_RIGHT 88
 #define DRIVE_SCALE_FWD 180
 #define DRIVE_SCALE_REV 120
 #define DRIVE_FORWARDS 10
@@ -56,6 +56,8 @@ void setup() {
   pinMode(2, OUTPUT);
   pinMode(3, OUTPUT);
   pinMode(4, OUTPUT);
+  pinMode(10, OUTPUT);
+  pinMode(11, OUTPUT);
 }
 
 void muxSelect(int state){
@@ -133,8 +135,6 @@ void drive(int dir) {
 // dir = 1: right
 
 void rotate180() {
-  //Serial.println("GOING");
-  //lineFollow(10000);
   drive(10, 10);
   delay(300);
 //  Serial.println("STOPPING");
@@ -142,46 +142,20 @@ void rotate180() {
   int dir = -1;
   int vl = dir * DRIVE_TURN_SPEED;
   int vr = - dir * DRIVE_TURN_SPEED;
-//  Serial.println("TURNING");
   drive(vl, vr);
 
-  if(dir) {
-    muxSelect(LEFT_OUT_st);
-//    Serial.println("rotate");
-//    Serial.println(Mux_State);
-//    Serial.println(A5);
-    while(nsr(LEFT_OUT) > 70);
-    while(nsr(RIGHT_IN) > 40);
+  muxSelect(RIGHT_OUT_st);
+  while(nsr(RIGHT_OUT) > 70);
+  while(nsr(LEFT_IN) > 40);
 
-  }
-  else {
-    muxSelect(RIGHT_OUT_st);
-//    Serial.println(A5);
-    while(nsr(RIGHT_OUT) > 70);
-    while(nsr(LEFT_IN) > 40);
-  }
-
-//  Serial.println("TURNING");
   drive(10, 10);
 
   delay(100);
   drive(vl, vr);
   
-  if(dir) {
-    muxSelect(LEFT_OUT_st);
-//    Serial.println("rotate");
-//    Serial.println(Mux_State);
-//    Serial.println(A5);
-    while(nsr(LEFT_OUT) > 70);
-    while(nsr(RIGHT_IN) > 40);
-
-  }
-  else {
-    muxSelect(RIGHT_OUT_st);
-//    Serial.println(A5);
-    while(nsr(RIGHT_OUT) > 70);
-    while(nsr(LEFT_IN) > 40);
-  }
+  muxSelect(RIGHT_OUT_st);
+  while(nsr(RIGHT_OUT) > 80);
+  while(nsr(LEFT_IN) > 60);
   drive(0, 0);
 }
 
@@ -200,18 +174,20 @@ void rotate90(int dir) {
 
   if(dir) {
     muxSelect(LEFT_OUT_st);
+    delayMicroseconds(10);
 //    Serial.println("rotate");
 //    Serial.println(Mux_State);
 //    Serial.println(A5);
-    while(nsr(LEFT_OUT) > 70);
-    while(nsr(RIGHT_IN) > 40);
+    while(nsr(LEFT_OUT) > 40);
+    while(nsr(LEFT_IN) > 40);
 
   }
   else {
     muxSelect(RIGHT_OUT_st);
+    delayMicroseconds(10);
 //    Serial.println(A5);
-    while(nsr(RIGHT_OUT) > 70);
-    while(nsr(LEFT_IN) > 40);
+    while(nsr(RIGHT_OUT) > 40);
+    while(nsr(RIGHT_IN) > 40);
   }
 //
 //  while (lineStatus() == LINE_FOLLOW_GOOD) {
@@ -294,19 +270,20 @@ void markWalls(explore_t* state) {
 }
 
 void loop() {
-  
+
 //  while(1) {
 //     
 //     muxSelect(LEFT_OUT_st);
+//     delay(500);
 //     Serial.print("left: ");
-//     Serial.println(nsr(LEFT_OUT));
-//     delay(1000);
+//     Serial.println(nsr(LEFT_IN));
+//     delay(500);
 //     
 //     muxSelect(RIGHT_OUT_st);
-//    
+//     delay(500);
 //     Serial.print("right: ");
-//     Serial.println(nsr(RIGHT_OUT));
-//     delay(1000);
+//     Serial.println(nsr(RIGHT_IN));
+//     delay(500);
 //     
 //     
 //  }
