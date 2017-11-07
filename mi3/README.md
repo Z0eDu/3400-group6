@@ -2,6 +2,22 @@
 
 ## Code Integration 
 
+The first thing we did was integrate our code from the different labs and milestones. We added the relevant parts to a new file. We remapped the pins and created global constant variables that each part would need, so that the robot could use the line sensors and wall sensors at the same time. We connected the two inside line sensors directly to the arduino at the analog pins A2 and A3. The two outside line sensors we connected to a mux, and the output is the analog pin A5 on the arduino.
+```
+#define LEFT_OUT A5
+#define LEFT_IN A3
+#define RIGHT_IN A2
+#define RIGHT_OUT A5
+
+#define MUX A5 //input pin setup
+#define MUX_sel0 2
+#define MUX_sel1 3
+#define MUX_sel2 4
+
+#define LEFT_OUT_st 0 // For mux select
+#define RIGHT_OUT_st 1
+```
+
 ## Sensor Integration
 
 As we had to integrate the code from line following and wall detection, we naturally had to integrate the line sensors and IR sensors onto our robot. We preserved our sensor configurations from Milestone 1 and 2 because it was effective and worked well. For line detection, four line sensors are used: the inner 2 sensors are used for line following, and the outer 2 sensors are used to detect intersections. For wall detection, three sensors are used and are positioned on the front, left, and right of the robot respectively. 
