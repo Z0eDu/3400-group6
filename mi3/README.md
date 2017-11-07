@@ -98,7 +98,7 @@ The following clip shows the output of our simulation on a sample maze. The robo
 
 We ran our algorithm on the robot, and overall it worked very nicely! Here is a video of a full depth first search of a maze with no walls:
 
-JENNIE PUT YOUR VIDEO HERE
+<iframe src="https://drive.google.com/file/d/0B1QvEdmy23tjajdXOE5tTVB2aFE/preview" width="640" height="480"></iframe>
 
 And here is a video of a DFS of a maze with walls. The robot indicates that it is done by simply stopping:
 
