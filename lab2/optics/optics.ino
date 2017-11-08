@@ -35,10 +35,11 @@ void loop() {
   sei(); // turn interrupts back on
   //Serial.write(255); // send a start byte
   Serial.println("Start");
-  for (int i = 0 ; i < 128 ; i += 2) {
+  for (int i = 0 ; i < 128 ; i += 1) {
     Serial.println(fft_log_out[i]);
     delay(10000);
   }
+  Serial.println("Stop");
   delay(100000000);
   //Serial.write(fft_log_out, 128); // send out the data
   }
