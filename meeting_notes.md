@@ -42,3 +42,7 @@
 
 ## 2017.11.3
 1. Team met in lab and worked on debugging the mux and wall detections during the meeting.
+
+## 2017.11.10
+1. Decided to work on milestone 4 next week.
+1. Reminded each other to fill out team evaluations
