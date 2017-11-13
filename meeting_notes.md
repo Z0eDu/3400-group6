@@ -45,4 +45,8 @@
 
 ## 2017.11.10
 1. Decided to work on milestone 4 next week.
-1. Reminded each other to fill out team evaluations
+2. Reminded each other to fill out team evaluations
+
+## 2017.11.13
+1. Discussed the ethics homework and started brainstorming topics.
+2. Chose our topic and decided to write a short essay.
