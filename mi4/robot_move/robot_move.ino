@@ -4,8 +4,8 @@
 #define RIGHT_OUT A5
 #define LINE_P 8
 
-#define SERVO_LEFT 10
-#define SERVO_RIGHT 11
+#define SERVO_LEFT 5
+#define SERVO_RIGHT 6
 
 #define REGULATION_DELAY 10
 
@@ -14,11 +14,11 @@
 
 #define LINE_BLACK 900
 #define LINE_WHITE 500
-#define LINE_THRESHOLD 40
+#define LINE_THRESHOLD 50
 
 #define DISTANCE_THRESHOLD 20
 
-#define DRIVE_NEUTRAL_LEFT 95
+#define DRIVE_NEUTRAL_LEFT 94
 #define DRIVE_NEUTRAL_RIGHT 88
 #define DRIVE_SCALE_FWD 180
 #define DRIVE_SCALE_REV 120
@@ -56,8 +56,8 @@ void setup() {
   pinMode(2, OUTPUT);
   pinMode(3, OUTPUT);
   pinMode(4, OUTPUT);
-  pinMode(10, OUTPUT);
-  pinMode(11, OUTPUT);
+  pinMode(5, OUTPUT);
+  pinMode(6, OUTPUT);
 }
 
 void muxSelect(int state){
@@ -136,7 +136,7 @@ void drive(int dir) {
 
 void rotate180() {
   drive(10, 10);
-  delay(300);
+  delay(500);
 //  Serial.println("STOPPING");
   drive(0,0);
   int dir = -1;
@@ -145,8 +145,9 @@ void rotate180() {
   drive(vl, vr);
 
   muxSelect(RIGHT_OUT_st);
-  while(nsr(RIGHT_OUT) > 70);
-  while(nsr(LEFT_IN) > 40);
+  while(nsr(RIGHT_OUT) > 50);
+  delay(300);
+  while(nsr(RIGHT_IN) > 20);
 
   drive(10, 10);
 
@@ -154,8 +155,9 @@ void rotate180() {
   drive(vl, vr);
   
   muxSelect(RIGHT_OUT_st);
-  while(nsr(RIGHT_OUT) > 80);
-  while(nsr(LEFT_IN) > 60);
+  while(nsr(RIGHT_OUT) > 50);
+  delay(300);
+  while(nsr(RIGHT_IN) > 20);
   drive(0, 0);
 }
 
@@ -164,30 +166,33 @@ void rotate90(int dir) {
   //Serial.println("GOING");
   //lineFollow(10000);
   drive(10, 10);
-  delay(300);
+  if (dir == 1) delay(300);
+  if (dir == -1) delay(500);
 //  Serial.println("STOPPING");
   drive(0,0);
-  int vl = dir * DRIVE_TURN_SPEED;
-  int vr = - dir * DRIVE_TURN_SPEED;
+  int vl = dir * DRIVE_TURN_SPEED ;
+  int vr = - dir * DRIVE_TURN_SPEED ;
 //  Serial.println("TURNING");
   drive(vl, vr);
 
-  if(dir) {
+  if(dir == 1) {
     muxSelect(LEFT_OUT_st);
     delayMicroseconds(10);
 //    Serial.println("rotate");
 //    Serial.println(Mux_State);
 //    Serial.println(A5);
-    while(nsr(LEFT_OUT) > 40);
-    while(nsr(LEFT_IN) > 40);
+    while(nsr(LEFT_OUT) > 50);
+    delay(300);
+    while(nsr(LEFT_IN) > 20);
 
   }
   else {
     muxSelect(RIGHT_OUT_st);
-    delayMicroseconds(10);
+//    delayMicroseconds(100);
 //    Serial.println(A5);
-    while(nsr(RIGHT_OUT) > 40);
-    while(nsr(RIGHT_IN) > 40);
+    while(nsr(RIGHT_OUT) > 50);
+    delay(300);
+    while(nsr(RIGHT_IN) > 20);
   }
 //
 //  while (lineStatus() == LINE_FOLLOW_GOOD) {
@@ -255,34 +260,56 @@ void markWalls(explore_t* state) {
   //Serial.println(rd);
   float fd = getDistance(A4);// + getDistance(A4) + getDistance(A4) + getDistance(A4) + getDistance(A4)) / 5;
   //Serial.println(fd);
-  if (getDistance(A0) < DISTANCE_THRESHOLD) {
+  muxSelect(WALL_LEFT_st);
+  delayMicroseconds(10);
+  if (getDistance(MUX) < DISTANCE_THRESHOLD) {
     dfs_mark_rel_obstacle(state, LEFT);
     Serial.println("mark left");
   }
-  if(getDistance(A1) < DISTANCE_THRESHOLD) {
+  muxSelect(WALL_RIGHT_st);
+  delayMicroseconds(10);
+  if(getDistance(MUX) < DISTANCE_THRESHOLD) {
     dfs_mark_rel_obstacle(state, RIGHT);
     Serial.println("mark right");
   }
-  if (getDistance(A4) < DISTANCE_THRESHOLD) {
+  muxSelect(WALL_FRONT_st);
+  delayMicroseconds(10);
+  if (getDistance(MUX) < DISTANCE_THRESHOLD) {
     dfs_mark_rel_obstacle(state, FORWARDS);
     Serial.println("mark forward");
   }
 }
 
 void loop() {
-
+  while(1) drive(10,10);
+//  drive(0,0);
+//
+//  while(1) {
+//    lineFollow();
+//    drive(0,0);
+//    delay(500);
+//    rotate180();
+//    drive(0,0);
+//    delay(500);
+//  }
 //  while(1) {
 //     
-//     muxSelect(LEFT_OUT_st);
-//     delay(500);
+//     muxSelect(WALL_LEFT_st);
+//     delay(250);
 //     Serial.print("left: ");
-//     Serial.println(nsr(LEFT_IN));
+//     Serial.println(getDistance(MUX));
 //     delay(500);
 //     
-//     muxSelect(RIGHT_OUT_st);
+//     muxSelect(WALL_FRONT_st);
+//     delay(250);
+//     Serial.print("front: ");
+//     Serial.println(getDistance(MUX));
 //     delay(500);
+//     
+//     muxSelect(WALL_RIGHT_st);
+//     delay(250);
 //     Serial.print("right: ");
-//     Serial.println(nsr(RIGHT_IN));
+//     Serial.println(getDistance(MUX));
 //     delay(500);
 //     
 //     
