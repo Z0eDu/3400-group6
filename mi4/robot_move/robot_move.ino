@@ -281,7 +281,6 @@ void markWalls(explore_t* state) {
 }
 
 void loop() {
-  while(1) drive(10,10);
 //  drive(0,0);
 //
 //  while(1) {
