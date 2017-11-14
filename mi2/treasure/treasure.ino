@@ -107,7 +107,7 @@ ISR(TIMER0_COMPA_vect){//timer1 interrupt 8kHz toggles pin 9
       }      
       Serial.println("max_bin in loop");
       Serial.println(max_bin);
-      delay(10000);
+      delay(100000);
       // }
       if (i==127) {
         Serial.println("Stop");
