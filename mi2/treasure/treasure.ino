@@ -98,16 +98,16 @@ ISR(TIMER0_COMPA_vect){//timer1 interrupt 8kHz toggles pin 9
    Serial.println("Start");
     for (byte i = 0; i <FFT_N/2; i++){
       // if(i == 20 || i == 21 || i == 22){
-      Serial.println(fft_log_out[i]);// send out the data
+      //Serial.println(fft_log_out[i]);// send out the data
       
       //added for mi4
       if(i > 20 && fft_log_out[i] > max_data) {
         max_bin = i;
         max_data = fft_log_out[i];
       }      
-      Serial.println("max_bin in loop");
-      Serial.println(max_bin);
-      delay(100000);
+      //Serial.println("max_bin in loop");
+      //Serial.println(max_bin);
+      delay(2000);
       // }
       if (i==127) {
         Serial.println("Stop");
