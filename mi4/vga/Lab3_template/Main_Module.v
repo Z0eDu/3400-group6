@@ -1,0 +1,22 @@
+
+`define TOTAL_SCREEN_WIDTH 795
+`define TOTAL_SCREEN_HEIGHT 525
+`define VISIBLE_SCREEN_WIDTH 640
+`define VISIBLE_SCREEN_HEIGHT 480
+
+module Main_Module (
+	PIXEL_X,
+	PIXEL_Y,
+	PIXEL_COLOR_OUT
+);
+
+input  [9:0] PIXEL_X;
+input  [9:0] PIXEL_Y;
+output [7:0] PIXEL_COLOR_OUT;
+
+
+//assign PIXEL_COLOR_OUT = (PIXEL_X > 200) ? 8'b000_111_11 : 8'b000_111_00;
+
+
+
+endmodule
