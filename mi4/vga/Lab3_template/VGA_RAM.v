@@ -3,7 +3,7 @@
 // single read/write clock
 
 module VGA_RAM
-#(parameter DATA_WIDTH=8, parameter ADDR_WIDTH=5)
+#(parameter DATA_WIDTH=9, parameter ADDR_WIDTH=5)
 (
 	input [(DATA_WIDTH-1):0] data,
 	input [(ADDR_WIDTH-1):0] read_addr, write_addr,
@@ -28,4 +28,3 @@ module VGA_RAM
 	end
 
 endmodule
-
