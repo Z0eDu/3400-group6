@@ -12,20 +12,22 @@ void setup() {
   pinMode(7, OUTPUT);
 }
 
-void display_data(unsigned short got_data) {
-  digitalWrite(4, LOW);
-  // Location bits
-  digitalWrite(A2, HIGH);
-  digitalWrite(A1, HIGH);
-  digitalWrite(A0, HIGH);
-  digitalWrite(2, HIGH);
-  digitalWrite(3, HIGH);
-  // Clock high
-  digitalWrite(4, HIGH);
+void display_data(unsigned short got_data, bool init = true) {
+  if (init) {
+    digitalWrite(4, LOW);
+    // Location bits
+    digitalWrite(A2, HIGH);
+    digitalWrite(A1, HIGH);
+    digitalWrite(A0, HIGH);
+    digitalWrite(2, HIGH);
+    digitalWrite(3, HIGH);
+    // Clock high
+    digitalWrite(4, HIGH);
+  }
 
   // Clock low
   const int foo[] = {0, 0, 1, 2, 2};
-  for (int x = 0; x < 6; x++) {
+  for (int x = 0; x < 5; x++) {
     digitalWrite(4, LOW);
 
     // State bits
@@ -46,14 +48,25 @@ void display_data(unsigned short got_data) {
   digitalWrite(4, LOW);
 }
 
+void display_done_signal() {
+  display_data(30 << 9, false);
+}
+
 void loop() {
   // put your main code here, to run repeatedly:
   unsigned short  got_data;
 
-  for (int i = 0; i < 20; i++) {
-    unsigned short got_data = i << 9 | (i % 4) << 6 | (i % 16 << 2) | (i % 4); //(i == 7 || i == 5 || i == 9) ? i << 9 | 0b001000011 : i << 9;
-    display_data(got_data);
+  for (int fun = 0; fun < 10; fun ++) {
+    for (int i = 0; i < 20; i++) {
+      int j  = (i + fun) % 20;
+      unsigned short got_data = i << 9 | (j % 4) << 6 | (j % 16 << 2) | (j % 4); //(i == 7 || i == 5 || i == 9) ? i << 9 | 0b001000011 : i << 9;
+      display_data(got_data);
+    }
+    delay(500);
   }
 
-//  delay(1000);
+  while (true) {
+    display_done_signal();
+  }
+
 }
