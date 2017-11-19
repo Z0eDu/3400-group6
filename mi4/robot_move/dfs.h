@@ -56,9 +56,9 @@ typedef struct {
   point_t cur_pos;
 } explore_t;
 
-#define WALL_NORTH_MASK (0x1 << 0)
+#define WALL_NORTH_MASK (0x1 << 2)
 #define WALL_EAST_MASK (0x1 << 1)
-#define WALL_SOUTH_MASK (0x1 << 2)
+#define WALL_SOUTH_MASK (0x1 << 0)
 #define WALL_WEST_MASK (0x1 << 3)
 
 typedef struct {
@@ -183,6 +183,9 @@ void dfs_print_grid(const explore_t* state);
  * Returns: the info about the requested spot
  */
 grid_info_t dfs_get_grid_info(explore_t* state, const int row, const int col);
+
+unsigned short dfs_get_grid_info_to_transmit(explore_t* state, const int row,
+                                             const int col);
 
 /**
  * Prints the treasures at each location.

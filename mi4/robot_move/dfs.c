@@ -358,3 +358,58 @@ grid_info_t dfs_get_grid_info(explore_t* state, const int row, const int col) {
 
   return info;
 }
+
+unsigned short dfs_get_grid_info_to_transmit(explore_t* state, const int row,
+                                             const int col) {
+  grid_info_t info = dfs_get_grid_info(state, row, col);
+  unsigned short result = 0;
+  result |= (row * 5 + col) << 9;
+  unsigned short grid_state;
+  switch (info.state) {
+    case '?':
+      grid_state = 0;
+      break;
+    case '+':
+      grid_state = 1;
+      break;
+    case '#':
+      grid_state = 2;
+      break;
+    case '^':
+      grid_state = 3;
+      break;
+    case '>':
+      grid_state = 4;
+      break;
+    case 'v':
+      grid_state = 5;
+      break;
+    case '<':
+      grid_state = 6;
+      break;
+    default:
+      grid_state = 0;
+      break;
+  }
+  result |= grid_state << 3;
+  result |= info.walls << 2;
+
+  unsigned short grid_treasure;
+  switch (info.treasure) {
+    case 7:
+      grid_treasure = 1;
+      break;
+    case 12:
+      grid_treasure = 2;
+      break;
+    case 17:
+      grid_treasure = 3;
+      break;
+    default:
+      grid_treasure = 0;
+      break;
+  }
+  result |= grid_treasure;
+
+  return result;
+}
