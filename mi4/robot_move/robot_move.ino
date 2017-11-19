@@ -92,15 +92,15 @@ void setup() {
 //  fastAdcSetup(0x40); 
 //
 //  // put your setup code here, to run once:
-//  TCCR0A = 0;// set entire TCCR1A register to 0
-//  TCCR0B = 0;// same for TCCR1B
-//  TCNT0  = 0;//initialize counter value to 0
+//  TCCR2A = 0;// set entire TCCR1A register to 0
+//  TCCR2B = 0;// same for TCCR1B
+//  TCNT2  = 0;//initialize counter value to 0
 //  // set compare match register for 8khz increments
-//  OCR0A = 51;// = (16*10^6) / (8000*8) - 1 (must be <256)
+//  OCR2A = 51;// = (16*10^6) / (8000*8) - 1 (must be <256)
 //  // turn on CTC mode
-//  TCCR0A |= (1 << WGM21);
+//  TCCR2A |= (1 << WGM21);
 //  // Set CS21 bit for 8 prescaler
-//  TCCR0B |= (1 << CS21);
+//  TCCR2B |= (1 << CS21);
 
 
 }
@@ -131,7 +131,7 @@ void setup() {
 //
 //// ISR for treasure detection 
 //
-//ISR(TIMER0_COMPA_vect){
+//ISR(TIMER2_COMPA_vect){
 //
 //  // enable timer compare interrupt
 //  TIMSK2 |= (1 << OCIE2A);
@@ -246,9 +246,8 @@ int lineStatus() {
 
   if (left < LINE_THRESHOLD || right < LINE_THRESHOLD) {
     Serial.println("at intersection");
-    sei();
-    cli();
-
+    TIMSK2 |= (1 << OCIE2A);
+    TIMSK2 = 0;
     return LINE_FOLLOW_STOP;
   } else {
     return LINE_FOLLOW_GOOD;
@@ -529,6 +528,15 @@ void loop() {
     drive(0,0);
     delay(500);
     markWalls(&state);
+
+    for (size_t row = 0; row < MAP_ROWS; row++) {
+      for (size_t col = 0; col < MAP_COLS; col++) {
+         unsigned short info = dfs_get_grid_info_to_transmit(&state, state.cur_pos.row, state.cur_pos.col);
+
+         
+    }
+  }
+    unsigned short info = dfs_get_grid_info_to_transmit(&state, state.cur_pos.row, state.cur_pos.col);
   }
 
   dfs_finalize(&state);
