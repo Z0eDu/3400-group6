@@ -4,7 +4,7 @@ JedecChain;
 	DefaultMfr(6E);
 
 	P ActionCode(Cfg)
-		Device PartName(EP4CE22) Path("C:/Users/labuser/Downloads/3400-group6-master/mi4/vga/Lab3_template/") File("output_file.jic") MfrSpec(OpMask(1) SEC_Device(EPCS64) Child_OpMask(1 7));
+		Device PartName(EP4CE22) Path("C:/Users/labuser/Desktop/3400-group6-master/mi4/vga/Lab3_template/") File("output_file.jic") MfrSpec(OpMask(1) SEC_Device(EPCS64) Child_OpMask(1 7));
 
 ChainEnd;
 

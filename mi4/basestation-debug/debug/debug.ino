@@ -1,16 +1,5 @@
-#include <SPI.h>
-#include "nRF24L01.h"
-#include "RF24.h"
-
-// Set up nRF24L01 radio on SPI bus plus pins 9 & 10
-RF24 radio(9, 10);
-
-// Radio pipe addresses for the 2 nodes to communicate.
-const uint64_t pipes[2] = { 0x0000000012LL, 0x0000000013LL };
-
-void setup(void)
-{
-  // Output pin setup
+void setup() {
+  // put your setup code here, to run once:
   pinMode(8, OUTPUT);
   pinMode(A1, OUTPUT);
   pinMode(A0, OUTPUT);
@@ -21,27 +10,6 @@ void setup(void)
   pinMode(5, OUTPUT);
   pinMode(6, OUTPUT);
   pinMode(7, OUTPUT);
-
-
-  Serial.begin(9600);
-  radio.begin();
-
-  // optionally, increase the delay between retries & # of retries
-  radio.setRetries(15, 15);
-  radio.setAutoAck(true);
-  // set the channel
-  radio.setChannel(0x50);
-  // set the power
-  // RF24_PA_MIN=-18dBm, RF24_PA_LOW=-12dBm, RF24_PA_MED=-6dBM, and RF24_PA_HIGH=0dBm.
-  radio.setPALevel(RF24_PA_MIN);
-  //RF24_250KBPS for 250kbs, RF24_1MBPS for 1Mbps, or RF24_2MBPS for 2Mbps
-  radio.setDataRate(RF24_250KBPS);
-
-  radio.openWritingPipe(pipes[1]);
-  radio.openReadingPipe(1, pipes[0]);
-
-  radio.startListening();
-  radio.printDetails();
 }
 
 void display_data(unsigned short got_data) {
@@ -78,13 +46,14 @@ void display_data(unsigned short got_data) {
   digitalWrite(4, LOW);
 }
 
-void loop(void)
-{
-  // if there is data ready
-  if ( radio.available() )
-  {
-    unsigned short got_data;
-    radio.read(&got_data, sizeof(got_data));
+void loop() {
+  // put your main code here, to run repeatedly:
+  unsigned short  got_data;
+
+  for (int i = 0; i < 20; i++) {
+    unsigned short got_data = i << 9 | (i % 4) << 6 | (i % 16 << 2) | (i % 4); //(i == 7 || i == 5 || i == 9) ? i << 9 | 0b001000011 : i << 9;
     display_data(got_data);
   }
+
+//  delay(1000);
 }

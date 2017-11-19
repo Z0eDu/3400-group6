@@ -10,7 +10,7 @@
 		<user_name>Page_0</user_name>
 		<page_flags>1</page_flags>
 		<bit0>
-			<sof_filename>C:/Users/labuser/Downloads/3400-group6-master/mi4/vga/Lab3_template/DE0_NANO.sof</sof_filename> 
+			<sof_filename>C:/Users/labuser/Desktop/3400-group6-master/mi4/vga/Lab3_template/DE0_NANO.sof</sof_filename> 
 		</bit0>
 	</sof_data>
 	<version>10</version>

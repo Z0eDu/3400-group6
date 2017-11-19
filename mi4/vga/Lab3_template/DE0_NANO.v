@@ -144,9 +144,10 @@ module DE0_NANO(
   reg  [8:0] temp_vga_ram_write;
   
   always @(posedge arduino_clock) begin
-    if (last_arduino_waddr == arduino_waddr) begin
-      input_pos <= input_pos + 3'b1;
-    end else input_pos <= 3'b0;
+	 if (arduino_waddr == 5'b11111) input_pos <= 3'd4;
+	 else if (input_pos == 3'd4) input_pos <= 3'd0;
+	 else input_pos <= input_pos + 3'b1;
+	 
 	 last_arduino_waddr <= arduino_waddr;
 	 vga_ram_write <= temp_vga_ram_write;
   end
@@ -168,9 +169,9 @@ module DE0_NANO(
 
 	always @(*) begin
 		case (input_pos)
-			2'd0: temp_vga_ram_write = {vga_ram_write[8:6], vga_ram_write[5:3] , arduino_data};
-			2'd1: temp_vga_ram_write = {vga_ram_write[8:6], arduino_data       , vga_ram_write[2:0]};
-			2'd2: temp_vga_ram_write = {arduino_data,       vga_ram_write[5:3] , vga_ram_write[2:0]};
+			3'd0: temp_vga_ram_write = {vga_ram_write[8:6], vga_ram_write[5:3] , arduino_data};
+			3'd1: temp_vga_ram_write = {vga_ram_write[8:6], arduino_data       , vga_ram_write[2:0]};
+			3'd2: temp_vga_ram_write = {arduino_data,       vga_ram_write[5:3] , vga_ram_write[2:0]};
       default: temp_vga_ram_write = vga_ram_write;
 		endcase
 
@@ -227,13 +228,13 @@ module DE0_NANO(
       default: base_color = `ORANGE;
     endcase
 
-    if (grid_rel_y > `SQUARE_EDGE_0 - `WALL_SIZE && vga_ram_rsp[5]) mark_wall = 1'b1;
-    else if (grid_rel_x > `SQUARE_EDGE_0 - `WALL_SIZE && vga_ram_rsp[4]) mark_wall = 1'b1;
-    else if (grid_rel_y < `WALL_SIZE && vga_ram_rsp[3]) mark_wall = 1'b1;
-    else if (grid_rel_x < `WALL_SIZE && vga_ram_rsp[2]) mark_wall = 1'b1;
+    if ((grid_rel_y > `SQUARE_EDGE_0 - `WALL_SIZE) && vga_ram_rsp[5]) mark_wall = 1'b1;
+    else if ((grid_rel_x > `SQUARE_EDGE_0 - `WALL_SIZE) && vga_ram_rsp[4]) mark_wall = 1'b1;
+    else if ((grid_rel_y < `WALL_SIZE) && vga_ram_rsp[3]) mark_wall = 1'b1;
+    else if ((grid_rel_x < `WALL_SIZE) && vga_ram_rsp[2]) mark_wall = 1'b1;
     else mark_wall = 1'b0;
 
-    if (grid_rel_x > `TREASURE_MIN && grid_rel_x < `TREASURE_MAX && grid_rel_y > `TREASURE_MIN && grid_rel_y < `TREASURE_MAX) begin
+    if ((grid_rel_x > `TREASURE_MIN) && (grid_rel_x < `TREASURE_MAX) && (grid_rel_y > `TREASURE_MIN) && (grid_rel_y < `TREASURE_MAX)) begin
     case (vga_ram_rsp[1:0])
       2'd1: treasure_color = `ORANGE; // 7 kHz
       2'd2: treasure_color = `WHITE; // 12 kHz
@@ -242,13 +243,14 @@ module DE0_NANO(
     endcase
     end else treasure_color = `BLACK;
 
+	 if (mark_wall) PIXEL_COLOR = `WHITE;
+    else if (treasure_color != `BLACK) PIXEL_COLOR = treasure_color;
+    else PIXEL_COLOR = base_color;
+	 
 	end
 
-	always @(posedge CLOCK_25) begin
-    if (mark_wall) PIXEL_COLOR <= `WHITE;
-    else if (treasure_color != `BLACK) PIXEL_COLOR <= treasure_color;
-    else PIXEL_COLOR <= base_color;
-	end
+	//always @(posedge CLOCK_25) begin
+//	end
 
 	VGA_RAM vga_ram (
 		.data(vga_ram_write),
