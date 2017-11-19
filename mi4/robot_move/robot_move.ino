@@ -50,38 +50,33 @@ Servo servo_right;
 int Mux_State;
 
 /* Treasure code */
-boolean toggle2 = 0;
 int fft_i = 0;
-int count = 0;
 
-void fastAdcSetup(int pin) {
-  //ADCSRA = 0xe5; // set the adc to free running mode
-  //ADMUX = 0x40; // use adc0
-  //DIDR0 = 0x07; // turn off the digital input for adc0
-  DIDR0 = 0x3F; // digital inputs disabled
-  ADMUX = 0x40; // measuring on ADC0, use the internal 1.1 reference
-  ADCSRA = 0xAC; // AD-converter on, interrupt enabled, prescaler = 16
-  ADCSRB = 0x40; // AD channels MUX on, free running mode
-  bitWrite(ADCSRA, 6, 1); // Start the conversion by setting bit 6 (=ADSC) in ADCSRA
-  sei(); // set interrupt flag
-}
-
-int fastAdcRead() {
-  while(!(ADCSRA & 0x10)); // wait for adc to be ready
-  ADCSRA = 0xf5; // restart adc
-  byte m = ADCL; // fetch adc data
-  byte j = ADCH;
-  int k = (j << 8) | m; // form into an int
-  k -= 0x0200; // form into a signed int
-  k <<= 6; // form into a 16b signed int
-  return k;
-}
-
-
+//void fastAdcSetup(int pin) {
+//  DIDR0 = 0x3F; // digital inputs disabled
+//  ADMUX = 0x40; // measuring on ADC0, use the internal 1.1 reference
+//  ADCSRA = 0xAC; // AD-converter on, interrupt enabled, prescaler = 16
+//  ADCSRB = 0x40; // AD channels MUX on, free running mode
+//  bitWrite(ADCSRA, 6, 1); // Start the conversion by setting bit 6 (=ADSC) in ADCSRA
+//  //sei(); // set interrupt flag
+//}
+//
+//int fastAdcRead() {
+//  while(!(ADCSRA & 0x10)); // wait for adc to be ready
+//  ADCSRA = 0xf5; // restart adc
+//  byte m = ADCL; // fetch adc data
+//  byte j = ADCH;
+//  int k = (j << 8) | m; // form into an int
+//  k -= 0x0200; // form into a signed int
+//  k <<= 6; // form into a 16b signed int
+//  return k;
+//}
 
 void setup() {
+
   muxSelect(MIC_st);
   Serial.begin(9600);
+  Serial.println("in setup");
   servo_left.attach(SERVO_LEFT);
   servo_right.attach(SERVO_RIGHT);
   pinMode(A2, INPUT);
@@ -94,134 +89,111 @@ void setup() {
   pinMode(6, OUTPUT);
 
   // Treasure setup
-  pinMode(9, OUTPUT);
-  pinMode(13, OUTPUT);
-  digitalWrite(13, LOW);  
-  fastAdcSetup(0x40); 
+//  fastAdcSetup(0x40); 
+//
+//  // put your setup code here, to run once:
+//  TCCR0A = 0;// set entire TCCR1A register to 0
+//  TCCR0B = 0;// same for TCCR1B
+//  TCNT0  = 0;//initialize counter value to 0
+//  // set compare match register for 8khz increments
+//  OCR0A = 51;// = (16*10^6) / (8000*8) - 1 (must be <256)
+//  // turn on CTC mode
+//  TCCR0A |= (1 << WGM21);
+//  // Set CS21 bit for 8 prescaler
+//  TCCR0B |= (1 << CS21);
 
-  cli();
-  // put your setup code here, to run once:
-  TCCR0A = 0;// set entire TCCR1A register to 0
-  TCCR0B = 0;// same for TCCR1B
-  TCNT0  = 0;//initialize counter value to 0
-  // set compare match register for 8khz increments
-  OCR0A = 51;// = (16*10^6) / (8000*8) - 1 (must be <256)
-  // turn on CTC mode
-  TCCR0A |= (1 << WGM21);
-  // Set CS21 bit for 8 prescaler
-  TCCR0B |= (1 << CS21);
-  // enable timer compare interrupt
-  TIMSK0 |= (1 << OCIE2A);
 
-  sei();
-  
 }
 
-// ISR that toggles between each frequency detector
-ISR(ADC_vect) {
-  int port;
-    if (ADMUX == 0x40) {
-      port = 0;
-      ADMUX = 0x41;
-    }else if(ADMUX == 0x41) {
-      port = 1;
-      ADMUX = 0x42;
-    }else if(ADMUX == 0x42) {
-       port = 2;
-       ADMUX = 0x44;
-    } 
-     
-    int val = ADCL; // store lower byte ADC
-    val += ADCH << 8; // store higher bytes ADC
-   
-}
-
-// ISR for treasure detection 
-ISR(TIMER0_COMPA_vect){//timer1 interrupt 8kHz toggles pin 9
-//generates pulse wave of frequency 8kHz/2 = 4kHz (takes two cycles for full wave- toggle high then toggle low)
-  if (toggle2){
-    digitalWrite(9,HIGH);
-    toggle2 = 0;
-  }
-  else{
-    digitalWrite(9,LOW);
-    toggle2 = 1;
-  }
-
-  int max_data = 0;
-  int max_bin = 0;
-    
-  if (fft_i == 512){
-    fft_window(); // window the data for better frequency response
-    fft_reorder(); // reorder the data before doing the fft
-    fft_run(); // process the data in the fft
-    fft_mag_log(); // take the output of the fft
-
-    fft_i = 0;
-    
-   Serial.println("Start");
-    for (byte i = 0; i <FFT_N/2; i++){
-      // if(i == 20 || i == 21 || i == 22){
-      //Serial.println(fft_log_out[i]);// send out the data
-      
-      //added for mi4
-      if(i > 20 && fft_log_out[i] > max_data) {
-        max_bin = i;
-        max_data = fft_log_out[i];
-      }      
-      //Serial.println("max_bin in loop");
-      //Serial.println(max_bin);
-      delay(2000);
-      // }
-      if (i==127) {
-        Serial.println("Stop");
-        //delay(100000000);
-      }
-    }
-
-    int foundTreasure = -1;
-    Serial.println("max_bin");
-    Serial.println(max_bin);
-    
-    // 7 kHz
-    if(max_bin > 40 && max_bin < 65) { 
-      foundTreasure = 0;
-      Serial.println("7kHz");
-    // 12 kHz
-    } else if (max_bin >= 65 && max_bin < 100){
-      foundTreasure = 1;
-      Serial.println("12kHz");
-    // 17 kHz
-    } else if (max_bin >= 100 && max_bin < 130){
-      foundTreasure = 2;
-      Serial.println("17kHz");
-    } else {
-      foundTreasure = -1;
-      Serial.println("No treasure detected");
-    }
-
-
-
-
-    
-    if(fft_log_out[20] >= 50 || fft_log_out[21] >= 50 ||fft_log_out[22] >= 50){
-      count ++;
-    } else{
-      count = 0;
-    }
-    if (count >= 15) {
-      digitalWrite(13,HIGH);
-    }
-    else {
-      digitalWrite(13, LOW);
-    }
-  } else{
-    fft_input[fft_i] = fastAdcRead();
-    fft_input[fft_i+1] = 0;
-    fft_i += 2;
-  }
-
-}
+//volatile int count = 0;
+//// ISR that toggles between each frequency detector
+//ISR(ADC_vect) {
+//  int port;
+//    if (ADMUX == 0x40) {
+//      port = 0;
+//      ADMUX = 0x41;
+//    }else if(ADMUX == 0x41) {
+//      port = 1;
+//      ADMUX = 0x44;
+//    }else if(ADMUX == 0x44) {
+//       port = 4;
+//       ADMUX = 0x44;
+//    } 
+//     
+//    int val = ADCL; // store lower byte ADC
+//    val += ADCH << 8; // store higher bytes ADC
+//    
+//    if (count == 0) {
+//      count = 0;
+//    }
+//
+//}
+//
+//// ISR for treasure detection 
+//
+//ISR(TIMER0_COMPA_vect){
+//
+//  // enable timer compare interrupt
+//  TIMSK2 |= (1 << OCIE2A);
+//  
+//  int max_data = 0;
+//  int max_bin = 0;
+//    
+//  if (fft_i == 512){
+//    fft_window(); // window the data for better frequency response
+//    fft_reorder(); // reorder the data before doing the fft
+//    fft_run(); // process the data in the fft
+//    fft_mag_log(); // take the output of the fft
+//
+//    fft_i = 0;
+//    
+//   //Serial.println("Start");
+//    for (byte i = 0; i <FFT_N/2; i++){      
+//      if(i > 20 && fft_log_out[i] > max_data) {
+//        max_bin = i;
+//        max_data = fft_log_out[i];
+//      }      
+//      //delay(2000);
+//      // }
+//      //if (i==127) {
+//        //Serial.println("Stop");
+//      //}
+//    }
+//
+//    int foundTreasure = -1;
+//    //Serial.println("max_bin");
+//    //Serial.println(max_bin);
+//    
+//    // 7 kHz
+//    if(max_bin > 40 && max_bin < 65) { 
+//      foundTreasure = 0;
+//      //Serial.println("7kHz");
+//    // 12 kHz
+//    } else if (max_bin >= 65 && max_bin < 100){
+//      foundTreasure = 1;
+//      //Serial.println("12kHz");
+//    // 17 kHz
+//    } else if (max_bin >= 100 && max_bin < 130){
+//      foundTreasure = 2;
+//      //Serial.println("17kHz");
+//    } else {
+//      foundTreasure = -1;
+//      //Serial.println("No treasure detected");
+//    }
+//
+//    fft_input[fft_i] = fastAdcRead();
+//    fft_input[fft_i+1] = 0;
+//    fft_i += 2;
+//    count++;
+//  }
+//
+//  if (count == 0) {
+//    count = 0;
+//    // disable
+//    TIMSK2 = 0;
+//  }
+//
+//}
 
 
 void muxSelect(int state){
@@ -233,10 +205,8 @@ void muxSelect(int state){
 
 // Effect: drives each motor at the given normalized velocity
 void drive(int left, int right) {
-
   if (right < 0) {
     right = right * DRIVE_SCALE_REV / 255;
-    Serial.println(left);
   } else {
     right = right * DRIVE_SCALE_FWD / 255;
   }
@@ -266,15 +236,19 @@ int lineError() {
 int lineStatus() {
   muxSelect(LEFT_OUT_st);
   int left = nsr(LEFT_OUT);
-    Serial.print("left: ");
+//    Serial.print("left: ");
     Serial.println(left);
   muxSelect(RIGHT_OUT_st);
   
   int right = nsr(RIGHT_OUT);
-    Serial.print("right: ");
+//    Serial.print("right: ");
     Serial.println(right);
 
   if (left < LINE_THRESHOLD || right < LINE_THRESHOLD) {
+    Serial.println("at intersection");
+    sei();
+    cli();
+
     return LINE_FOLLOW_STOP;
   } else {
     return LINE_FOLLOW_GOOD;
@@ -428,23 +402,25 @@ void markWalls(explore_t* state) {
   delayMicroseconds(10);
   if (getDistance(MUX) < DISTANCE_THRESHOLD) {
     dfs_mark_rel_obstacle(state, LEFT);
-    Serial.println("mark left");
+    //Serial.println("mark left");
   }
   muxSelect(WALL_RIGHT_st);
   delayMicroseconds(10);
   if(getDistance(MUX) < DISTANCE_THRESHOLD) {
     dfs_mark_rel_obstacle(state, RIGHT);
-    Serial.println("mark right");
+    //Serial.println("mark right");
   }
   muxSelect(WALL_FRONT_st);
   delayMicroseconds(10);
   if (getDistance(MUX) < DISTANCE_THRESHOLD) {
     dfs_mark_rel_obstacle(state, FORWARDS);
-    Serial.println("mark forward");
+    //Serial.println("mark forward");
   }
 }
 
 void loop() {
+//  Serial.print("count ");
+//  Serial.println(count);
 //  drive(0,0);
 //
 //  while(1) {
@@ -510,27 +486,27 @@ void loop() {
   int last_rel_dir;
   while ((last_rel_dir = dfs_at_intersection(&state)) != -1) {
     drive(0,0);
-    Serial.println("Intersection");
-    Serial.print("State:\n");
+    //Serial.println("Intersection");
+    //Serial.print("State:\n");
     dfs_print_grid(&state);
-    Serial.print("Going: ");
-    switch (last_rel_dir) {
-      case FORWARDS:
-        Serial.print(" F ");
-        break;
-      case RIGHT:
-        Serial.print(" R ");
-        break;
-      case BACKWARDS:
-        Serial.print(" B ");
-        break;
-      case LEFT:
-        Serial.print(" L ");
-        break;
-      default:
-        Serial.print("   ");
-    }
-    Serial.print("\n");
+    //Serial.print("Going: ");
+//    switch (last_rel_dir) {
+//      case FORWARDS:
+//        //Serial.print(" F ");
+//        break;
+//      case RIGHT:
+//        //Serial.print(" R ");
+//        break;
+//      case BACKWARDS:
+//        //Serial.print(" B ");
+//        break;
+//      case LEFT:
+//        //Serial.print(" L ");
+//        break;
+//      default:
+//        //Serial.print("   ");
+//    }
+//    //Serial.print("\n");
     
     delay(100);
     switch (last_rel_dir) {
@@ -560,7 +536,7 @@ void loop() {
   // dfs_print_grid(&state);
   // delay_and_clear();
   // sleep(10);
-  Serial.println("DONE");
+  //Serial.println("DONE");
   while(1);
 //
 //  lineFollow();
