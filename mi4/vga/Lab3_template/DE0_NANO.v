@@ -107,6 +107,8 @@ module DE0_NANO(
     );
 
 	 assign reset = ~KEY[0]; // reset when KEY0 is pressed
+	 
+	 reg done;
 
 	 //assign PIXEL_COLOR = 8'b000_111_00; // Green
 	 //assign LED[0] = led_state;
@@ -147,6 +149,9 @@ module DE0_NANO(
 	 if (arduino_waddr == 5'b11111) input_pos <= 3'd4;
 	 else if (input_pos == 3'd4) input_pos <= 3'd0;
 	 else input_pos <= input_pos + 3'b1;
+	 
+	 if (arduino_waddr == 5'd30) done <= 1'b1;
+	 else done <= 1'b0;
 	 
 	 last_arduino_waddr <= arduino_waddr;
 	 vga_ram_write <= temp_vga_ram_write;
@@ -286,6 +291,17 @@ module DE0_NANO(
 		.q(sonic_out)
 	);
 
+	// GND
+	assign GPIO_1_D[24] = 1'b0;
+	
+   DDS_DRIVER dds(
+		  .RESET(~done),
+		  .CLOCK(CLOCK_25),
+		  .DAC_OUT({GPIO_1_D[22], GPIO_1_D[20], GPIO_1_D[18], GPIO_1_D[16], GPIO_1_D[14], GPIO_1_D[12], GPIO_1_D[10], GPIO_1_D[08]})
+	 );
+	 
+	 
+	
 
     //=======================================================
     //  Structural coding
