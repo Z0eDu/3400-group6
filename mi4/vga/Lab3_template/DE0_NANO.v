@@ -11,6 +11,7 @@
 
 `define BLACK 8'b000_000_00
 `define RED 8'b111_000_00
+`define PURPLE 8'b111_000_11
 `define GREEN 8'b000_111_00
 `define BLUE 8'b000_000_11
 `define ORANGE 8'b110_100_00
@@ -136,37 +137,41 @@ module DE0_NANO(
   assign arduino_waddr = arduino_in[4:0];
   wire       arduino_clock = arduino_in[5];
 
-  reg  [1:0] input_pos;
+  reg  [2:0] input_pos;
   reg [4:0] last_arduino_waddr;
-
+  
+  reg  [8:0] vga_ram_write;
+  reg  [8:0] temp_vga_ram_write;
+  
   always @(posedge arduino_clock) begin
     if (last_arduino_waddr == arduino_waddr) begin
-      input_pos <= input_pos + 2'b1;
-    end else input_pos <= 2'b0;
+      input_pos <= input_pos + 3'b1;
+    end else input_pos <= 3'b0;
+	 last_arduino_waddr <= arduino_waddr;
+	 vga_ram_write <= temp_vga_ram_write;
   end
 
-	reg  [8:0] vga_ram_write;
 	reg  [4:0] vga_ram_raddr;
-	wire  [4:0] vga_ram_waddr;
-	wire        vga_ram_we;
-	wire  [7:0] vga_ram_rsp;
+	wire [4:0] vga_ram_waddr;
+	wire       vga_ram_we;
+	wire [8:0] vga_ram_rsp;
 
 	reg [6:0] grid_rel_x;
 	reg [6:0] grid_rel_y;
 
-  assign vga_ram_we = (input_pos == 2'b2);
-  assign vga_ram_waddr = arduino_waddr;
+  assign vga_ram_we = (input_pos == 3'd3);
+  assign vga_ram_waddr = last_arduino_waddr;
 
-  wire [7:0] base_color;
-  wire mark_wall;
-  wire [7:0] treasure_color;
+  reg [7:0] base_color;
+  reg mark_wall;
+  reg [7:0] treasure_color;
 
 	always @(*) begin
 		case (input_pos)
-			2'd0: vga_ram_write = {vga_ram_write[8:6], vga_ram_write[5:3] , arduino_data};
-			2'd1: vga_ram_write = {vga_ram_write[8:6], arduino_data       , vga_ram_write[2:0]};
-			2'd2: vga_ram_write = {arduino_data,       vga_ram_write[5:3] , vga_ram_write[2:0]};
-      default: vga_ram_write = 8'd0;
+			2'd0: temp_vga_ram_write = {vga_ram_write[8:6], vga_ram_write[5:3] , arduino_data};
+			2'd1: temp_vga_ram_write = {vga_ram_write[8:6], arduino_data       , vga_ram_write[2:0]};
+			2'd2: temp_vga_ram_write = {arduino_data,       vga_ram_write[5:3] , vga_ram_write[2:0]};
+      default: temp_vga_ram_write = vga_ram_write;
 		endcase
 
 		if      (PIXEL_COORD_X < `SQUARE_EDGE_0) grid_coord_x = 5'd0;
@@ -219,20 +224,20 @@ module DE0_NANO(
       3'd4: base_color = `BLUE; //robot >
       3'd5: base_color = `BLUE; //robot v
       3'd6: base_color = `BLUE; //robot <
-      default: base_color = `BLACK;
+      default: base_color = `ORANGE;
     endcase
 
-    if (grid_rel_y > SQUARE_EDGE_0 - WALL_SIZE && vga_ram_rsp[5]) mark_wall = 1'b1;
-    else if (grid_rel_x > SQUARE_EDGE_0 - WALL_SIZE && vga_ram_rsp[6]) mark_wall = 1'b1;
-    else if (grid_rel_y < WALL_SIZE && vga_ram_rsp[7]) mark_wall = 1'b1;
-    else if (grid_rel_x < WALL_SIZE && vga_ram_rsp[8]) mark_wall = 1'b1;
+    if (grid_rel_y > `SQUARE_EDGE_0 - `WALL_SIZE && vga_ram_rsp[5]) mark_wall = 1'b1;
+    else if (grid_rel_x > `SQUARE_EDGE_0 - `WALL_SIZE && vga_ram_rsp[4]) mark_wall = 1'b1;
+    else if (grid_rel_y < `WALL_SIZE && vga_ram_rsp[3]) mark_wall = 1'b1;
+    else if (grid_rel_x < `WALL_SIZE && vga_ram_rsp[2]) mark_wall = 1'b1;
     else mark_wall = 1'b0;
 
-    if (grid_rel_x > TREASURE_MIN && grid_rel_x < TREASURE_MAX && grid_rel_y > TREASURE_MIN && grid_rel_y < TREASURE_MAX) begin
+    if (grid_rel_x > `TREASURE_MIN && grid_rel_x < `TREASURE_MAX && grid_rel_y > `TREASURE_MIN && grid_rel_y < `TREASURE_MAX) begin
     case (vga_ram_rsp[1:0])
-      2'd1: treasure_color = `GREEN; // 7 kHz
-      2'd2: treasure_color = `RED; // 12 kHz
-      2'd3: treasure_color = `BLUE; // 17 kHz
+      2'd1: treasure_color = `ORANGE; // 7 kHz
+      2'd2: treasure_color = `WHITE; // 12 kHz
+      2'd3: treasure_color = `PURPLE; // 17 kHz
       default: treasure_color = `BLACK;
     endcase
     end else treasure_color = `BLACK;

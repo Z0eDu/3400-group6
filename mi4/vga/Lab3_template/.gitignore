@@ -1,6 +1,9 @@
 # ignore Quartus II generated files
 *_generation_script*
 *_inst.vhd
+*.jic
+*.map
+*.rpd
 *.bak
 *.cmp
 *.done
