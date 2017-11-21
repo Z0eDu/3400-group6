@@ -230,7 +230,7 @@ void rotate90(int dir) {
   //Serial.println("GOING");
   //lineFollow(10000);
   drive(10, 10);
-  if (dir == 1) delay(400);
+  if (dir == 1) delay(250);
   if (dir == -1) delay(500);
 //  Serial.println("STOPPING");
   drive(0,0);
@@ -488,7 +488,9 @@ void loop() {
   // dfs_print_grid(&state);
   // delay_and_clear();
   // sleep(10);
+  while(1) {
   transmit(30 << 9);
+  }
   Serial.println("DONE");
   while(1);
 //

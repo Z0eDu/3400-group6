@@ -56,10 +56,10 @@ typedef struct {
   point_t cur_pos;
 } explore_t;
 
-#define WALL_NORTH_MASK (0x1 << 2)
-#define WALL_EAST_MASK (0x1 << 1)
-#define WALL_SOUTH_MASK (0x1 << 0)
-#define WALL_WEST_MASK (0x1 << 3)
+#define WALL_NORTH_MASK (0x1 << 1)
+#define WALL_EAST_MASK (0x1 << 2)
+#define WALL_SOUTH_MASK (0x1 << 3)
+#define WALL_WEST_MASK (0x1 << 0)
 
 typedef struct {
   // #: not reachable
