@@ -72,18 +72,18 @@ void setup() {
   //
   // Setup and configure rf radio
   //
-  radio.begin();
-
-  // optionally, increase the delay between retries & # of retries
-  radio.setRetries(15,15);
-  radio.setAutoAck(true);
-  // set the channel
-  radio.setChannel(0x50);
-  // set the power
-  // RF24_PA_MIN=-18dBm, RF24_PA_LOW=-12dBm, RF24_PA_MED=-6dBM, and RF24_PA_HIGH=0dBm.
-  radio.setPALevel(RF24_PA_MIN);
-  //RF24_250KBPS for 250kbs, RF24_1MBPS for 1Mbps, or RF24_2MBPS for 2Mbps
-  radio.setDataRate(RF24_250KBPS);
+//  radio.begin();
+//
+//  // optionally, increase the delay between retries & # of retries
+//  radio.setRetries(15,15);
+//  radio.setAutoAck(true);
+//  // set the channel
+//  radio.setChannel(0x50);
+//  // set the power
+//  // RF24_PA_MIN=-18dBm, RF24_PA_LOW=-12dBm, RF24_PA_MED=-6dBM, and RF24_PA_HIGH=0dBm.
+//  radio.setPALevel(RF24_PA_MIN);
+//  //RF24_250KBPS for 250kbs, RF24_1MBPS for 1Mbps, or RF24_2MBPS for 2Mbps
+//  radio.setDataRate(RF24_250KBPS);
 
   // optionally, reduce the payload size.  seems to
   // improve reliability
@@ -102,24 +102,25 @@ void setup() {
   //
   // Start listening
   //
-  radio.startListening();
+  //radio.startListening();
 
   //
   // Dump the configuration of the rf unit for debugging
   //
-  radio.printDetails();
+  //radio.printDetails();
 
 }
 
 void transmit(unsigned short state){
       // First, stop listening so we can talk.
-   radio.stopListening();
-
-    bool update; 
-    update = false; 
-    while (!update) {
-    update = radio.write( &state, sizeof(state) );
-    };
+   //radio.stopListening();
+//
+//    bool update; 
+//    update = false; 
+//    //while (!update) {
+//    for (int i = 0; i<10 && !update; i++) {
+//    update = radio.write( &state, sizeof(state) );
+//    };
 
 }
 
@@ -406,7 +407,17 @@ void loop() {
 //  }
 
   markWalls(&state);
+
+    // send empty maze
+    for (size_t row = 0; row < MAP_ROWS; row++) {
+      for (size_t col = 0; col < MAP_COLS; col++) {
+         unsigned short info = dfs_get_grid_info_to_transmit(&state, row, col);
+         transmit(info);
+    }
+  } 
+   
   int last_rel_dir;
+  
   while ((last_rel_dir = dfs_at_intersection(&state)) != -1) {
     drive(0,0);
     Serial.println("Intersection");
@@ -452,9 +463,30 @@ void loop() {
     drive(0,0);
     delay(500);
     markWalls(&state);
+
+    for (size_t row = 0; row < MAP_ROWS; row++) {
+      for (size_t col = 0; col < MAP_COLS; col++) {
+         unsigned short info = dfs_get_grid_info_to_transmit(&state, row, col);
+         transmit(info);
+ 
+    }
+  }
   }
 
+  
+
   dfs_finalize(&state);
+
+    for (size_t row = 0; row < MAP_ROWS; row++) {
+      for (size_t col = 0; col < MAP_COLS; col++) {
+         unsigned short info = dfs_get_grid_info_to_transmit(&state, row, col);
+         transmit(info);
+    }
+  }  
+
+  transmit(30 << 9); // done signal
+  
+  
   // PRINT("Done:\n");
   // dfs_print_grid(&state);
   // delay_and_clear();
@@ -467,6 +499,7 @@ void loop() {
 
   //figureEight();
   /*
+   * 
   Serial.println("Starting!");
   lineFollow();
   Serial.println("Found intersection!");
