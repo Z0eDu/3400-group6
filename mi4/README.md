@@ -32,9 +32,9 @@ Here is a video of the final system:
 
 ## Work Distribution
 
-*   Ayomi:
-*   Drew:
-*   Emily:  
-*   Eric: Mux hardware implementation
-*   Jacob: Maze exploration algorithm
-*   Joo Yeon: Mux software implementation
+*   Ayomi: Fixing mux and sensors
+*   Drew: Fixing mux and sensors
+*   Emily: Treasure detection hardware and software
+*   Eric: Radio code
+*   Jacob: Base station FPGA code
+*   Joo Yeon: Treasure detection hardware and software
