@@ -71,6 +71,25 @@ For walls, we used the following color scheme:
 * White: robot still exploring the maze
 * Purple: robot done, maze final
 
+## Radio Transmission
+
+To implement radio transmission, code was scavanged from Lab 4. A method which utilizes the necessary radio writing process was placed into a new method, transmit:
+```cpp
+void transmit(unsigned short state){
+      // First, stop listening so we can talk.
+   radio.stopListening();
+
+    bool update; 
+    update = false; 
+    while (!update) {
+    update = radio.write( &state, sizeof(state) );
+    };
+  }```
+  
+  This method could now be called to transmit an unsigned short with information about each aspect of an intersection including treasures, walls, location, and its state. Altogether this would require 14 bits. This is how they are sent.
+  
+  ill finish this soon
+
 ## Demo
 
 Here is a video of the final system that displays walls/treasures in a maze as the robot finds them, and signals on screen/plays the done sound when the maze is fully mapped: 
