@@ -44,20 +44,23 @@ void setup(void)
   radio.printDetails();
 }
 
-void display_data(unsigned short got_data) {
-  digitalWrite(4, LOW);
-  // Location bits
-  digitalWrite(A2, HIGH);
-  digitalWrite(A1, HIGH);
-  digitalWrite(A0, HIGH);
-  digitalWrite(2, HIGH);
-  digitalWrite(3, HIGH);
-  // Clock high
-  digitalWrite(4, HIGH);
+
+void display_data(unsigned short got_data, bool init = true) {
+  if (init) {
+    digitalWrite(4, LOW);
+    // Location bits
+    digitalWrite(A2, HIGH);
+    digitalWrite(A1, HIGH);
+    digitalWrite(A0, HIGH);
+    digitalWrite(2, HIGH);
+    digitalWrite(3, HIGH);
+    // Clock high
+    digitalWrite(4, HIGH);
+  }
 
   // Clock low
   const int foo[] = {0, 0, 1, 2, 2};
-  for (int x = 0; x < 6; x++) {
+  for (int x = 0; x < 5; x++) {
     digitalWrite(4, LOW);
 
     // State bits
@@ -78,6 +81,11 @@ void display_data(unsigned short got_data) {
   digitalWrite(4, LOW);
 }
 
+void display_done_signal() {
+  display_data(30 << 9, false);
+}
+
+
 void loop(void)
 {
   // if there is data ready
@@ -85,6 +93,12 @@ void loop(void)
   {
     unsigned short got_data;
     radio.read(&got_data, sizeof(got_data));
-    display_data(got_data);
+    Serial.println(got_data);
+    if (got_data >> 9 == 30) {
+      display_done_signal();
+    }
+    else {
+      display_data(got_data);
+    }
   }
 }
