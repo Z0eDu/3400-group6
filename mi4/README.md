@@ -1,5 +1,10 @@
 # Milestone 4:
 
+## Fixing Mux and Sensors (cleaning up Milestone 3)
+After fixing the issues from the mux that stemmed from not setting up the pins on the Arduino connected to the mux select signals for output, we focused on making the sensors more accurate. We noticed that the sensors were extremely close to the ground and decided that this might affect their consistency. It turns out that this was the root of our inconsitent sensor readings as they were nearly dragging on the map and jittering a lot.
+
+After moving up the sensors, we read in different values since their shadows affected their own readings differently.  We decreased the thresholds to distinctly discern a white reading and a black reading. In addition, since the sensors were moved higher, the angles were different, causing the robot to detect the crossing black line of an intersection sooner.  As a result, the robot would sometimes stop just before an intersection, move forward a small amount, and detect the same intersection thinking that it was the next. To account for this, we increased the delay for which the robot drives forward before turning or driving forward and looking for an intersection again. Finally, the robot moved as we wanted it to, so we re-ran it on the maze from Milestone 3 and it worked very consistently. 
+
 ## Treasure Hardware
 
 While the simple treasure detection circuit from Lab 2 worked well, it was only good for detecting the various treasure frequencies at very small distance ranges. Thus, the simple circuit made finding treasures in the maze while the robot was moving much more difficult. As a result, we have added a non-inverting op-amp to to better detect the treasures at farther distances with greater accuracy. 
@@ -84,7 +89,8 @@ void transmit(unsigned short state){
     while (!update) {
     update = radio.write( &state, sizeof(state) );
     };
-  }```
+  }
+```
   
   This method could now be called to transmit an unsigned short with information about each aspect of an intersection including treasures, walls, location, and its state. Altogether this would require 14 bits. This is how they are sent.
   
