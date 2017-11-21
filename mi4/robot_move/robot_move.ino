@@ -407,6 +407,7 @@ void loop() {
 //  }
 
   markWalls(&state);
+  dfs_mark_treasure(&state, TREASURE_7KHZ);
 
     for (size_t row = 0; row < MAP_ROWS; row++) {
       for (size_t col = 0; col < MAP_COLS; col++) {
