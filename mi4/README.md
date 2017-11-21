@@ -8,7 +8,7 @@ While the simple treasure detection circuit from Lab 2 worked well, it was only 
 
 We first prototyped our circuit on a breadboard with a gain of 10, and tested to see that it worked well with the range of frequencies (7 kHz, 12 kHz, 17 kHz). Once our testing confirmed that the hardware was robust, we then protoboarded three treasure detection circuits. The idea is that each of the treasure detection circuit will be responsible for detecting a specific frequency. An ISR will toggle between the three treasure detection input pins on the Arduino. Using the FFT library, the robot will then be able to send a signal to the base station if a treasure at a certain frequency is detected. The breadboard assembly and final non-inverting ampilifier breakouts for the treasure detection circuitry is shown below. 
 
-<img src="https://docs.google.com/uc?id=1CS5IXJnBlW2MbFpP2Np_VRaIfRsvI7GE"  width="400">
+<img src="https://docs.google.com/uc?id=1CS5IXJnBlW2MbFpP2Np_VRaIfRsvI7GE"  width="380">     <img src="https://docs.google.com/uc?id=1a7Xjq8PNw8w9VKAVN1tuOODa7_y493gE"  width="380">
 
 
 ## Treasure Software
