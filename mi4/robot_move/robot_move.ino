@@ -39,21 +39,19 @@
 #define WALL_RIGHT_st 4
 #define WALL_FRONT_st 5
 
-#include <Servo.h>
-#include "dfs.h"
 
-// Radio includes
 #include <SPI.h>
 #include "nRF24L01.h"
 #include "RF24.h"
 
+#include <Servo.h>
+#include "dfs.h"
 Servo servo_left;
 Servo servo_right;
 int Mux_State;
 
-// Radio for Group 6
-RF24 radio(9,10);
 const uint64_t pipes[2] = { 0x0000000012LL, 0x0000000013LL };
+RF24 radio(9,10);
 
 void setup() {
   muxSelect(MIC_st);
@@ -69,21 +67,19 @@ void setup() {
   pinMode(5, OUTPUT);
   pinMode(6, OUTPUT);
 
-  //
-  // Setup and configure rf radio
-  //
-//  radio.begin();
-//
-//  // optionally, increase the delay between retries & # of retries
-//  radio.setRetries(15,15);
-//  radio.setAutoAck(true);
-//  // set the channel
-//  radio.setChannel(0x50);
-//  // set the power
-//  // RF24_PA_MIN=-18dBm, RF24_PA_LOW=-12dBm, RF24_PA_MED=-6dBM, and RF24_PA_HIGH=0dBm.
-//  radio.setPALevel(RF24_PA_MIN);
-//  //RF24_250KBPS for 250kbs, RF24_1MBPS for 1Mbps, or RF24_2MBPS for 2Mbps
-//  radio.setDataRate(RF24_250KBPS);
+
+  radio.begin();
+
+  // optionally, increase the delay between retries & # of retries
+  radio.setRetries(15,15);
+  radio.setAutoAck(true);
+  // set the channel
+  radio.setChannel(0x50);
+  // set the power
+  // RF24_PA_MIN=-18dBm, RF24_PA_LOW=-12dBm, RF24_PA_MED=-6dBM, and RF24_PA_HIGH=0dBm.
+  radio.setPALevel(RF24_PA_MIN);
+  //RF24_250KBPS for 250kbs, RF24_1MBPS for 1Mbps, or RF24_2MBPS for 2Mbps
+  radio.setDataRate(RF24_250KBPS);
 
   // optionally, reduce the payload size.  seems to
   // improve reliability
@@ -96,33 +92,37 @@ void setup() {
   // back and forth.
   // Open 'our' pipe for writing
   // Open the 'other' pipe for reading, in position #1 (we can have up to 5 pipes open for reading)
+
+
     radio.openWritingPipe(pipes[0]);
     radio.openReadingPipe(1,pipes[1]);
 
   //
   // Start listening
   //
-  //radio.startListening();
+
+  radio.startListening();
 
   //
   // Dump the configuration of the rf unit for debugging
   //
-  //radio.printDetails();
 
+  radio.printDetails();
+  
 }
 
 void transmit(unsigned short state){
       // First, stop listening so we can talk.
-   //radio.stopListening();
-//
-//    bool update; 
-//    update = false; 
-//    //while (!update) {
-//    for (int i = 0; i<10 && !update; i++) {
-//    update = radio.write( &state, sizeof(state) );
-//    };
+   radio.stopListening();
 
-}
+    bool update; 
+    printf("Now sending new robot update\n");
+    update = false; 
+    while (!update) {
+    update = radio.write( &state, sizeof(state) );
+    };
+  }
+
 
 void muxSelect(int state){
    Mux_State = state;
@@ -230,7 +230,7 @@ void rotate90(int dir) {
   //Serial.println("GOING");
   //lineFollow(10000);
   drive(10, 10);
-  if (dir == 1) delay(300);
+  if (dir == 1) delay(400);
   if (dir == -1) delay(500);
 //  Serial.println("STOPPING");
   drive(0,0);
@@ -408,16 +408,15 @@ void loop() {
 
   markWalls(&state);
 
-    // send empty maze
     for (size_t row = 0; row < MAP_ROWS; row++) {
       for (size_t col = 0; col < MAP_COLS; col++) {
          unsigned short info = dfs_get_grid_info_to_transmit(&state, row, col);
          transmit(info);
+         
     }
-  } 
-   
-  int last_rel_dir;
+  }
   
+  int last_rel_dir;
   while ((last_rel_dir = dfs_at_intersection(&state)) != -1) {
     drive(0,0);
     Serial.println("Intersection");
@@ -467,30 +466,29 @@ void loop() {
     for (size_t row = 0; row < MAP_ROWS; row++) {
       for (size_t col = 0; col < MAP_COLS; col++) {
          unsigned short info = dfs_get_grid_info_to_transmit(&state, row, col);
-         transmit(info);
- 
+          transmit(info);
+         
     }
   }
+      
   }
 
   
 
   dfs_finalize(&state);
-
     for (size_t row = 0; row < MAP_ROWS; row++) {
       for (size_t col = 0; col < MAP_COLS; col++) {
          unsigned short info = dfs_get_grid_info_to_transmit(&state, row, col);
          transmit(info);
+         
     }
-  }  
-
-  transmit(30 << 9); // done signal
-  
+  }
   
   // PRINT("Done:\n");
   // dfs_print_grid(&state);
   // delay_and_clear();
   // sleep(10);
+  transmit(30 << 9);
   Serial.println("DONE");
   while(1);
 //
@@ -499,12 +497,10 @@ void loop() {
 
   //figureEight();
   /*
-   * 
   Serial.println("Starting!");
   lineFollow();
   Serial.println("Found intersection!");
   rotate90(-1);
   drive(0,0);
   delay(1000);*/
-  
 }

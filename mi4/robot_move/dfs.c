@@ -361,7 +361,7 @@ grid_info_t dfs_get_grid_info(explore_t* state, const int row, const int col) {
 
 unsigned short dfs_get_grid_info_to_transmit(explore_t* state, const int row,
                                              const int col) {
-  return 0;                                         
+                                    
   grid_info_t info = dfs_get_grid_info(state, row, col);
   unsigned short result = 0;
   result |= (row * 5 + col) << 9;
@@ -392,7 +392,7 @@ unsigned short dfs_get_grid_info_to_transmit(explore_t* state, const int row,
       grid_state = 0;
       break;
   }
-  result |= grid_state << 3;
+  result |= grid_state << 6;
   result |= info.walls << 2;
 
   unsigned short grid_treasure;
