@@ -3,9 +3,34 @@
 ## Fixing Mux and Sensors (cleaning up Milestone 3)		
 After fixing the issues from the mux that stemmed from not setting up the pins on the Arduino connected to the mux select signals for output, we focused on making the sensors more accurate. We noticed that the sensors were extremely close to the ground and decided that this might affect their consistency. It turns out that this was the root of our inconsitent sensor readings as they were nearly dragging on the map and jittering a lot.		
 	
-After moving up the sensors, we read in different values since their shadows affected their own readings differently.  We decreased the thresholds to distinctly discern a white reading and a black reading. In addition, since the sensors were moved higher, the angles were different, causing the robot to detect the crossing black line of an intersection sooner.  As a result, the robot would sometimes stop just before an intersection, move forward a small amount, and detect the same intersection thinking that it was the next. To account for this, we increased the delay for which the robot drives forward before turning or driving forward and looking for an intersection again. Finally, the robot moved as we wanted it to, so we re-ran it on the maze from Milestone 3 and it worked very consistently. As shown below,  and in our final demo, our robot can navigate multiple different mazes.		
+After moving up the sensors, we read in different values since their shadows affected their own readings differently.  We decreased the thresholds to distinctly discern a white reading and a black reading. In addition, since the sensors were moved higher, the angles were different, causing the robot to detect the crossing black line of an intersection sooner.  As a result, the robot would sometimes stop just before an intersection, move forward a small amount, and detect the same intersection thinking that it was the next. To account for this, we increased the delay for which the robot drives forward before turning or driving forward and looking for an intersection again. After fixing the line sensors, we connected the wall sensors to the mux. We noticed that the values the sensors gave us were slightly different than before, so we had to find new thresholds for the sensors. The code below is how we switched between sensors before reading from a sensor.
+
+```
+muxSelect(WALL_LEFT_st);
+  delayMicroseconds(10);
+  if (getDistance(MUX) < DISTANCE_THRESHOLD) {
+    dfs_mark_rel_obstacle(state, LEFT);
+    Serial.println("mark left");
+  }
+  muxSelect(WALL_RIGHT_st);
+  delayMicroseconds(10);
+  if(getDistance(MUX) < DISTANCE_THRESHOLD) {
+    dfs_mark_rel_obstacle(state, RIGHT);
+    Serial.println("mark right");
+  }
+  muxSelect(WALL_FRONT_st);
+  delayMicroseconds(10);
+  if (getDistance(MUX) < DISTANCE_THRESHOLD) {
+    dfs_mark_rel_obstacle(state, FORWARDS);
+    Serial.println("mark forward");
+  }
+```
+
+Finally, the robot moved as we wanted it to, so we re-ran it on the maze from Milestone 3 and it worked very consistently. As shown below,  and in our final demo, our robot can navigate multiple different mazes.		
 
 <iframe src="https://drive.google.com/file/d/1J9mfxvdShdzv5FZRr6nGyIn-4kUWKguF/preview" width="640" height="480"></iframe>
+
+Lastly, we plan to add more weight or redistribute the weight of the robot, so that more of it is at the back. Since we raised the sensors, the robot rocks forward when it moves and stops. 
 
 ## Treasure Hardware
 
