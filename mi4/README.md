@@ -19,7 +19,7 @@ We first prototyped our circuit on a breadboard with a gain of 10, and tested to
 
 ## Treasure Software
 
-For milestone 2, we have implemented a singel treasure detector that detected a treasure and identified the frequency. For the competition, the robot should be able to detect a treasure from any wall around it. Therefore, we decided to have three treasure sensors: on the front, right, and left side. We used ADC0, ADC2, and ADC4 for the sensors, and we had to switch between them. In order to do so, We set the corresponding bits in the Adc setup and added another ISR that switched the ADCMUX that selects which ADC to use. 
+For milestone 2, we had implemented a single treasure detector that detected a treasure and identified the frequency. For the competition, the robot should be able to detect a treasure from any wall around it. Therefore, we decided to have three treasure sensors: on the front, right, and left side. We used ADC0, ADC2, and ADC4 for the sensors, and we had to switch between them. In order to do so, We set the corresponding bits in the Adc setup and added another ISR that switched the ADMUX that selects which ADC to use. 
 
 ```cpp
 void fastAdcSetup(int pin) {
@@ -40,9 +40,9 @@ ISR(ADC_vect) {
       ADMUX = 0x41;
     }else if(ADMUX == 0x41) {
       port = 1;
-      ADMUX = 0x42;
-    }else if(ADMUX == 0x42) {
-       port = 2;
+      ADMUX = 0x44;
+    }else if(ADMUX == 0x44) {
+       port = 4;
        ADMUX = 0x44;
     } 
      
@@ -51,7 +51,7 @@ ISR(ADC_vect) {
    
 }
 ```
-For integration, we had to reduce the memory of the code and deal with the timer. The arduino ran out of memory when we first added the code. We got rid of all the serial codes and the serial library and it fixed the problem. When we simply added the code, the robot never moved because the arduino was always dealing with the timer interrupt. Therefore we had to disable the specific timer's interrupt in the setup and enable it in the intersection. We also had to enable the timer compare interrupt in the timer ISR and then disable at the end of it. We used Timer2 for FFT since enabling and disabling Timer0 affected other functionalities of the robot.
+For integration, we had to reduce the memory of the code and deal with the timer. The Arduino ran out of memory when we first added the code. We got rid of all the serial codes and the serial library and it fixed the problem. When we simply added the code, the robot never moved because the Arduino was always dealing with the timer interrupt. Therefore we had to disable the specific timer's interrupt in the setup and enable it in the intersection. We also had to enable the timer compare interrupt in the timer ISR and then disable at the end of it. We used Timer2 for FFT since enabling and disabling Timer0 affected other functionalities of the robot, in particular the PWM interrupts of the servos.
 
 
 ## Base Station
