@@ -111,6 +111,8 @@ The code to transmit this state was called in the main loop. At each intersectio
    ```
 Once the maze is complete, a final call is sent (transmit(30 << 9);) which indicates the exploration is finished. 
 
+<img src="https://docs.google.com/uc?id=1TvhngIjVEHkpT7y99jwuG1ZnYaPwjkIC"  width="400">
+
 ## Demo
 
 Here is a video of the final system that displays walls/treasures in a maze as the robot finds them, and signals on screen/plays the done sound when the maze is fully mapped: 
