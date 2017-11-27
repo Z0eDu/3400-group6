@@ -10,7 +10,7 @@ Ayomi Sanni (acs333), Drew Mera (dnm54), Emily Sun (eys27), Eric Lyne (eal234), 
 *	http://www.caee.utexas.edu/prof/kockelman/public_html/TRB17EconomicEffectsofAVs.pdf
 
 ### Brief explanation of the case you are discussing.
-The case we are discussing regards the first fatality involving a self-driving car -- particularly the accident of Joshua Brown who was killed driving a Tesla Model S. There is debate as to how effective the technical safety feature of Tesla's Autopilot was versus how Brown responded to the safety warnings of the system.  "Brown was audibly warned six times to keep his hands on the steering wheel. He was also warned visually, seven times, on his Tesla's dashboard", as described by the Washington Post.
+The case we are discussing regards the first fatality involving a self-driving car -- particularly the accident of Joshua Brown who was killed driving a Tesla Model S. There is debate as to how effective the technical safety feature of Tesla's Autopilot was versus how Brown responded to the safety warnings of the system.  "Brown was audibly warned six times to keep his hands on the steering wheel. He was also warned visually, seven times, on his Tesla's dashboard," as described by the Washington Post.
 
 ### Define who the stakeholders are.
 Each driver behind the hands of a self driving car is at risk of injury or even death if the car malfunctions. The stakes could potentially be death for the driver and passenger, and even nearby drivers and pedestrians. On the other hand, Tesla has its reputation and possible lawsuits at stake if an accident occurs.
