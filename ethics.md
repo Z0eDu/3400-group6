@@ -1,4 +1,5 @@
 #ECE 3400 Group 6: Ethics Homework
+
 Ayomi Sanni (acs333), Drew Mera (dnm54), Emily Sun (eys27), Eric Lyne (eal234), Jacob Glueck (jng55), Joo Yeon Chae (jc2464)
 
 ##Links/references on the case you are discussing:	
