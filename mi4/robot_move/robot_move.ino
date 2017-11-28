@@ -82,6 +82,7 @@ RF24 radio(9,10);
 void setup() {
   muxSelect(MIC_st);
   Serial.begin(9600);
+  Serial.println("in setup");
   servo_left.attach(SERVO_LEFT);
   servo_right.attach(SERVO_RIGHT);
   pinMode(A2, INPUT);
@@ -157,6 +158,7 @@ void setup() {
 volatile int count = 0;
 // ISR that toggles between each frequency detector
 ISR(ADC_vect) {
+  Serial.println("in ISR");
   int port;
     if (ADMUX == 0x40) {
       port = 0;
@@ -269,7 +271,7 @@ void drive(int left, int right) {
 
   if (right < 0) {
     right = right * DRIVE_SCALE_REV / 255;
-    Serial.println(left);
+    //Serial.println(left);
   } else {
     right = right * DRIVE_SCALE_FWD / 255;
   }
@@ -299,13 +301,13 @@ int lineError() {
 int lineStatus() {
   muxSelect(LEFT_OUT_st);
   int left = nsr(LEFT_OUT);
-    Serial.print("left: ");
-    Serial.println(left);
+    //Serial.print("left: ");
+    //Serial.println(left);
   muxSelect(RIGHT_OUT_st);
   
   int right = nsr(RIGHT_OUT);
-    Serial.print("right: ");
-    Serial.println(right);
+    //Serial.print("right: ");
+    //Serial.println(right);
 
   if (left < LINE_THRESHOLD || right < LINE_THRESHOLD) {
     return LINE_FOLLOW_STOP;
@@ -461,19 +463,19 @@ void markWalls(explore_t* state) {
   delayMicroseconds(10);
   if (getDistance(MUX) < DISTANCE_THRESHOLD) {
     dfs_mark_rel_obstacle(state, LEFT);
-    Serial.println("mark left");
+    //Serial.println("mark left");
   }
   muxSelect(WALL_RIGHT_st);
   delayMicroseconds(10);
   if(getDistance(MUX) < DISTANCE_THRESHOLD) {
     dfs_mark_rel_obstacle(state, RIGHT);
-    Serial.println("mark right");
+    //Serial.println("mark right");
   }
   muxSelect(WALL_FRONT_st);
   delayMicroseconds(10);
   if (getDistance(MUX) < DISTANCE_THRESHOLD) {
     dfs_mark_rel_obstacle(state, FORWARDS);
-    Serial.println("mark forward");
+    //Serial.println("mark forward");
   }
 }
 
@@ -540,7 +542,7 @@ void loop() {
 //  }
 
   markWalls(&state);
-  dfs_mark_treasure(&state, TREASURE_7KHZ);
+  //dfs_mark_treasure(&state, TREASURE_7KHZ);
 
     for (size_t row = 0; row < MAP_ROWS; row++) {
       for (size_t col = 0; col < MAP_COLS; col++) {
@@ -553,8 +555,8 @@ void loop() {
   int last_rel_dir;
   while ((last_rel_dir = dfs_at_intersection(&state)) != -1) {
     drive(0,0);
-    Serial.println("Intersection");
-    Serial.print("State:\n");
+    //Serial.println("Intersection");
+    //Serial.print("State:\n");
     dfs_print_grid(&state);
     Serial.print("Going: ");
     switch (last_rel_dir) {
@@ -595,10 +597,10 @@ void loop() {
     lineFollow();
     drive(0,0);
     delay(500);
-    markWalls(&stpate);
+    markWalls(&state);
 
     //check for treasures
-    TIMSK2 |= (1 << OCIE2A):
+    TIMSK2 |= (1 << OCIE2A);
     TIMSK2 = 0;
 
     for (size_t row = 0; row < MAP_ROWS; row++) {
@@ -629,7 +631,7 @@ void loop() {
   while(1) {
   transmit(30 << 9);
   }
-  Serial.println("DONE");
+  //Serial.println("DONE");
   while(1);
 //
 //  lineFollow();
