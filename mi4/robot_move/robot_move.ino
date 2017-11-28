@@ -39,16 +39,42 @@
 #define WALL_RIGHT_st 4
 #define WALL_FRONT_st 5
 
+#define LOG_OUT 1 // use the log output function
+#define FFT_N 256 // set to 256 point fft
 
 #include <SPI.h>
 #include "nRF24L01.h"
 #include "RF24.h"
 
+#include <FFT.h>
 #include <Servo.h>
 #include "dfs.h"
 Servo servo_left;
 Servo servo_right;
 int Mux_State;
+
+/* Treasure code */
+int fft_i = 0;
+
+void fastAdcSetup(int pin) {
+  DIDR0 = 0x3F; // digital inputs disabled
+  ADMUX = 0x40; // measuring on ADC0, use the internal 1.1 reference
+  ADCSRA = 0xAC; // AD-converter on, interrupt enabled, prescaler = 16
+  ADCSRB = 0x40; // AD channels MUX on, free running mode
+  bitWrite(ADCSRA, 6, 1); // Start the conversion by setting bit 6 (=ADSC) in ADCSRA
+  //sei(); // set interrupt flag
+}
+
+int fastAdcRead() {
+  while(!(ADCSRA & 0x10)); // wait for adc to be ready
+  ADCSRA = 0xf5; // restart adc
+  byte m = ADCL; // fetch adc data
+  byte j = ADCH;
+  int k = (j << 8) | m; // form into an int
+  k -= 0x0200; // form into a signed int
+  k <<= 6; // form into a 16b signed int
+  return k;
+}
 
 const uint64_t pipes[2] = { 0x0000000012LL, 0x0000000013LL };
 RF24 radio(9,10);
@@ -66,6 +92,23 @@ void setup() {
   pinMode(4, OUTPUT);
   pinMode(5, OUTPUT);
   pinMode(6, OUTPUT);
+
+  // Treasure setup
+  fastAdcSetup(0x40); 
+
+  // put your setup code here, to run once:
+  TCCR2A = 0;// set entire TCCR2A register to 0
+  TCCR2B = 0;// same for TCCR2B
+  TCNT2  = 0;//initialize counter value to 0
+  // set compare match register for 8khz increments
+  OCR2A = 51;// = (16*10^6) / (8000*8) - 1 (must be <256)
+  // turn on CTC mode
+  TCCR2A |= (1 << WGM21);
+  // Set CS21 bit for 8 prescaler
+  TCCR2B |= (1 << CS21);
+
+  //disable the timer to begin
+  TIMSK2 = 0;
 
 
   radio.begin();
@@ -109,6 +152,96 @@ void setup() {
 
   radio.printDetails();
   
+}
+
+volatile int count = 0;
+// ISR that toggles between each frequency detector
+ISR(ADC_vect) {
+  int port;
+    if (ADMUX == 0x40) {
+      port = 0;
+      ADMUX = 0x41;
+    }else if(ADMUX == 0x41) {
+      port = 1;
+      ADMUX = 0x44;
+    }else if(ADMUX == 0x44) {
+       port = 4;
+       ADMUX = 0x44;
+    } 
+     
+    int val = ADCL; // store lower byte ADC
+    val += ADCH << 8; // store higher bytes ADC
+    
+    if (count == 0) {
+      count = 0;
+    }
+
+}
+
+// ISR for treasure detection 
+
+ISR(TIMER2_COMPA_vect){
+
+  // enable timer compare interrupt
+  TIMSK2 |= (1 << OCIE2A);
+  
+  int max_data = 0;
+  int max_bin = 0;
+    
+  if (fft_i == 512){
+    fft_window(); // window the data for better frequency response
+    fft_reorder(); // reorder the data before doing the fft
+    fft_run(); // process the data in the fft
+    fft_mag_log(); // take the output of the fft
+
+    fft_i = 0;
+    
+   //Serial.println("Start");
+    for (byte i = 0; i <FFT_N/2; i++){      
+      if(i > 20 && fft_log_out[i] > max_data) {
+        max_bin = i;
+        max_data = fft_log_out[i];
+      }      
+      //delay(2000);
+      // }
+      //if (i==127) {
+        //Serial.println("Stop");
+      //}
+    }
+
+    int foundTreasure = -1;
+    //Serial.println("max_bin");
+    //Serial.println(max_bin);
+    
+    // 7 kHz
+    if(max_bin > 40 && max_bin < 65) { 
+      foundTreasure = 0;
+      //Serial.println("7kHz");
+    // 12 kHz
+    } else if (max_bin >= 65 && max_bin < 100){
+      foundTreasure = 1;
+      //Serial.println("12kHz");
+    // 17 kHz
+    } else if (max_bin >= 100 && max_bin < 130){
+      foundTreasure = 2;
+      //Serial.println("17kHz");
+    } else {
+      foundTreasure = -1;
+      //Serial.println("No treasure detected");
+    }
+
+    fft_input[fft_i] = fastAdcRead();
+    fft_input[fft_i+1] = 0;
+    fft_i += 2;
+    count++;
+  }
+
+  if (count == 0) {
+    count = 0;
+    // disable
+    TIMSK2 = 0;
+  }
+
 }
 
 void transmit(unsigned short state){
@@ -462,7 +595,11 @@ void loop() {
     lineFollow();
     drive(0,0);
     delay(500);
-    markWalls(&state);
+    markWalls(&stpate);
+
+    //check for treasures
+    TIMSK2 |= (1 << OCIE2A):
+    TIMSK2 = 0;
 
     for (size_t row = 0; row < MAP_ROWS; row++) {
       for (size_t col = 0; col < MAP_COLS; col++) {
