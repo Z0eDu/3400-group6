@@ -32,7 +32,7 @@
 #define MUX_sel1 3
 #define MUX_sel2 4
 
-#define MIC_st 0
+#define MIC_st 2
 #define LEFT_OUT_st 0
 #define RIGHT_OUT_st 1
 #define WALL_LEFT_st 3
@@ -52,9 +52,9 @@
 Servo servo_left;
 Servo servo_right;
 int Mux_State;
-
 /* Treasure code */
 int fft_i = 0;
+bool treasure_det = false;
 
 void fastAdcSetup(int pin) {
   DIDR0 = 0x3F; // digital inputs disabled
@@ -66,6 +66,7 @@ void fastAdcSetup(int pin) {
 }
 
 int fastAdcRead() {
+  return 0;
   while(!(ADCSRA & 0x10)); // wait for adc to be ready
   ADCSRA = 0xf5; // restart adc
   byte m = ADCL; // fetch adc data
@@ -82,7 +83,7 @@ RF24 radio(9,10);
 void setup() {
   muxSelect(MIC_st);
   Serial.begin(9600);
-  Serial.println("in setup");
+  Serial.println("setup");
   servo_left.attach(SERVO_LEFT);
   servo_right.attach(SERVO_RIGHT);
   pinMode(A2, INPUT);
@@ -95,9 +96,10 @@ void setup() {
   pinMode(6, OUTPUT);
 
   // Treasure setup
-  fastAdcSetup(0x40); 
+  //fastAdcSetup(0x40); 
 
   // put your setup code here, to run once:
+  cli();
   TCCR2A = 0;// set entire TCCR2A register to 0
   TCCR2B = 0;// same for TCCR2B
   TCNT2  = 0;//initialize counter value to 0
@@ -108,9 +110,15 @@ void setup() {
   // Set CS21 bit for 8 prescaler
   TCCR2B |= (1 << CS21);
 
-  //disable the timer to begin
-  TIMSK2 = 0;
+  //disable only the timer2 to begin
 
+  TIMSK2 = 0;
+  sei();
+//  TIMSK1 |= (1 << OCIE1A);
+//  TIMSK1 |= (1 << OCIE1B);
+//  TIMSK0 |= (1 << OCIE0A);
+//  TIMSK0 |= (1 << OCIE1B);
+  
 
   radio.begin();
 
@@ -156,88 +164,35 @@ void setup() {
 }
 
 volatile int count = 0;
-// ISR that toggles between each frequency detector
-ISR(ADC_vect) {
-  Serial.println("in ISR");
-  int port;
-    if (ADMUX == 0x40) {
-      port = 0;
-      ADMUX = 0x41;
-    }else if(ADMUX == 0x41) {
-      port = 1;
-      ADMUX = 0x44;
-    }else if(ADMUX == 0x44) {
-       port = 4;
-       ADMUX = 0x44;
-    } 
-     
-    int val = ADCL; // store lower byte ADC
-    val += ADCH << 8; // store higher bytes ADC
-    
-    if (count == 0) {
-      count = 0;
-    }
-
-}
+ //ISR that toggles between each frequency detector
+//ISR(ADC_vect) {
+//    TIMSK2 = 0;
+//  int port;
+//    if (ADMUX == 0x40) {
+//      port = 0;
+//      ADMUX = 0x41;
+//    }else if(ADMUX == 0x41) {
+//      port = 1;
+//      ADMUX = 0x44;
+//    }else if(ADMUX == 0x44) {
+//       port = 4;
+//       ADMUX = 0x44;
+//    } 
+//     
+//    int val = ADCL; // store lower byte ADC
+//    val += ADCH << 8; // store higher bytes ADC
+//    
+//
+//
+//}
 
 // ISR for treasure detection 
 
 ISR(TIMER2_COMPA_vect){
-
+    TIMSK2 = 0;
   // enable timer compare interrupt
   TIMSK2 |= (1 << OCIE2A);
-  
-  int max_data = 0;
-  int max_bin = 0;
-    
-  if (fft_i == 512){
-    fft_window(); // window the data for better frequency response
-    fft_reorder(); // reorder the data before doing the fft
-    fft_run(); // process the data in the fft
-    fft_mag_log(); // take the output of the fft
-
-    fft_i = 0;
-    
-   //Serial.println("Start");
-    for (byte i = 0; i <FFT_N/2; i++){      
-      if(i > 20 && fft_log_out[i] > max_data) {
-        max_bin = i;
-        max_data = fft_log_out[i];
-      }      
-      //delay(2000);
-      // }
-      //if (i==127) {
-        //Serial.println("Stop");
-      //}
-    }
-
-    int foundTreasure = -1;
-    //Serial.println("max_bin");
-    //Serial.println(max_bin);
-    
-    // 7 kHz
-    if(max_bin > 40 && max_bin < 65) { 
-      foundTreasure = 0;
-      //Serial.println("7kHz");
-    // 12 kHz
-    } else if (max_bin >= 65 && max_bin < 100){
-      foundTreasure = 1;
-      //Serial.println("12kHz");
-    // 17 kHz
-    } else if (max_bin >= 100 && max_bin < 130){
-      foundTreasure = 2;
-      //Serial.println("17kHz");
-    } else {
-      foundTreasure = -1;
-      //Serial.println("No treasure detected");
-    }
-
-    fft_input[fft_i] = fastAdcRead();
-    fft_input[fft_i+1] = 0;
-    fft_i += 2;
-    count++;
-  }
-
+  treasure_det = true;
   if (count == 0) {
     count = 0;
     // disable
@@ -247,15 +202,15 @@ ISR(TIMER2_COMPA_vect){
 }
 
 void transmit(unsigned short state){
-      // First, stop listening so we can talk.
-   radio.stopListening();
-
-    bool update; 
-    printf("Now sending new robot update\n");
-    update = false; 
-    while (!update) {
-    update = radio.write( &state, sizeof(state) );
-    };
+//      // First, stop listening so we can talk.
+//   radio.stopListening();
+//
+//    bool update; 
+//    printf("Now sending new robot update\n");
+//    update = false; 
+//    while (!update) {
+//    update = radio.write( &state, sizeof(state) );
+//    };
   }
 
 
@@ -268,7 +223,7 @@ void muxSelect(int state){
 
 // Effect: drives each motor at the given normalized velocity
 void drive(int left, int right) {
-
+  Serial.println("drive");
   if (right < 0) {
     right = right * DRIVE_SCALE_REV / 255;
     //Serial.println(left);
@@ -443,7 +398,9 @@ void figureEight() {
 //return the distance from the wall
 float getDistance(int PINNAME) {
 //  muxSelect(muxsel);
+  Serial.println("getDistance");
   float val = analogRead(PINNAME);   //read the value
+    Serial.println("after analog read");
 //  Serial.println(val);
   val = val * 5 /1023;               //convert the output to volts
 
@@ -453,6 +410,7 @@ float getDistance(int PINNAME) {
 }
 
 void markWalls(explore_t* state) {
+    //Serial.println("IN mark walls");
   float ld = getDistance(A0);// + getDistance(A0) + getDistance(A0) + getDistance(A0) + getDistance(A0)) / 5;
   //Serial.println(ld);
   float rd = getDistance(A1);// +  getDistance(A1) +  getDistance(A1) +  getDistance(A1) +  getDistance(A1)) / 5;
@@ -460,7 +418,9 @@ void markWalls(explore_t* state) {
   float fd = getDistance(A4);// + getDistance(A4) + getDistance(A4) + getDistance(A4) + getDistance(A4)) / 5;
   //Serial.println(fd);
   muxSelect(WALL_LEFT_st);
+
   delayMicroseconds(10);
+
   if (getDistance(MUX) < DISTANCE_THRESHOLD) {
     dfs_mark_rel_obstacle(state, LEFT);
     //Serial.println("mark left");
@@ -480,68 +440,69 @@ void markWalls(explore_t* state) {
 }
 
 void loop() {
-//  drive(0,0);
-//
-//  while(1) {
-//    lineFollow();
-//    drive(0,0);
-//    delay(500);
-//    rotate180();
-//    drive(0,0);
-//    delay(500);
-//  }
-//  while(1) {
-//     
-//     muxSelect(WALL_LEFT_st);
-//     delay(250);
-//     Serial.print("left: ");
-//     Serial.println(getDistance(MUX));
-//     delay(500);
-//     
-//     muxSelect(WALL_FRONT_st);
-//     delay(250);
-//     Serial.print("front: ");
-//     Serial.println(getDistance(MUX));
-//     delay(500);
-//     
-//     muxSelect(WALL_RIGHT_st);
-//     delay(250);
-//     Serial.print("right: ");
-//     Serial.println(getDistance(MUX));
-//     delay(500);
-//     
-//     
-//  }
-  //stopAtWall();
+  //Serial.println("loop");
+
+  if(treasure_det == true){
+  int max_data = 0;
+  int max_bin = 0;
+    
+  if (fft_i == 512){
+    fft_window(); // window the data for better frequency response
+    fft_reorder(); // reorder the data before doing the fft
+    fft_run(); // process the data in the fft
+    fft_mag_log(); // take the output of the fft
+
+    fft_i = 0;
+    
+   //Serial.println("Start");
+    for (byte i = 0; i <FFT_N/2; i++){      
+      if(i > 20 && fft_log_out[i] > max_data) {
+        max_bin = i;
+        max_data = fft_log_out[i];
+      }      
+      //delay(2000);
+      // }
+      //if (i==127) {
+        //Serial.println("Stop");
+      //}
+    }
+
+    int foundTreasure = -1;
+    //Serial.println("max_bin");
+    //Serial.println(max_bin);
+    
+    // 7 kHz
+    if(max_bin > 40 && max_bin < 65) { 
+      foundTreasure = 0;
+      //Serial.println("7kHz");
+    // 12 kHz
+    } else if (max_bin >= 65 && max_bin < 100){
+      foundTreasure = 1;
+      //Serial.println("12kHz");
+    // 17 kHz
+    } else if (max_bin >= 100 && max_bin < 130){
+      foundTreasure = 2;
+      //Serial.println("17kHz");
+    } else {
+      foundTreasure = -1;
+      //Serial.println("No treasure detected");
+    }
+
+    fft_input[fft_i] = fastAdcRead();
+    fft_input[fft_i+1] = 0;
+    fft_i += 2;
+    count--;
+   }
+   treasure_det = false;
+  }
+  
+
   explore_t state;
   dfs_init(&state, 0, 0, SOUTH);
-  // dfs_mark_obstacle(&state, 1, 1, NORTH);
-  // dfs_mark_obstacle(&state, 1, 1, EAST);
-  // dfs_mark_obstacle(&state, 1, 1, SOUTH);
-  // dfs_mark_obstacle(&state, 1, 1, WEST);
-  //
-  // dfs_mark_obstacle(&state, 1, 4, WEST);
-  // dfs_mark_obstacle(&state, 2, 4, WEST);
-  // dfs_mark_obstacle(&state, 3, 4, WEST);
-  //
-  // dfs_mark_obstacle(&state, 3, 0, NORTH);
-  // dfs_mark_obstacle(&state, 3, 1, NORTH);
-  // dfs_mark_obstacle(&state, 3, 2, NORTH);
-
-//  while(1) {
-//    float ld = getDistance(A0);
-//    float rd = getDistance(A1);
-//    float fd = getDistance(A4);
-//    Serial.print("foobar: ");
-//    Serial.print(ld);
-//    Serial.print("  ");
-//    Serial.print(rd);
-//     Serial.print("  ");
-//    Serial.print(fd);
-//     Serial.println("  ");
-//  }
-
+  //Serial.println("dfs_init");
+ 
   markWalls(&state);
+  //Serial.println("mark walls");
   //dfs_mark_treasure(&state, TREASURE_7KHZ);
 
     for (size_t row = 0; row < MAP_ROWS; row++) {
@@ -555,8 +516,6 @@ void loop() {
   int last_rel_dir;
   while ((last_rel_dir = dfs_at_intersection(&state)) != -1) {
     drive(0,0);
-    //Serial.println("Intersection");
-    //Serial.print("State:\n");
     dfs_print_grid(&state);
     Serial.print("Going: ");
     switch (last_rel_dir) {
