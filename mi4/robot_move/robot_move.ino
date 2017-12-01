@@ -57,11 +57,15 @@ int fft_i = 0;
 bool treasure_det = false;
 
 void fastAdcSetup(int pin) {
-  DIDR0 = 0x3F; // digital inputs disabled
-  ADMUX = 0x40; // measuring on ADC0, use the internal 1.1 reference
-  ADCSRA = 0xAC; // AD-converter on, interrupt enabled, prescaler = 16
-  ADCSRB = 0x40; // AD channels MUX on, free running mode
-  bitWrite(ADCSRA, 6, 1); // Start the conversion by setting bit 6 (=ADSC) in ADCSRA
+  ADCSRA = 0xe5; // set the adc to free running mode
+  ADMUX = 0x41; // use adc1
+  DIDR0 = 0x07; // turn off the digital input for adc0
+  
+//  DIDR0 = 0x3F; // digital inputs disabled
+//  ADMUX = 0x40; // measuring on ADC0, use the internal 1.1 reference
+//  ADCSRA = 0xAC; // AD-converter on, interrupt enabled, prescaler = 16
+//  ADCSRB = 0x40; // AD channels MUX on, free running mode
+//  bitWrite(ADCSRA, 6, 1); // Start the conversion by setting bit 6 (=ADSC) in ADCSRA
   //sei(); // set interrupt flag
 }
 
@@ -411,26 +415,28 @@ float getDistance(int PINNAME) {
 
 void markWalls(explore_t* state) {
     //Serial.println("IN mark walls");
-  float ld = getDistance(A0);// + getDistance(A0) + getDistance(A0) + getDistance(A0) + getDistance(A0)) / 5;
+  //float ld = getDistance(A0);// + getDistance(A0) + getDistance(A0) + getDistance(A0) + getDistance(A0)) / 5;
   //Serial.println(ld);
-  float rd = getDistance(A1);// +  getDistance(A1) +  getDistance(A1) +  getDistance(A1) +  getDistance(A1)) / 5;
+  //float rd = getDistance(A1);// +  getDistance(A1) +  getDistance(A1) +  getDistance(A1) +  getDistance(A1)) / 5;
   //Serial.println(rd);
-  float fd = getDistance(A4);// + getDistance(A4) + getDistance(A4) + getDistance(A4) + getDistance(A4)) / 5;
+  //float fd = getDistance(A4);// + getDistance(A4) + getDistance(A4) + getDistance(A4) + getDistance(A4)) / 5;
   //Serial.println(fd);
+  delay(500);
   muxSelect(WALL_LEFT_st);
-
   delayMicroseconds(10);
 
   if (getDistance(MUX) < DISTANCE_THRESHOLD) {
     dfs_mark_rel_obstacle(state, LEFT);
     //Serial.println("mark left");
   }
+  delay(500);
   muxSelect(WALL_RIGHT_st);
   delayMicroseconds(10);
   if(getDistance(MUX) < DISTANCE_THRESHOLD) {
     dfs_mark_rel_obstacle(state, RIGHT);
     //Serial.println("mark right");
   }
+    delay(500);
   muxSelect(WALL_FRONT_st);
   delayMicroseconds(10);
   if (getDistance(MUX) < DISTANCE_THRESHOLD) {
