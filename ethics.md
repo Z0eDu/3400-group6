@@ -3,11 +3,11 @@ Ayomi Sanni (acs333), Drew Mera (dnm54), Emily Sun (eys27), Eric Lyne (eal234), 
 
 ### Links/references on the case you are discussing:	
 
-*	https://www.theguardian.com/technology/2016/jun/30/tesla-autopilot-death-self-driving-car-elon-musk
-*	https://www.nytimes.com/interactive/2016/07/01/business/inside-tesla-accident.html
-*	https://www.washingtonpost.com/news/the-switch/wp/2017/06/20/the-driver-who-died-in-a-tesla-crash-using-autopilot-ignored-7-safety-warnings/?utm_term=.ade6757d1c24
-*	https://www.tesla.com/blog/tragic-loss
-*	http://www.caee.utexas.edu/prof/kockelman/public_html/TRB17EconomicEffectsofAVs.pdf
+*	[The Guardian](https://www.theguardian.com/technology/2016/jun/30/tesla-autopilot-death-self-driving-car-elon-musk)
+*	[New York Times](https://www.nytimes.com/interactive/2016/07/01/business/inside-tesla-accident.html)
+*	[Washington Post](https://www.washingtonpost.com/news/the-switch/wp/2017/06/20/the-driver-who-died-in-a-tesla-crash-using-autopilot-ignored-7-safety-warnings/?utm_term=.ade6757d1c24)
+*	[Tesla Statement](https://www.tesla.com/blog/tragic-loss)
+*	[University of Texas](http://www.caee.utexas.edu/prof/kockelman/public_html/TRB17EconomicEffectsofAVs.pdf)
 
 ### Brief explanation of the case you are discussing.
 The case we are discussing regards the first fatality involving a self-driving car -- particularly the accident of Joshua Brown who was killed driving a Tesla Model S. There is debate as to how effective the technical safety feature of Tesla's Autopilot was versus how Brown responded to the safety warnings of the system.  "Brown was audibly warned six times to keep his hands on the steering wheel. He was also warned visually, seven times, on his Tesla's dashboard," as described by the Washington Post.
