@@ -9,15 +9,16 @@ int fft_i = 0;
 int count = 0;
 
 void fastAdcSetup(int pin) {
-  //ADCSRA = 0xe5; // set the adc to free running mode
-  //ADMUX = 0x40; // use adc0
-  //DIDR0 = 0x07; // turn off the digital input for adc0
-  DIDR0 = 0x3F; // digital inputs disabled
-  ADMUX = 0x40; // measuring on ADC0, use the internal 1.1 reference
-  ADCSRA = 0xAC; // AD-converter on, interrupt enabled, prescaler = 16
-  ADCSRB = 0x40; // AD channels MUX on, free running mode
-  bitWrite(ADCSRA, 6, 1); // Start the conversion by setting bit 6 (=ADSC) in ADCSRA
-  sei(); // set interrupt flag
+  ADCSRA = 0xe5; // set the adc to free running mode
+  ADMUX = 0x40; // use adc0
+  DIDR0 = 0x07; // turn off the digital input for adc0
+
+//  DIDR0 = 0x3F; // digital inputs disabled
+//  ADMUX = 0x40; // measuring on ADC0, use the internal 1.1 reference
+//  ADCSRA = 0xAC; // AD-converter on, interrupt enabled, prescaler = 16
+//  ADCSRB = 0x40; // AD channels MUX on, free running mode
+//  bitWrite(ADCSRA, 6, 1); // Start the conversion by setting bit 6 (=ADSC) in ADCSRA
+//  sei(); // set interrupt flag
 }
 
 int fastAdcRead() {
@@ -54,24 +55,24 @@ void setup() {
 
   sei();
 }
-
-ISR(ADC_vect) {
-  int port;
-    if (ADMUX == 0x40) {
-      port = 0;
-      ADMUX = 0x41;
-    }else if(ADMUX == 0x41) {
-      port = 1;
-      ADMUX = 0x42;
-    }else if(ADMUX == 0x42) {
-       port = 2;
-       ADMUX = 0x44;
-    } 
-     
-    int val = ADCL; // store lower byte ADC
-    val += ADCH << 8; // store higher bytes ADC
-   
-}
+//
+//ISR(ADC_vect) {
+//  int port;
+//    if (ADMUX == 0x40) {
+//      port = 0;
+//      ADMUX = 0x41;
+//    }else if(ADMUX == 0x41) {
+//      port = 1;
+//      ADMUX = 0x44;
+//    }else if(ADMUX == 0x42) {
+//       port = 4;
+//       ADMUX = 0x44;
+//    } 
+//     
+//    int val = ADCL; // store lower byte ADC
+//    val += ADCH << 8; // store higher bytes ADC
+//   
+//}
 
 ISR(TIMER0_COMPA_vect){//timer1 interrupt 8kHz toggles pin 9
 //generates pulse wave of frequency 8kHz/2 = 4kHz (takes two cycles for full wave- toggle high then toggle low)
