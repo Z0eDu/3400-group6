@@ -58,7 +58,7 @@ bool treasure_det = false;
 
 void fastAdcSetup(int pin) {
   ADCSRA = 0xe5; // set the adc to free running mode
-  ADMUX = 0x41; // use adc1
+  ADMUX = 0x44; // use adc1
   DIDR0 = 0x07; // turn off the digital input for adc0
   
 //  DIDR0 = 0x3F; // digital inputs disabled
@@ -402,9 +402,9 @@ void figureEight() {
 //return the distance from the wall
 float getDistance(int PINNAME) {
 //  muxSelect(muxsel);
-  Serial.println("getDistance");
+  //Serial.println("getDistance");
   float val = analogRead(PINNAME);   //read the value
-    Serial.println("after analog read");
+    //Serial.println("after analog read");
 //  Serial.println(val);
   val = val * 5 /1023;               //convert the output to volts
 
@@ -446,7 +446,7 @@ void markWalls(explore_t* state) {
 }
 
 void loop() {
-  //Serial.println("loop");
+  Serial.println(treasure_det);
 
   if(treasure_det == true){
   int max_data = 0;
@@ -484,14 +484,14 @@ void loop() {
     // 12 kHz
     } else if (max_bin >= 65 && max_bin < 100){
       foundTreasure = 1;
-      //Serial.println("12kHz");
+      Serial.println("12kHz");
     // 17 kHz
     } else if (max_bin >= 100 && max_bin < 130){
       foundTreasure = 2;
       //Serial.println("17kHz");
     } else {
       foundTreasure = -1;
-      //Serial.println("No treasure detected");
+      Serial.println("No treasure detected");
     }
 
     fft_input[fft_i] = fastAdcRead();
