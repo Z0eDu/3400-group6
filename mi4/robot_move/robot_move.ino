@@ -504,7 +504,7 @@ void loop() {
   
 
   explore_t state;
-  dfs_init(&state, 0, 0, SOUTH);
+  dfs_init(&state, 3, 0, EAST);
   //Serial.println("dfs_init");
  
   markWalls(&state);
