@@ -87,8 +87,6 @@ void setup() {
   Serial.begin(9600);
   Serial.println("setup");
 
-  servo_left.attach(SERVO_LEFT);
-  servo_right.attach(SERVO_RIGHT);
   pinMode(A2, INPUT);
   pinMode(A3, INPUT);
   pinMode(A5, INPUT);
@@ -114,10 +112,6 @@ void setup() {
   //RF24_250KBPS for 250kbs, RF24_1MBPS for 1Mbps, or RF24_2MBPS for 2Mbps
   radio.setDataRate(RF24_250KBPS);
 
-  // optionally, reduce the payload size.  seems to
-  // improve reliability
-  //radio.setPayloadSize(8);
-  //
   // Open pipes to other nodes for communication
   radio.openWritingPipe(pipes[0]);
   radio.openReadingPipe(1, pipes[1]);
@@ -125,8 +119,8 @@ void setup() {
   // Start listening
   radio.startListening();
 
-
-
+  servo_left.attach(SERVO_LEFT);
+  servo_right.attach(SERVO_RIGHT);
 }
 
 void transmit(unsigned short state) {
@@ -311,14 +305,6 @@ void figureEight() {
 
 }
 
-
-//void stopAtWall() {
-//  while (getDistance(1) > 7)
-//    drive(10, 10);
-//
-//  drive(0,0);
-//}
-
 //return the distance from the wall
 float getDistance(int PINNAME) {
   //  muxSelect(muxsel);
@@ -480,10 +466,8 @@ void loop() {
       for (size_t col = 0; col < MAP_COLS; col++) {
         unsigned short info = dfs_get_grid_info_to_transmit(&state, row, col);
         transmit(info);
-
       }
     }
-
   }
 
   dfs_finalize(&state);
@@ -495,13 +479,7 @@ void loop() {
     }
   }
 
-  // PRINT("Done:\n");
-  // dfs_print_grid(&state);
-  // delay_and_clear();
-  // sleep(10);
   while (1) {
     transmit(30 << 9);
   }
-
-
 }
