@@ -50,3 +50,10 @@
 ## 2017.11.13
 1. Discussed the ethics homework and started brainstorming topics.
 2. Chose our topic and decided to write a short essay.
+
+## 2017.11.13
+1. Discussed the ethics homework and started brainstorming topics.
+2. Chose our topic and decided to write a short essay.
+
+## 2017.12.1
+1. Came into open lab hours and worked on our robot for the final competition.
