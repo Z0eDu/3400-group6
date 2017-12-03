@@ -2,7 +2,7 @@
 #define LEFT_IN A3
 #define RIGHT_IN A2
 #define RIGHT_OUT A5
-#define LINE_P 8
+#define LINE_P 10
 
 #define SERVO_LEFT 5
 #define SERVO_RIGHT 6
@@ -16,7 +16,7 @@
 #define LINE_WHITE 500
 #define LINE_THRESHOLD 30
 
-#define DISTANCE_THRESHOLD 20
+#define DISTANCE_THRESHOLD 13
 
 #define DRIVE_NEUTRAL_LEFT 94
 #define DRIVE_NEUTRAL_RIGHT 88
@@ -344,18 +344,25 @@ ISR(TIMER2_COMPA_vect) {
     fft_mag_log();  // take the output of the fft
 
     fft_i = 0;
-    for (int q = 0; q < FFT_N/2; q++)
-        Serial.println(fft_log_out[q]);
-    int noiseCancel = (fft_log_out[10] + fft_log_out[11] + fft_log_out[30] + fft_log_out[31]) / 4;
-    if ((fft_log_out[23] - noiseCancel) >= 10  || (fft_log_out[24] - noiseCancel) >= 10 ||
-        (fft_log_out[25] - noiseCancel) >= 10 || digitalRead(BUTTON_PIN)) {
+    //for (int q = 0; q < FFT_N/2; q++)
+      // Serial.println(fft_log_out[q]);
+
+   // int noiseCancel = (fft_log_out[10] + fft_log_out[11] + fft_log_out[30] + fft_log_out[31]) / 4;
+   int noiseCancel = 30;
+    //Serial.println(noiseCancel);
+    Serial.println(fft_log_out[20]);
+    Serial.println(fft_log_out[24]);
+    Serial.println(fft_log_out[25]);
+    
+    if ((fft_log_out[19] - noiseCancel) >= 10  || (fft_log_out[20] - noiseCancel) >= 10 ||
+        (fft_log_out[21] - noiseCancel) >= 10 || digitalRead(BUTTON_PIN)) {
       count++;
       Serial.println("660");
     } else {
       count = 0;
       Serial.println("NOT 660");
     }
-    if (count >= 15) {
+    if (count >= 20) {
       should_start = 1;
       cli();
       TIMSK2 = 0;
@@ -440,7 +447,7 @@ void loop() {
 
     lineFollow();
     drive(0, 0);
-    delay(500);
+    delay(100);
     markWalls(&state);
 
     for (size_t row = 0; row < MAP_ROWS; row++) {
