@@ -10,8 +10,8 @@
 ## Team information
 
 * Lab: Monday 1930 - 2230
-* [Team contract](team_contract.md)
-* [Meeting notes](meeting_notes.md)
+* [Team Contract](team_contract.md)
+* [Meeting Notes](meeting_notes.md)
 * [Robot Costs](robot_costs.md)
 * [Ethics Homework](ethics.md)
 
