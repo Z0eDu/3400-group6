@@ -351,14 +351,6 @@ void figureEight() {
 
 }
 
-
-//void stopAtWall() {
-//  while (getDistance(1) > 7)
-//    drive(10, 10);
-//
-//  drive(0,0);
-//}
-
 //return the distance from the wall
 float getDistance(int PINNAME) {
   //  muxSelect(muxsel);
