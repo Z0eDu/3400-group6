@@ -16,6 +16,7 @@
 `define BLUE 8'b000_000_11
 `define ORANGE 8'b110_100_00
 `define WHITE 8'b111_111_11
+`define CYAN 8'b000_111_11
 
 `define SQUARE_EDGE_0 120
 `define SQUARE_EDGE_1 240
@@ -151,6 +152,7 @@ module DE0_NANO(
 	 else input_pos <= input_pos + 3'b1;
 	 
 	 if (arduino_waddr == 5'd30) done <= 1'b1;
+	 else if (arduino_waddr == 5'd31) done <=done;
 	 else done <= 1'b0;
 	 
 	 last_arduino_waddr <= arduino_waddr;
@@ -224,12 +226,12 @@ module DE0_NANO(
 
     case (vga_ram_rsp[8:6])
       3'd0: base_color = `BLACK; // unvisited
-      3'd1: base_color = `GREEN; // visited
-      3'd2: base_color = `RED; // unreachable
-      3'd3: base_color = `BLUE; //robot ^
-      3'd4: base_color = `BLUE; //robot >
-      3'd5: base_color = `BLUE; //robot v
-      3'd6: base_color = `BLUE; //robot <
+      3'd1: base_color = `CYAN; // visited
+      3'd2: base_color = `ORANGE; // unreachable
+      3'd3: base_color = `PURPLE; //robot ^
+      3'd4: base_color = `PURPLE; //robot >
+      3'd5: base_color = `PURPLE; //robot v
+      3'd6: base_color = `PURPLE; //robot <
       default: base_color = `ORANGE;
     endcase
 
@@ -241,9 +243,9 @@ module DE0_NANO(
 
     if ((grid_rel_x > `TREASURE_MIN) && (grid_rel_x < `TREASURE_MAX) && (grid_rel_y > `TREASURE_MIN) && (grid_rel_y < `TREASURE_MAX)) begin
     case (vga_ram_rsp[1:0])
-      2'd1: treasure_color = `ORANGE; // 7 kHz
-      2'd2: treasure_color = `WHITE; // 12 kHz
-      2'd3: treasure_color = `PURPLE; // 17 kHz
+      2'd1: treasure_color = `RED; // 7 kHz
+      2'd2: treasure_color = `GREEN; // 12 kHz
+      2'd3: treasure_color = `BLUE; // 17 kHz
       default: treasure_color = `BLACK;
     endcase
     end else treasure_color = `BLACK;
