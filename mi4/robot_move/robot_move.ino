@@ -88,6 +88,7 @@ void setup() {
   muxSelect(MIC_st);
   Serial.begin(9600);
   Serial.println("setup");
+  
   servo_left.attach(SERVO_LEFT);
   servo_right.attach(SERVO_RIGHT);
   pinMode(A2, INPUT);
@@ -168,42 +169,25 @@ void setup() {
 }
 
 volatile int count = 0;
- //ISR that toggles between each frequency detector
-//ISR(ADC_vect) {
-//    TIMSK2 = 0;
-//  int port;
-//    if (ADMUX == 0x40) {
-//      port = 0;
-//      ADMUX = 0x41;
-//    }else if(ADMUX == 0x41) {
-//      port = 1;
-//      ADMUX = 0x44;
-//    }else if(ADMUX == 0x44) {
-//       port = 4;
-//       ADMUX = 0x44;
-//    } 
-//     
-//    int val = ADCL; // store lower byte ADC
-//    val += ADCH << 8; // store higher bytes ADC
-//    
-//
-//
-//}
 
 // ISR for treasure detection 
+ int max_data = 0;
+ int max_bin = 0;
 
 ISR(TIMER2_COMPA_vect){
-    TIMSK2 = 0;
-  // enable timer compare interrupt
-  TIMSK2 |= (1 << OCIE2A);
-  treasure_det = true;
   if (count == 0) {
-    count = 0;
+    //Serial.println(count);
     // disable
     TIMSK2 = 0;
+    return;
   }
 
-}
+    fft_input[fft_i] = fastAdcRead();
+    fft_input[fft_i+1] = 0;
+    fft_i += 2;
+    count--;
+   }
+  
 
 void transmit(unsigned short state){
 //      // First, stop listening so we can talk.
@@ -260,13 +244,9 @@ int lineError() {
 int lineStatus() {
   muxSelect(LEFT_OUT_st);
   int left = nsr(LEFT_OUT);
-    //Serial.print("left: ");
-    //Serial.println(left);
   muxSelect(RIGHT_OUT_st);
   
   int right = nsr(RIGHT_OUT);
-    //Serial.print("right: ");
-    //Serial.println(right);
 
   if (left < LINE_THRESHOLD || right < LINE_THRESHOLD) {
     return LINE_FOLLOW_STOP;
@@ -295,7 +275,7 @@ void drive(int dir) {
 void rotate180() {
   drive(10, 10);
   delay(500);
-//  Serial.println("STOPPING");
+
   drive(0,0);
   int dir = -1;
   int vl = dir * DRIVE_TURN_SPEED;
@@ -414,13 +394,8 @@ float getDistance(int PINNAME) {
 }
 
 void markWalls(explore_t* state) {
-    //Serial.println("IN mark walls");
-  //float ld = getDistance(A0);// + getDistance(A0) + getDistance(A0) + getDistance(A0) + getDistance(A0)) / 5;
-  //Serial.println(ld);
-  //float rd = getDistance(A1);// +  getDistance(A1) +  getDistance(A1) +  getDistance(A1) +  getDistance(A1)) / 5;
-  //Serial.println(rd);
-  //float fd = getDistance(A4);// + getDistance(A4) + getDistance(A4) + getDistance(A4) + getDistance(A4)) / 5;
-  //Serial.println(fd);
+  //Serial.println("IN mark walls");
+
   delay(500);
   muxSelect(WALL_LEFT_st);
   delayMicroseconds(10);
@@ -441,74 +416,18 @@ void markWalls(explore_t* state) {
   delayMicroseconds(10);
   if (getDistance(MUX) < DISTANCE_THRESHOLD) {
     dfs_mark_rel_obstacle(state, FORWARDS);
-    //Serial.println("mark forward");
   }
 }
 
 void loop() {
-  Serial.println(treasure_det);
-
-  if(treasure_det == true){
-  int max_data = 0;
-  int max_bin = 0;
-    
-  if (fft_i == 512){
-    fft_window(); // window the data for better frequency response
-    fft_reorder(); // reorder the data before doing the fft
-    fft_run(); // process the data in the fft
-    fft_mag_log(); // take the output of the fft
-
-    fft_i = 0;
-    
-   //Serial.println("Start");
-    for (byte i = 0; i <FFT_N/2; i++){      
-      if(i > 20 && fft_log_out[i] > max_data) {
-        max_bin = i;
-        max_data = fft_log_out[i];
-      }      
-      //delay(2000);
-      // }
-      //if (i==127) {
-        //Serial.println("Stop");
-      //}
-    }
-
-    int foundTreasure = -1;
-    //Serial.println("max_bin");
-    //Serial.println(max_bin);
-    
-    // 7 kHz
-    if(max_bin > 40 && max_bin < 65) { 
-      foundTreasure = 0;
-      //Serial.println("7kHz");
-    // 12 kHz
-    } else if (max_bin >= 65 && max_bin < 100){
-      foundTreasure = 1;
-      Serial.println("12kHz");
-    // 17 kHz
-    } else if (max_bin >= 100 && max_bin < 130){
-      foundTreasure = 2;
-      //Serial.println("17kHz");
-    } else {
-      foundTreasure = -1;
-      Serial.println("No treasure detected");
-    }
-
-    fft_input[fft_i] = fastAdcRead();
-    fft_input[fft_i+1] = 0;
-    fft_i += 2;
-    count--;
-   }
-   treasure_det = false;
-  }
-  
+ Serial.println("loop");
 
   explore_t state;
   dfs_init(&state, 3, 0, EAST);
   //Serial.println("dfs_init");
  
   markWalls(&state);
-  //Serial.println("mark walls");
+
   //dfs_mark_treasure(&state, TREASURE_7KHZ);
 
     for (size_t row = 0; row < MAP_ROWS; row++) {
@@ -518,12 +437,13 @@ void loop() {
          
     }
   }
+
   
   int last_rel_dir;
   while ((last_rel_dir = dfs_at_intersection(&state)) != -1) {
     drive(0,0);
     dfs_print_grid(&state);
-    Serial.print("Going: ");
+    //Serial.print("Going: ");
     switch (last_rel_dir) {
       case FORWARDS:
         Serial.print(" F ");
@@ -541,6 +461,7 @@ void loop() {
         Serial.print("   ");
     }
     Serial.print("\n");
+
     
     delay(100);
     switch (last_rel_dir) {
@@ -564,9 +485,57 @@ void loop() {
     delay(500);
     markWalls(&state);
 
+
     //check for treasures
+    fft_i = 0;
+    count = 256;
     TIMSK2 |= (1 << OCIE2A);
-    TIMSK2 = 0;
+    while (TIMSK2 != 0);
+    
+
+//  if (fft_i == 512){
+    fft_window(); // window the data for better frequency response
+    fft_reorder(); // reorder the data before doing the fft
+    fft_run(); // process the data in the fft
+    fft_mag_log(); // take the output of the fft
+
+    fft_i = 0;
+    
+   //Serial.println("Start");
+    for (byte i = 0; i <FFT_N/2; i++){      
+      if(i > 20 && fft_log_out[i] > max_data) {
+        max_bin = i;
+        max_data = fft_log_out[i];
+      }      
+      //delay(2000);
+      // }
+      //if (i==127) {
+        //Serial.println("Stop");
+      //}
+    }
+
+    int foundTreasure = -1;
+    //Serial.println("max_bin");
+    //Serial.println(max_bin);
+
+    // Treasure detection
+    // 7 kHz
+    if(max_bin > 40 && max_bin < 65) { 
+      foundTreasure = 0;
+      //Serial.println("7kHz");
+    // 12 kHz
+    } else if (max_bin >= 65 && max_bin < 100){
+      foundTreasure = 1;
+      Serial.println("12kHz");
+    // 17 kHz
+    } else if (max_bin >= 100 && max_bin < 130){
+      foundTreasure = 2;
+      //Serial.println("17kHz");
+    } else {
+      foundTreasure = -1;
+      Serial.println("No treasure detected");
+    }
+    
 
     for (size_t row = 0; row < MAP_ROWS; row++) {
       for (size_t col = 0; col < MAP_COLS; col++) {
@@ -610,4 +579,5 @@ void loop() {
   rotate90(-1);
   drive(0,0);
   delay(1000);*/
+ 
 }
