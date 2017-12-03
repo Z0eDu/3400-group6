@@ -47,7 +47,7 @@
 
 #include <FFT.h>  // include the library
 
-int should_start = 0;
+volatile int should_start = 0;
 int fft_i = 0;
 int count = 0;
 
@@ -170,13 +170,13 @@ int lineError() {
 int lineStatus() {
   muxSelect(LEFT_OUT_st);
   int left = nsr(LEFT_OUT);
-  Serial.print("left: ");
-  Serial.println(nsr(LEFT_IN));
+  //Serial.print("left: ");
+  //Serial.println(nsr(LEFT_IN));
   muxSelect(RIGHT_OUT_st);
 
   int right = nsr(RIGHT_OUT);
-  Serial.print("right: ");
-  Serial.println(nsr(RIGHT_IN));
+  //Serial.print("right: ");
+  //Serial.println(nsr(RIGHT_IN));
 
   if (left < LINE_THRESHOLD && right < LINE_THRESHOLD) {
     return LINE_FOLLOW_STOP;
@@ -307,32 +307,32 @@ float getDistance(int PINNAME) {
 void markWalls(explore_t* state) {
   muxSelect(WALL_LEFT_st);
   delayMicroseconds(10);
-  Serial.print("LEFT: ");
-  Serial.println(getDistance(MUX));
+  //Serial.print("LEFT: ");
+  //Serial.println(getDistance(MUX));
   if ((getDistance(MUX) + getDistance(MUX) + getDistance(MUX)) / 3 <
       DISTANCE_THRESHOLD) {
     dfs_mark_rel_obstacle(state, LEFT);
-    Serial.println("mark left");
+    //Serial.println("mark left");
   }
 
   muxSelect(WALL_RIGHT_st);
   delayMicroseconds(10);
-  Serial.print("RIGHT: ");
-  Serial.println(getDistance(MUX));
+  //Serial.print("RIGHT: ");
+  //Serial.println(getDistance(MUX));
   if ((getDistance(MUX) + getDistance(MUX) + getDistance(MUX)) / 3 <
       DISTANCE_THRESHOLD) {
     dfs_mark_rel_obstacle(state, RIGHT);
-    Serial.println("mark right");
+    //Serial.println("mark right");
   }
 
   muxSelect(WALL_FRONT_st);
   delayMicroseconds(10);
-  Serial.print("Front: ");
-  Serial.println(getDistance(MUX));
+  //Serial.print("Front: ");
+  //Serial.println(getDistance(MUX));
   if ((getDistance(MUX) + getDistance(MUX) + getDistance(MUX)) / 3 <
       DISTANCE_THRESHOLD) {
     dfs_mark_rel_obstacle(state, FORWARDS);
-    Serial.println("mark forward");
+    //Serial.println("mark forward");
   }
 }
 
@@ -344,29 +344,46 @@ ISR(TIMER2_COMPA_vect) {
     fft_mag_log();  // take the output of the fft
 
     fft_i = 0;
-    if (fft_log_out[20] >= 50 || fft_log_out[21] >= 50 ||
-        fft_log_out[22] >= 50 || digitalRead(BUTTON_PIN)) {
+    for (int q = 0; q < FFT_N/2; q++)
+        Serial.println(fft_log_out[q]);
+    int noiseCancel = (fft_log_out[10] + fft_log_out[11] + fft_log_out[30] + fft_log_out[31]) / 4;
+    if ((fft_log_out[23] - noiseCancel) >= 10  || (fft_log_out[24] - noiseCancel) >= 10 ||
+        (fft_log_out[25] - noiseCancel) >= 10 || digitalRead(BUTTON_PIN)) {
       count++;
+      Serial.println("660");
     } else {
       count = 0;
+      Serial.println("NOT 660");
     }
     if (count >= 15) {
       should_start = 1;
+      cli();
       TIMSK2 = 0;
+      // put your setup code here, to run once:
+      TCCR2A = 0;  // set entire TCCR2A register to 0
+      TCCR2B = 0;  // same for TCCR2B
+      TCNT2 = 0;   // initialize counter value to 0
+      // set compare match register for 8khz increments
+      OCR2A = 0;  // = (16*10^6) / (8000*8) - 1 (must be <256)
+      // turn on CTC mode
+    
+      sei();
     } else {
       should_start = 0;
     }
   } else {
     muxSelect(MICR_st);
     fft_input[fft_i] = analogRead(MUX);
+    //Serial.println(fft_input[fft_i]);
     fft_input[fft_i + 1] = 0;
     fft_i += 2;
   }
 }
 
 void loop() {
-  while (should_start == 0)
-    ;
+  
+  while (should_start == 0);
+  
 
   explore_t state;
   dfs_init(&state, 3, 0, EAST);
@@ -382,27 +399,27 @@ void loop() {
   int last_rel_dir;
   while ((last_rel_dir = dfs_at_intersection(&state)) != -1) {
     drive(0, 0);
-    Serial.println("Intersection");
-    Serial.print("State:\n");
+    //Serial.println("Intersection");
+    //Serial.print("State:\n");
     dfs_print_grid(&state);
-    Serial.print("Going: ");
+    //Serial.print("Going: ");
     switch (last_rel_dir) {
       case FORWARDS:
-        Serial.print(" F ");
+        //Serial.print(" F ");
         break;
       case RIGHT:
-        Serial.print(" R ");
+        //Serial.print(" R ");
         break;
       case BACKWARDS:
-        Serial.print(" B ");
+        //Serial.print(" B ");
         break;
       case LEFT:
-        Serial.print(" L ");
+        //Serial.print(" L ");
         break;
       default:
         Serial.print("   ");
     }
-    Serial.print("\n");
+    //Serial.print("\n");
 
     delay(100);
     switch (last_rel_dir) {
