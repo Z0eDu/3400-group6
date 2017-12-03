@@ -60,13 +60,6 @@ void fastAdcSetup(int pin) {
   ADCSRA = 0xe5; // set the adc to free running mode
   ADMUX = 0x44; // use adc1
   DIDR0 = 0x07; // turn off the digital input for adc0
-
-  //  DIDR0 = 0x3F; // digital inputs disabled
-  //  ADMUX = 0x40; // measuring on ADC0, use the internal 1.1 reference
-  //  ADCSRA = 0xAC; // AD-converter on, interrupt enabled, prescaler = 16
-  //  ADCSRB = 0x40; // AD channels MUX on, free running mode
-  //  bitWrite(ADCSRA, 6, 1); // Start the conversion by setting bit 6 (=ADSC) in ADCSRA
-  //sei(); // set interrupt flag
 }
 
 int fastAdcRead() {
@@ -115,7 +108,6 @@ void setup() {
   TCCR2B |= (1 << CS21);
 
   //disable only the timer2 to begin
-
   TIMSK2 = 0;
   sei();
 
@@ -156,7 +148,6 @@ int max_bin = 0;
 
 ISR(TIMER2_COMPA_vect) {
   if (count == 0) {
-    //Serial.println(count);
     // disable
     TIMSK2 = 0;
     return;
@@ -181,7 +172,6 @@ void transmit(unsigned short state) {
   //    };
 }
 
-
 void muxSelect(int state) {
   Mux_State = state;
   digitalWrite(MUX_sel0, bitRead(state, 0) ? HIGH : LOW);
@@ -194,7 +184,6 @@ void drive(int left, int right) {
   Serial.println("drive");
   if (right < 0) {
     right = right * DRIVE_SCALE_REV / 255;
-    //Serial.println(left);
   } else {
     right = right * DRIVE_SCALE_FWD / 255;
   }
@@ -242,16 +231,12 @@ int lineStatus() {
 void drive(int dir) {
   int vl = LINE_P * dir / 255 + DRIVE_FORWARDS;
   int vr =  - LINE_P * dir / 255 + DRIVE_FORWARDS;
-  //  Serial.print(vl);
-  //  Serial.print(", ");
-  //  Serial.println(vr);
   drive(vl, vr);
 }
 
 // Effect: rotates the robot 90 degrees
 // dir = -1: left
 // dir = 1: right
-
 void rotate180() {
   drive(10, 10);
   delay(500);
@@ -281,24 +266,19 @@ void rotate180() {
 
 
 void rotate90(int dir) {
-  //Serial.println("GOING");
-  //lineFollow(10000);
   drive(10, 10);
   if (dir == 1) delay(250);
   if (dir == -1) delay(500);
-  //  Serial.println("STOPPING");
+  // Stopping
   drive(0, 0);
   int vl = dir * DRIVE_TURN_SPEED ;
   int vr = - dir * DRIVE_TURN_SPEED ;
-  //  Serial.println("TURNING");
+  // Turning
   drive(vl, vr);
 
   if (dir == 1) {
     muxSelect(LEFT_OUT_st);
     delayMicroseconds(10);
-    //    Serial.println("rotate");
-    //    Serial.println(Mux_State);
-    //    Serial.println(A5);
     while (nsr(LEFT_OUT) > 50);
     delay(300);
     while (nsr(LEFT_IN) > 20);
@@ -306,20 +286,12 @@ void rotate90(int dir) {
   }
   else {
     muxSelect(RIGHT_OUT_st);
-    //    delayMicroseconds(100);
-    //    Serial.println(A5);
+
     while (nsr(RIGHT_OUT) > 50);
     delay(300);
     while (nsr(RIGHT_IN) > 20);
   }
-  //
-  //  while (lineStatus() == LINE_FOLLOW_GOOD) {
-  //    delay(REGULATION_DELAY);
-  //  }
-  //  while (lineStatus() != LINE_FOLLOW_GOOD) {
-  //    delay(REGULATION_DELAY);
-  //  }
-  //delay(850);
+
   drive(0, 0);
 }
 
@@ -353,11 +325,9 @@ void figureEight() {
 
 //return the distance from the wall
 float getDistance(int PINNAME) {
-  //  muxSelect(muxsel);
-  //Serial.println("getDistance");
+  //Serial.println("get distance");
   float val = analogRead(PINNAME);   //read the value
   //Serial.println("after analog read");
-  //  Serial.println(val);
   val = val * 5 / 1023;              //convert the output to volts
 
   float cm = (12.9895 - .42 * val) / (val + .0249221); //convert the output to distance from wall (cm)
@@ -366,7 +336,7 @@ float getDistance(int PINNAME) {
 }
 
 void markWalls(explore_t* state) {
-  //Serial.println("IN mark walls");
+  //Serial.println("mark walls");
 
   delay(500);
   muxSelect(WALL_LEFT_st);
@@ -374,14 +344,12 @@ void markWalls(explore_t* state) {
 
   if (getDistance(MUX) < DISTANCE_THRESHOLD) {
     dfs_mark_rel_obstacle(state, LEFT);
-    //Serial.println("mark left");
   }
   delay(500);
   muxSelect(WALL_RIGHT_st);
   delayMicroseconds(10);
   if (getDistance(MUX) < DISTANCE_THRESHOLD) {
     dfs_mark_rel_obstacle(state, RIGHT);
-    //Serial.println("mark right");
   }
   delay(500);
   muxSelect(WALL_FRONT_st);
@@ -392,7 +360,7 @@ void markWalls(explore_t* state) {
 }
 
 void loop() {
-  Serial.println("loop");
+  //Serial.println("loop");
 
   explore_t state;
   dfs_init(&state, 3, 0, EAST);
@@ -409,7 +377,6 @@ void loop() {
 
     }
   }
-
 
   int last_rel_dir;
   while ((last_rel_dir = dfs_at_intersection(&state)) != -1) {
@@ -432,7 +399,7 @@ void loop() {
       default:
         Serial.print("   ");
     }
-    Serial.print("\n");
+    //Serial.print("\n");
 
 
     delay(100);
@@ -453,6 +420,7 @@ void loop() {
     }
 
     lineFollow();
+    Serial.println("after line follow");
     drive(0, 0);
     delay(500);
     markWalls(&state);
@@ -479,17 +447,9 @@ void loop() {
         max_bin = i;
         max_data = fft_log_out[i];
       }
-      //delay(2000);
-      // }
-      //if (i==127) {
-      //Serial.println("Stop");
-      //}
     }
 
     int foundTreasure = -1;
-    //Serial.println("max_bin");
-    //Serial.println(max_bin);
-
     // Treasure detection
     // 7 kHz
     if (max_bin > 40 && max_bin < 65) {
@@ -508,48 +468,27 @@ void loop() {
       Serial.println("No treasure detected");
     }
 
-
     for (size_t row = 0; row < MAP_ROWS; row++) {
       for (size_t col = 0; col < MAP_COLS; col++) {
         unsigned short info = dfs_get_grid_info_to_transmit(&state, row, col);
         transmit(info);
-
       }
     }
-
   }
-
-
 
   dfs_finalize(&state);
   for (size_t row = 0; row < MAP_ROWS; row++) {
     for (size_t col = 0; col < MAP_COLS; col++) {
       unsigned short info = dfs_get_grid_info_to_transmit(&state, row, col);
       transmit(info);
-
     }
   }
 
-  // PRINT("Done:\n");
-  // dfs_print_grid(&state);
-  // delay_and_clear();
-  // sleep(10);
   while (1) {
     transmit(30 << 9);
   }
-  //Serial.println("DONE");
-  while (1);
-  //
-  //  lineFollow();
-  //  drive(0,0);
 
-  //figureEight();
-  /*
-    Serial.println("Starting!");
-    lineFollow();
-    Serial.println("Found intersection!");
-    rotate90(-1);
-    drive(0,0);
-    delay(1000);*/
+  while (1);
+
 
 }
