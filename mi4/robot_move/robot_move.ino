@@ -53,7 +53,6 @@ Servo servo_left;
 Servo servo_right;
 int Mux_State;
 /* Treasure code */
-int fft_i = 0;
 bool treasure_det = false;
 
 void fastAdcSetup(int pin) {
@@ -102,24 +101,6 @@ void setup() {
   // Treasure setup
   fastAdcSetup(0x40);
 
-  // put your setup code here, to run once:
-  cli();
-  TCCR2A = 0;// set entire TCCR2A register to 0
-  TCCR2B = 0;// same for TCCR2B
-  TCNT2  = 0;//initialize counter value to 0
-  // set compare match register for 8khz increments
-  OCR2A = 51;// = (16*10^6) / (8000*8) - 1 (must be <256)
-  // turn on CTC mode
-  TCCR2A |= (1 << WGM21);
-  // Set CS21 bit for 8 prescaler
-  TCCR2B |= (1 << CS21);
-
-  //disable only the timer2 to begin
-
-  TIMSK2 = 0;
-  sei();
-
-
   radio.begin();
 
   // optionally, increase the delay between retries & # of retries
@@ -147,27 +128,6 @@ void setup() {
 
 
 }
-
-volatile int count = 0;
-
-// ISR for treasure detection
-int max_data = 0;
-int max_bin = 0;
-
-ISR(TIMER2_COMPA_vect) {
-  if (count == 0) {
-    //Serial.println(count);
-    // disable
-    TIMSK2 = 0;
-    return;
-  }
-
-  fft_input[fft_i] = fastAdcRead();
-  fft_input[fft_i + 1] = 0;
-  fft_i += 2;
-  count--;
-}
-
 
 void transmit(unsigned short state) {
   //      // First, stop listening so we can talk.
@@ -465,22 +425,20 @@ void loop() {
     delay(500);
     markWalls(&state);
 
-
     //check for treasures
-    fft_i = 0;
-    count = 256;
-    //TIMSK2 |= (1 << OCIE2A);
-    TIMSK2 = 0;
-    while (TIMSK2 != 0);
+    for(int fft_i = 0; fft_i < FFT_N; fft_i+=2){
+        fft_input[fft_i] = fastAdcRead();
+        fft_input[fft_i + 1] = 0;
+    }
 
-
-    //  if (fft_i == 512){
     fft_window(); // window the data for better frequency response
     fft_reorder(); // reorder the data before doing the fft
     fft_run(); // process the data in the fft
     fft_mag_log(); // take the output of the fft
 
-    fft_i = 0;
+    // ISR for treasure detection
+    int max_data = 0;
+    int max_bin = 0;
 
     //Serial.println("Start");
     for (byte i = 0; i < FFT_N / 2; i++) {
