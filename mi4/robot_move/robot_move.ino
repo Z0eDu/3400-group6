@@ -55,6 +55,7 @@ RF24 radio(9, 10);
 void setup() {
   muxSelect(MIC_st);
   Serial.begin(9600);
+  Serial.println("setup");
   servo_left.attach(SERVO_LEFT);
   servo_right.attach(SERVO_RIGHT);
   pinMode(A2, INPUT);
@@ -87,7 +88,6 @@ void setup() {
 }
 
 void transmit(unsigned short state) {
-  return;
   // First, stop listening so we can talk.
   radio.stopListening();
 
