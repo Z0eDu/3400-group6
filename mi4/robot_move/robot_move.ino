@@ -99,7 +99,7 @@ void setup() {
   pinMode(6, OUTPUT);
 
   // Treasure setup
-  fastAdcSetup(0x40);
+  //fastAdcSetup(0x40);
 
   radio.begin();
 
@@ -425,55 +425,55 @@ void loop() {
     delay(500);
     markWalls(&state);
 
-    //check for treasures
-    for(int fft_i = 0; fft_i < FFT_N; fft_i+=2){
-        fft_input[fft_i] = fastAdcRead();
-        fft_input[fft_i + 1] = 0;
-    }
-
-    fft_window(); // window the data for better frequency response
-    fft_reorder(); // reorder the data before doing the fft
-    fft_run(); // process the data in the fft
-    fft_mag_log(); // take the output of the fft
-
-    // ISR for treasure detection
-    int max_data = 0;
-    int max_bin = 0;
-
-    //Serial.println("Start");
-    for (byte i = 0; i < FFT_N / 2; i++) {
-      if (i > 20 && fft_log_out[i] > max_data) {
-        max_bin = i;
-        max_data = fft_log_out[i];
-      }
-      //delay(2000);
-      // }
-      //if (i==127) {
-      //Serial.println("Stop");
-      //}
-    }
-
-    int foundTreasure = -1;
-    //Serial.println("max_bin");
-    //Serial.println(max_bin);
-
-    // Treasure detection
-    // 7 kHz
-    if (max_bin > 40 && max_bin < 65) {
-      foundTreasure = 0;
-      //Serial.println("7kHz");
-      // 12 kHz
-    } else if (max_bin >= 65 && max_bin < 100) {
-      foundTreasure = 1;
-      Serial.println("12kHz");
-      // 17 kHz
-    } else if (max_bin >= 100 && max_bin < 130) {
-      foundTreasure = 2;
-      //Serial.println("17kHz");
-    } else {
-      foundTreasure = -1;
-      Serial.println("No treasure detected");
-    }
+//    //check for treasures
+//    for(int fft_i = 0; fft_i < FFT_N; fft_i+=2){
+//        fft_input[fft_i] = fastAdcRead();
+//        fft_input[fft_i + 1] = 0;
+//    }
+//
+//    fft_window(); // window the data for better frequency response
+//    fft_reorder(); // reorder the data before doing the fft
+//    fft_run(); // process the data in the fft
+//    fft_mag_log(); // take the output of the fft
+//
+//    // ISR for treasure detection
+//    int max_data = 0;
+//    int max_bin = 0;
+//
+//    //Serial.println("Start");
+//    for (byte i = 0; i < FFT_N / 2; i++) {
+//      if (i > 20 && fft_log_out[i] > max_data) {
+//        max_bin = i;
+//        max_data = fft_log_out[i];
+//      }
+//      //delay(2000);
+//      // }
+//      //if (i==127) {
+//      //Serial.println("Stop");
+//      //}
+//    }
+//
+//    int foundTreasure = -1;
+//    //Serial.println("max_bin");
+//    //Serial.println(max_bin);
+//
+//    // Treasure detection
+//    // 7 kHz
+//    if (max_bin > 40 && max_bin < 65) {
+//      foundTreasure = 0;
+//      //Serial.println("7kHz");
+//      // 12 kHz
+//    } else if (max_bin >= 65 && max_bin < 100) {
+//      foundTreasure = 1;
+//      Serial.println("12kHz");
+//      // 17 kHz
+//    } else if (max_bin >= 100 && max_bin < 130) {
+//      foundTreasure = 2;
+//      //Serial.println("17kHz");
+//    } else {
+//      foundTreasure = -1;
+//      Serial.println("No treasure detected");
+//    }
 
 
     for (size_t row = 0; row < MAP_ROWS; row++) {
@@ -502,19 +502,6 @@ void loop() {
   while (1) {
     transmit(30 << 9);
   }
-  //Serial.println("DONE");
-  while (1);
-  //
-  //  lineFollow();
-  //  drive(0,0);
 
-  //figureEight();
-  /*
-    Serial.println("Starting!");
-    lineFollow();
-    Serial.println("Found intersection!");
-    rotate90(-1);
-    drive(0,0);
-    delay(1000);*/
 
 }
