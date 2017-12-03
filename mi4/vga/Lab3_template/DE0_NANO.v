@@ -250,7 +250,8 @@ module DE0_NANO(
     endcase
     end else treasure_color = `BLACK;
 
-	 if (mark_wall) PIXEL_COLOR = `WHITE;
+	 if (mark_wall && done) PIXEL_COLOR = `PURPLE;
+	 else if (mark_wall) PIXEL_COLOR = `WHITE;
     else if (treasure_color != `BLACK) PIXEL_COLOR = treasure_color;
     else PIXEL_COLOR = base_color;
 	 
