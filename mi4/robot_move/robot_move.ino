@@ -27,7 +27,7 @@
 #define DRIVE_TURN_SPEED 10
 #define DRIVE_MAX 180
 
-#define MUX A5 //input pin setup
+#define MUX A5  // input pin setup
 #define MUX_sel0 2
 #define MUX_sel1 3
 #define MUX_sel2 4
@@ -39,10 +39,9 @@
 #define WALL_RIGHT_st 4
 #define WALL_FRONT_st 5
 
-
 #include <SPI.h>
-#include "nRF24L01.h"
 #include "RF24.h"
+#include "nRF24L01.h"
 
 #include <Servo.h>
 #include "dfs.h"
@@ -50,8 +49,8 @@ Servo servo_left;
 Servo servo_right;
 int Mux_State;
 
-const uint64_t pipes[2] = { 0x0000000012LL, 0x0000000013LL };
-RF24 radio(9,10);
+const uint64_t pipes[2] = {0x0000000012LL, 0x0000000013LL};
+RF24 radio(9, 10);
 
 void setup() {
   muxSelect(MIC_st);
@@ -67,73 +66,48 @@ void setup() {
   pinMode(5, OUTPUT);
   pinMode(6, OUTPUT);
 
-
   radio.begin();
 
   // optionally, increase the delay between retries & # of retries
-  radio.setRetries(15,15);
+  radio.setRetries(15, 15);
   radio.setAutoAck(true);
   // set the channel
   radio.setChannel(0x50);
   // set the power
-  // RF24_PA_MIN=-18dBm, RF24_PA_LOW=-12dBm, RF24_PA_MED=-6dBM, and RF24_PA_HIGH=0dBm.
+  // RF24_PA_MIN=-18dBm, RF24_PA_LOW=-12dBm, RF24_PA_MED=-6dBM, and
+  // RF24_PA_HIGH=0dBm.
   radio.setPALevel(RF24_PA_MIN);
-  //RF24_250KBPS for 250kbs, RF24_1MBPS for 1Mbps, or RF24_2MBPS for 2Mbps
+  // RF24_250KBPS for 250kbs, RF24_1MBPS for 1Mbps, or RF24_2MBPS for 2Mbps
   radio.setDataRate(RF24_250KBPS);
 
-  // optionally, reduce the payload size.  seems to
-  // improve reliability
-  //radio.setPayloadSize(8);
-  //
   // Open pipes to other nodes for communication
-  //
-
-  // This simple sketch opens two pipes for these two nodes to communicate
-  // back and forth.
-  // Open 'our' pipe for writing
-  // Open the 'other' pipe for reading, in position #1 (we can have up to 5 pipes open for reading)
-
-
-    radio.openWritingPipe(pipes[0]);
-    radio.openReadingPipe(1,pipes[1]);
-
-  //
-  // Start listening
-  //
-
+  radio.openWritingPipe(pipes[0]);
+  radio.openReadingPipe(1, pipes[1]);
   radio.startListening();
-
-  //
-  // Dump the configuration of the rf unit for debugging
-  //
-
-  radio.printDetails();
-  
 }
 
-void transmit(unsigned short state){
-      // First, stop listening so we can talk.
-   radio.stopListening();
+void transmit(unsigned short state) {
+  return;
+  // First, stop listening so we can talk.
+  radio.stopListening();
 
-    bool update; 
-    printf("Now sending new robot update\n");
-    update = false; 
-    while (!update) {
-    update = radio.write( &state, sizeof(state) );
-    };
-  }
+  bool update;
+  printf("Now sending new robot update\n");
+  update = false;
+  while (!update) {
+    update = radio.write(&state, sizeof(state));
+  };
+}
 
-
-void muxSelect(int state){
-   Mux_State = state;
-   digitalWrite(MUX_sel0, bitRead(state,0) ? HIGH : LOW);
-   digitalWrite(MUX_sel1, bitRead(state,1) ? HIGH : LOW);
-   digitalWrite(MUX_sel2, bitRead(state,2) ? HIGH : LOW);
+void muxSelect(int state) {
+  Mux_State = state;
+  digitalWrite(MUX_sel0, bitRead(state, 0) ? HIGH : LOW);
+  digitalWrite(MUX_sel1, bitRead(state, 1) ? HIGH : LOW);
+  digitalWrite(MUX_sel2, bitRead(state, 2) ? HIGH : LOW);
 }
 
 // Effect: drives each motor at the given normalized velocity
 void drive(int left, int right) {
-
   if (right < 0) {
     right = right * DRIVE_SCALE_REV / 255;
     Serial.println(left);
@@ -147,7 +121,8 @@ void drive(int left, int right) {
 // Returns: a normalized line sensor reading. 0 means black, 255 means white.
 byte nsr(int pin) {
   int raw = analogRead(pin);
-  return 255 - map(constrain(raw, LINE_WHITE, LINE_BLACK), LINE_WHITE, LINE_BLACK, 0, 255);
+  return 255 - map(constrain(raw, LINE_WHITE, LINE_BLACK), LINE_WHITE,
+                   LINE_BLACK, 0, 255);
 }
 
 // Returns: the error from being straight on the line. Between -255 and 255
@@ -166,13 +141,13 @@ int lineError() {
 int lineStatus() {
   muxSelect(LEFT_OUT_st);
   int left = nsr(LEFT_OUT);
-    Serial.print("left: ");
-    Serial.println(left);
+  Serial.print("left: ");
+  Serial.println(left);
   muxSelect(RIGHT_OUT_st);
-  
+
   int right = nsr(RIGHT_OUT);
-    Serial.print("right: ");
-    Serial.println(right);
+  Serial.print("right: ");
+  Serial.println(right);
 
   if (left < LINE_THRESHOLD || right < LINE_THRESHOLD) {
     return LINE_FOLLOW_STOP;
@@ -187,85 +162,79 @@ int lineStatus() {
 // dir > 0: right
 void drive(int dir) {
   int vl = LINE_P * dir / 255 + DRIVE_FORWARDS;
-  int vr =  - LINE_P * dir / 255 + DRIVE_FORWARDS;
-//  Serial.print(vl);
-//  Serial.print(", ");
-//  Serial.println(vr);
+  int vr = -LINE_P * dir / 255 + DRIVE_FORWARDS;
+  //  Serial.print(vl);
+  //  Serial.print(", ");
+  //  Serial.println(vr);
   drive(vl, vr);
 }
 
 // Effect: rotates the robot 90 degrees
 // dir = -1: left
 // dir = 1: right
-
 void rotate180() {
   drive(10, 10);
   delay(500);
-//  Serial.println("STOPPING");
-  drive(0,0);
+  //  Serial.println("STOPPING");
+  drive(0, 0);
   int dir = -1;
   int vl = dir * DRIVE_TURN_SPEED;
-  int vr = - dir * DRIVE_TURN_SPEED;
+  int vr = -dir * DRIVE_TURN_SPEED;
   drive(vl, vr);
 
   muxSelect(RIGHT_OUT_st);
-  while(nsr(RIGHT_OUT) > 50);
+  while (nsr(RIGHT_OUT) > 50)
+    ;
   delay(300);
-  while(nsr(RIGHT_IN) > 20);
+  while (nsr(RIGHT_IN) > 20)
+    ;
 
   drive(10, 10);
 
   delay(100);
   drive(vl, vr);
-  
+
   muxSelect(RIGHT_OUT_st);
-  while(nsr(RIGHT_OUT) > 50);
+  while (nsr(RIGHT_OUT) > 50)
+    ;
   delay(300);
-  while(nsr(RIGHT_IN) > 20);
+  while (nsr(RIGHT_IN) > 20)
+    ;
   drive(0, 0);
 }
 
-
 void rotate90(int dir) {
-  //Serial.println("GOING");
-  //lineFollow(10000);
+  // Serial.println("GOING");
+  // lineFollow(10000);
   drive(10, 10);
   if (dir == 1) delay(250);
   if (dir == -1) delay(500);
-//  Serial.println("STOPPING");
-  drive(0,0);
-  int vl = dir * DRIVE_TURN_SPEED ;
-  int vr = - dir * DRIVE_TURN_SPEED ;
-//  Serial.println("TURNING");
+  //  Serial.println("STOPPING");
+  drive(0, 0);
+  int vl = dir * DRIVE_TURN_SPEED;
+  int vr = -dir * DRIVE_TURN_SPEED;
+  //  Serial.println("TURNING");
   drive(vl, vr);
 
-  if(dir == 1) {
+  if (dir == 1) {
     muxSelect(LEFT_OUT_st);
     delayMicroseconds(10);
-//    Serial.println("rotate");
-//    Serial.println(Mux_State);
-//    Serial.println(A5);
-    while(nsr(LEFT_OUT) > 50);
+    while (nsr(LEFT_OUT) > 50)
+      ;
     delay(300);
-    while(nsr(LEFT_IN) > 20);
+    while (nsr(LEFT_IN) > 20)
+      ;
 
-  }
-  else {
+  } else {
     muxSelect(RIGHT_OUT_st);
-//    delayMicroseconds(100);
-//    Serial.println(A5);
-    while(nsr(RIGHT_OUT) > 50);
+    //    delayMicroseconds(100);
+    //    Serial.println(A5);
+    while (nsr(RIGHT_OUT) > 50)
+      ;
     delay(300);
-    while(nsr(RIGHT_IN) > 20);
+    while (nsr(RIGHT_IN) > 20)
+      ;
   }
-//
-//  while (lineStatus() == LINE_FOLLOW_GOOD) {
-//    delay(REGULATION_DELAY);
-//  }
-//  while (lineStatus() != LINE_FOLLOW_GOOD) {
-//    delay(REGULATION_DELAY);
-//  }
-  //delay(850);
   drive(0, 0);
 }
 
@@ -273,57 +242,42 @@ void rotate90(int dir) {
 // Stops at an intersection.
 int lineFollow(unsigned long timeout) {
   unsigned long start = millis();
-  while(lineStatus() == LINE_FOLLOW_GOOD && ((millis()-start) < timeout || timeout == 0)) {
+  while (lineStatus() == LINE_FOLLOW_GOOD &&
+         ((millis() - start) < timeout || timeout == 0)) {
     drive(lineError());
     delay(REGULATION_DELAY);
   }
 }
 
 // Effect: follows the line until an intersection
-int lineFollow() {
-  return lineFollow(0);
-}
+int lineFollow() { return lineFollow(0); }
 
 // Effect: drives the robot in a figure eight
 void figureEight() {
-  for(int i = 0; i < 8; i ++){
-    if(i < 4) {
+  for (int i = 0; i < 8; i++) {
+    if (i < 4) {
       rotate90(-1);
-    }else{
+    } else {
       rotate90(1);
     }
     lineFollow();
   }
-
 }
 
-
-//void stopAtWall() {
-//  while (getDistance(1) > 7)
-//    drive(10, 10);
-//
-//  drive(0,0);
-//}
-
-//return the distance from the wall
+// return the distance from the wall
 float getDistance(int PINNAME) {
-//  muxSelect(muxsel);
-  float val = analogRead(PINNAME);   //read the value
-//  Serial.println(val);
-  val = val * 5 /1023;               //convert the output to volts
+  //  muxSelect(muxsel);
+  float val = analogRead(PINNAME);  // read the value
+  //  Serial.println(val);
+  val = val * 5 / 1023;  // convert the output to volts
 
-  float cm = (12.9895 - .42*val) / (val+.0249221);   //convert the output to distance from wall (cm)
+  float cm = (12.9895 - .42 * val) /
+             (val + .0249221);  // convert the output to distance from wall (cm)
 
   return cm;
 }
 
 void markWalls(explore_t* state) {
-  float ld = getDistance(A0);// + getDistance(A0) + getDistance(A0) + getDistance(A0) + getDistance(A0)) / 5;
-  //Serial.println(ld);
-  float rd = getDistance(A1);// +  getDistance(A1) +  getDistance(A1) +  getDistance(A1) +  getDistance(A1)) / 5;
-  //Serial.println(rd);
-  float fd = getDistance(A4);// + getDistance(A4) + getDistance(A4) + getDistance(A4) + getDistance(A4)) / 5;
-  //Serial.println(fd);
   muxSelect(WALL_LEFT_st);
   delayMicroseconds(10);
   if (getDistance(MUX) < DISTANCE_THRESHOLD) {
@@ -332,7 +286,7 @@ void markWalls(explore_t* state) {
   }
   muxSelect(WALL_RIGHT_st);
   delayMicroseconds(10);
-  if(getDistance(MUX) < DISTANCE_THRESHOLD) {
+  if (getDistance(MUX) < DISTANCE_THRESHOLD) {
     dfs_mark_rel_obstacle(state, RIGHT);
     Serial.println("mark right");
   }
@@ -345,80 +299,20 @@ void markWalls(explore_t* state) {
 }
 
 void loop() {
-//  drive(0,0);
-//
-//  while(1) {
-//    lineFollow();
-//    drive(0,0);
-//    delay(500);
-//    rotate180();
-//    drive(0,0);
-//    delay(500);
-//  }
-//  while(1) {
-//     
-//     muxSelect(WALL_LEFT_st);
-//     delay(250);
-//     Serial.print("left: ");
-//     Serial.println(getDistance(MUX));
-//     delay(500);
-//     
-//     muxSelect(WALL_FRONT_st);
-//     delay(250);
-//     Serial.print("front: ");
-//     Serial.println(getDistance(MUX));
-//     delay(500);
-//     
-//     muxSelect(WALL_RIGHT_st);
-//     delay(250);
-//     Serial.print("right: ");
-//     Serial.println(getDistance(MUX));
-//     delay(500);
-//     
-//     
-//  }
-  //stopAtWall();
   explore_t state;
-  dfs_init(&state, 0, 0, SOUTH);
-  // dfs_mark_obstacle(&state, 1, 1, NORTH);
-  // dfs_mark_obstacle(&state, 1, 1, EAST);
-  // dfs_mark_obstacle(&state, 1, 1, SOUTH);
-  // dfs_mark_obstacle(&state, 1, 1, WEST);
-  //
-  // dfs_mark_obstacle(&state, 1, 4, WEST);
-  // dfs_mark_obstacle(&state, 2, 4, WEST);
-  // dfs_mark_obstacle(&state, 3, 4, WEST);
-  //
-  // dfs_mark_obstacle(&state, 3, 0, NORTH);
-  // dfs_mark_obstacle(&state, 3, 1, NORTH);
-  // dfs_mark_obstacle(&state, 3, 2, NORTH);
-
-//  while(1) {
-//    float ld = getDistance(A0);
-//    float rd = getDistance(A1);
-//    float fd = getDistance(A4);
-//    Serial.print("foobar: ");
-//    Serial.print(ld);
-//    Serial.print("  ");
-//    Serial.print(rd);
-//     Serial.print("  ");
-//    Serial.print(fd);
-//     Serial.println("  ");
-//  }
+  dfs_init(&state, 3, 0, EAST);
 
   markWalls(&state);
-
-    for (size_t row = 0; row < MAP_ROWS; row++) {
-      for (size_t col = 0; col < MAP_COLS; col++) {
-         unsigned short info = dfs_get_grid_info_to_transmit(&state, row, col);
-         transmit(info);
-         
+  for (size_t row = 0; row < MAP_ROWS; row++) {
+    for (size_t col = 0; col < MAP_COLS; col++) {
+      unsigned short info = dfs_get_grid_info_to_transmit(&state, row, col);
+      transmit(info);
     }
   }
-  
+
   int last_rel_dir;
   while ((last_rel_dir = dfs_at_intersection(&state)) != -1) {
-    drive(0,0);
+    drive(0, 0);
     Serial.println("Intersection");
     Serial.print("State:\n");
     dfs_print_grid(&state);
@@ -440,11 +334,11 @@ void loop() {
         Serial.print("   ");
     }
     Serial.print("\n");
-    
+
     delay(100);
     switch (last_rel_dir) {
       case FORWARDS:
-        drive(10,10);
+        drive(10, 10);
         delay(300);
         break;
       case RIGHT:
@@ -459,50 +353,30 @@ void loop() {
     }
 
     lineFollow();
-    drive(0,0);
+    drive(0, 0);
     delay(500);
     markWalls(&state);
 
     for (size_t row = 0; row < MAP_ROWS; row++) {
       for (size_t col = 0; col < MAP_COLS; col++) {
-         unsigned short info = dfs_get_grid_info_to_transmit(&state, row, col);
-          transmit(info);
-         
+        unsigned short info = dfs_get_grid_info_to_transmit(&state, row, col);
+        transmit(info);
+      }
     }
   }
-      
-  }
-
-  
 
   dfs_finalize(&state);
-    for (size_t row = 0; row < MAP_ROWS; row++) {
-      for (size_t col = 0; col < MAP_COLS; col++) {
-         unsigned short info = dfs_get_grid_info_to_transmit(&state, row, col);
-         transmit(info);
-         
+  for (size_t row = 0; row < MAP_ROWS; row++) {
+    for (size_t col = 0; col < MAP_COLS; col++) {
+      unsigned short info = dfs_get_grid_info_to_transmit(&state, row, col);
+      transmit(info);
     }
   }
-  
-  // PRINT("Done:\n");
-  // dfs_print_grid(&state);
-  // delay_and_clear();
-  // sleep(10);
-  while(1) {
-  transmit(30 << 9);
+
+  while (1) {
+    transmit(30 << 9);
   }
   Serial.println("DONE");
-  while(1);
-//
-//  lineFollow();
-//  drive(0,0);
-
-  //figureEight();
-  /*
-  Serial.println("Starting!");
-  lineFollow();
-  Serial.println("Found intersection!");
-  rotate90(-1);
-  drive(0,0);
-  delay(1000);*/
+  while (1)
+    ;
 }
