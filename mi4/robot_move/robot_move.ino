@@ -181,9 +181,11 @@ void rotate180() {
   drive(vl, vr);
 
   muxSelect(RIGHT_OUT_st);
-  while (nsr(RIGHT_OUT) > 20);
+  while (nsr(RIGHT_OUT) > 20)
+    ;
   delay(500);
-  while (nsr(RIGHT_IN) > 20);
+  while (nsr(RIGHT_IN) > 20)
+    ;
 
   drive(10, 10);
 
@@ -191,9 +193,11 @@ void rotate180() {
   drive(vl, vr);
 
   muxSelect(RIGHT_OUT_st);
-  while (nsr(RIGHT_OUT) > 20);
+  while (nsr(RIGHT_OUT) > 20)
+    ;
   delay(500);
-  while (nsr(RIGHT_IN) > 20);
+  while (nsr(RIGHT_IN) > 20)
+    ;
   drive(0, 0);
 }
 
@@ -213,17 +217,21 @@ void rotate90(int dir) {
   if (dir == 1) {
     muxSelect(LEFT_OUT_st);
     delayMicroseconds(10);
-    while (nsr(LEFT_OUT) > 20);
+    while (nsr(LEFT_OUT) > 20)
+      ;
     delay(500);
-    while (nsr(LEFT_IN) > 20);
+    while (nsr(LEFT_IN) > 20)
+      ;
 
   } else {
     muxSelect(RIGHT_OUT_st);
     //    delayMicroseconds(100);
     //    Serial.println(A5);
-    while (nsr(RIGHT_OUT) > 20);
+    while (nsr(RIGHT_OUT) > 20)
+      ;
     delay(500);
-    while (nsr(RIGHT_IN) > 20);
+    while (nsr(RIGHT_IN) > 20)
+      ;
   }
   drive(0, 0);
 }
@@ -272,7 +280,8 @@ void markWalls(explore_t* state) {
   delayMicroseconds(10);
   Serial.print("LEFT: ");
   Serial.println(getDistance(MUX));
-  if ((getDistance(MUX) + getDistance(MUX) + getDistance(MUX))/3 < DISTANCE_THRESHOLD) {
+  if ((getDistance(MUX) + getDistance(MUX) + getDistance(MUX)) / 3 <
+      DISTANCE_THRESHOLD) {
     dfs_mark_rel_obstacle(state, LEFT);
     Serial.println("mark left");
   }
@@ -281,21 +290,21 @@ void markWalls(explore_t* state) {
   delayMicroseconds(10);
   Serial.print("RIGHT: ");
   Serial.println(getDistance(MUX));
-  if ((getDistance(MUX) + getDistance(MUX) + getDistance(MUX))/3 < DISTANCE_THRESHOLD) {
+  if ((getDistance(MUX) + getDistance(MUX) + getDistance(MUX)) / 3 <
+      DISTANCE_THRESHOLD) {
     dfs_mark_rel_obstacle(state, RIGHT);
     Serial.println("mark right");
   }
-
 
   muxSelect(WALL_FRONT_st);
   delayMicroseconds(10);
   Serial.print("Front: ");
   Serial.println(getDistance(MUX));
-  if ((getDistance(MUX) + getDistance(MUX) + getDistance(MUX))/3 < DISTANCE_THRESHOLD) {
+  if ((getDistance(MUX) + getDistance(MUX) + getDistance(MUX)) / 3 <
+      DISTANCE_THRESHOLD) {
     dfs_mark_rel_obstacle(state, FORWARDS);
     Serial.println("mark forward");
   }
-
 }
 
 void loop() {
