@@ -14,7 +14,7 @@
 
 #define LINE_BLACK 900
 #define LINE_WHITE 500
-#define LINE_THRESHOLD 50
+#define LINE_THRESHOLD 30
 
 #define DISTANCE_THRESHOLD 20
 
@@ -142,14 +142,14 @@ int lineStatus() {
   muxSelect(LEFT_OUT_st);
   int left = nsr(LEFT_OUT);
   Serial.print("left: ");
-  Serial.println(left);
+  Serial.println(nsr(LEFT_IN));
   muxSelect(RIGHT_OUT_st);
 
   int right = nsr(RIGHT_OUT);
   Serial.print("right: ");
-  Serial.println(right);
+  Serial.println(nsr(RIGHT_IN));
 
-  if (left < LINE_THRESHOLD || right < LINE_THRESHOLD) {
+  if (left < LINE_THRESHOLD && right < LINE_THRESHOLD) {
     return LINE_FOLLOW_STOP;
   } else {
     return LINE_FOLLOW_GOOD;
@@ -169,9 +169,7 @@ void drive(int dir) {
   drive(vl, vr);
 }
 
-// Effect: rotates the robot 90 degrees
-// dir = -1: left
-// dir = 1: right
+// Effect: rotates the robot 180 degrees
 void rotate180() {
   drive(10, 10);
   delay(500);
@@ -183,11 +181,9 @@ void rotate180() {
   drive(vl, vr);
 
   muxSelect(RIGHT_OUT_st);
-  while (nsr(RIGHT_OUT) > 50)
-    ;
-  delay(300);
-  while (nsr(RIGHT_IN) > 20)
-    ;
+  while (nsr(RIGHT_OUT) > 20);
+  delay(500);
+  while (nsr(RIGHT_IN) > 20);
 
   drive(10, 10);
 
@@ -195,11 +191,9 @@ void rotate180() {
   drive(vl, vr);
 
   muxSelect(RIGHT_OUT_st);
-  while (nsr(RIGHT_OUT) > 50)
-    ;
-  delay(300);
-  while (nsr(RIGHT_IN) > 20)
-    ;
+  while (nsr(RIGHT_OUT) > 20);
+  delay(500);
+  while (nsr(RIGHT_IN) > 20);
   drive(0, 0);
 }
 
@@ -219,21 +213,17 @@ void rotate90(int dir) {
   if (dir == 1) {
     muxSelect(LEFT_OUT_st);
     delayMicroseconds(10);
-    while (nsr(LEFT_OUT) > 50)
-      ;
-    delay(300);
-    while (nsr(LEFT_IN) > 20)
-      ;
+    while (nsr(LEFT_OUT) > 20);
+    delay(500);
+    while (nsr(LEFT_IN) > 20);
 
   } else {
     muxSelect(RIGHT_OUT_st);
     //    delayMicroseconds(100);
     //    Serial.println(A5);
-    while (nsr(RIGHT_OUT) > 50)
-      ;
-    delay(300);
-    while (nsr(RIGHT_IN) > 20)
-      ;
+    while (nsr(RIGHT_OUT) > 20);
+    delay(500);
+    while (nsr(RIGHT_IN) > 20);
   }
   drive(0, 0);
 }
@@ -280,22 +270,32 @@ float getDistance(int PINNAME) {
 void markWalls(explore_t* state) {
   muxSelect(WALL_LEFT_st);
   delayMicroseconds(10);
-  if (getDistance(MUX) < DISTANCE_THRESHOLD) {
+  Serial.print("LEFT: ");
+  Serial.println(getDistance(MUX));
+  if ((getDistance(MUX) + getDistance(MUX) + getDistance(MUX))/3 < DISTANCE_THRESHOLD) {
     dfs_mark_rel_obstacle(state, LEFT);
     Serial.println("mark left");
   }
+
   muxSelect(WALL_RIGHT_st);
   delayMicroseconds(10);
-  if (getDistance(MUX) < DISTANCE_THRESHOLD) {
+  Serial.print("RIGHT: ");
+  Serial.println(getDistance(MUX));
+  if ((getDistance(MUX) + getDistance(MUX) + getDistance(MUX))/3 < DISTANCE_THRESHOLD) {
     dfs_mark_rel_obstacle(state, RIGHT);
     Serial.println("mark right");
   }
+
+
   muxSelect(WALL_FRONT_st);
   delayMicroseconds(10);
-  if (getDistance(MUX) < DISTANCE_THRESHOLD) {
+  Serial.print("Front: ");
+  Serial.println(getDistance(MUX));
+  if ((getDistance(MUX) + getDistance(MUX) + getDistance(MUX))/3 < DISTANCE_THRESHOLD) {
     dfs_mark_rel_obstacle(state, FORWARDS);
     Serial.println("mark forward");
   }
+
 }
 
 void loop() {
