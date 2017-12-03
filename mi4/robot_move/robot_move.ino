@@ -35,9 +35,21 @@
 #define MIC_st 0
 #define LEFT_OUT_st 0
 #define RIGHT_OUT_st 1
+#define MICR_st 2
 #define WALL_LEFT_st 3
 #define WALL_RIGHT_st 4
 #define WALL_FRONT_st 5
+
+#define BUTTON_PIN 7
+
+#define LOG_OUT 1  // use the log output function
+#define FFT_N 256  // set to 256 point fft
+
+#include <FFT.h>  // include the library
+
+int should_start = 0;
+int fft_i = 0;
+int count = 0;
 
 #include <SPI.h>
 #include "RF24.h"
@@ -66,6 +78,7 @@ void setup() {
   pinMode(4, OUTPUT);
   pinMode(5, OUTPUT);
   pinMode(6, OUTPUT);
+  pinMode(BUTTON_PIN, INPUT);
 
   radio.begin();
 
@@ -85,6 +98,22 @@ void setup() {
   radio.openWritingPipe(pipes[0]);
   radio.openReadingPipe(1, pipes[1]);
   radio.startListening();
+
+  cli();
+  // put your setup code here, to run once:
+  TCCR2A = 0;  // set entire TCCR2A register to 0
+  TCCR2B = 0;  // same for TCCR2B
+  TCNT2 = 0;   // initialize counter value to 0
+  // set compare match register for 8khz increments
+  OCR2A = 249;  // = (16*10^6) / (8000*8) - 1 (must be <256)
+  // turn on CTC mode
+  TCCR2A |= (1 << WGM21);
+  // Set CS21 bit for 8 prescaler
+  TCCR2B |= (1 << CS21);
+  // enable timer compare interrupt
+  TIMSK2 |= (1 << OCIE2A);
+
+  sei();
 }
 
 void transmit(unsigned short state) {
@@ -307,7 +336,38 @@ void markWalls(explore_t* state) {
   }
 }
 
+ISR(TIMER2_COMPA_vect) {
+  if (fft_i == 512) {
+    fft_window();   // window the data for better frequency response
+    fft_reorder();  // reorder the data before doing the fft
+    fft_run();      // process the data in the fft
+    fft_mag_log();  // take the output of the fft
+
+    fft_i = 0;
+    if (fft_log_out[20] >= 50 || fft_log_out[21] >= 50 ||
+        fft_log_out[22] >= 50 || digitalRead(BUTTON_PIN)) {
+      count++;
+    } else {
+      count = 0;
+    }
+    if (count >= 15) {
+      should_start = 1;
+      TIMSK2 = 0;
+    } else {
+      should_start = 0;
+    }
+  } else {
+    muxSelect(MICR_st);
+    fft_input[fft_i] = analogRead(MUX);
+    fft_input[fft_i + 1] = 0;
+    fft_i += 2;
+  }
+}
+
 void loop() {
+  while (should_start == 0)
+    ;
+
   explore_t state;
   dfs_init(&state, 3, 0, EAST);
 
