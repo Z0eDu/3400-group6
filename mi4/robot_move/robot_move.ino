@@ -307,6 +307,7 @@ float getDistance(int PINNAME) {
 void markWalls(explore_t* state) {
   muxSelect(WALL_LEFT_st);
   delayMicroseconds(10);
+  
   //Serial.print("LEFT: ");
   //Serial.println(getDistance(MUX));
   if ((getDistance(MUX) + getDistance(MUX) + getDistance(MUX)) / 3 <
@@ -447,7 +448,7 @@ void loop() {
 
     lineFollow();
     drive(0, 0);
-    delay(100);
+    //delay(50);
     markWalls(&state);
 
     for (size_t row = 0; row < MAP_ROWS; row++) {
