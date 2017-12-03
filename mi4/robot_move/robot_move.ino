@@ -82,47 +82,6 @@ int fastAdcRead() {
 const uint64_t pipes[2] = { 0x0000000012LL, 0x0000000013LL };
 RF24 radio(9, 10);
 
-void setup() {
-  muxSelect(MIC_st);
-  Serial.begin(9600);
-  Serial.println("setup");
-
-  pinMode(A2, INPUT);
-  pinMode(A3, INPUT);
-  pinMode(A5, INPUT);
-  pinMode(2, OUTPUT);
-  pinMode(3, OUTPUT);
-  pinMode(4, OUTPUT);
-  pinMode(5, OUTPUT);
-  pinMode(6, OUTPUT);
-
-  // Treasure setup
-  //fastAdcSetup(0x40);
-
-  radio.begin();
-
-  // optionally, increase the delay between retries & # of retries
-  radio.setRetries(15, 15);
-  radio.setAutoAck(true);
-  // set the channel
-  radio.setChannel(0x50);
-  // set the power
-  // RF24_PA_MIN=-18dBm, RF24_PA_LOW=-12dBm, RF24_PA_MED=-6dBM, and RF24_PA_HIGH=0dBm.
-  radio.setPALevel(RF24_PA_HIGH);
-  //RF24_250KBPS for 250kbs, RF24_1MBPS for 1Mbps, or RF24_2MBPS for 2Mbps
-  radio.setDataRate(RF24_250KBPS);
-
-  // Open pipes to other nodes for communication
-  radio.openWritingPipe(pipes[0]);
-  radio.openReadingPipe(1, pipes[1]);
-
-  // Start listening
-  radio.startListening();
-
-  servo_left.attach(SERVO_LEFT);
-  servo_right.attach(SERVO_RIGHT);
-}
-
 void transmit(unsigned short state) {
   //      // First, stop listening so we can talk.
   //   radio.stopListening();
@@ -343,6 +302,49 @@ void markWalls(explore_t* state) {
   if (getDistance(MUX) < DISTANCE_THRESHOLD) {
     dfs_mark_rel_obstacle(state, FORWARDS);
   }
+}
+
+
+void setup() {
+  muxSelect(MIC_st);
+  Serial.begin(9600);
+  Serial.println("setup");
+
+  servo_left.attach(SERVO_LEFT);
+  servo_right.attach(SERVO_RIGHT);
+  drive(0,0);
+
+  pinMode(A2, INPUT);
+  pinMode(A3, INPUT);
+  pinMode(A5, INPUT);
+  pinMode(2, OUTPUT);
+  pinMode(3, OUTPUT);
+  pinMode(4, OUTPUT);
+  pinMode(5, OUTPUT);
+  pinMode(6, OUTPUT);
+
+  // Treasure setup
+  //fastAdcSetup(0x40);
+
+  radio.begin();
+
+  // optionally, increase the delay between retries & # of retries
+  radio.setRetries(15, 15);
+  radio.setAutoAck(true);
+  // set the channel
+  radio.setChannel(0x50);
+  // set the power
+  // RF24_PA_MIN=-18dBm, RF24_PA_LOW=-12dBm, RF24_PA_MED=-6dBM, and RF24_PA_HIGH=0dBm.
+  radio.setPALevel(RF24_PA_HIGH);
+  //RF24_250KBPS for 250kbs, RF24_1MBPS for 1Mbps, or RF24_2MBPS for 2Mbps
+  radio.setDataRate(RF24_250KBPS);
+
+  // Open pipes to other nodes for communication
+  radio.openWritingPipe(pipes[0]);
+  radio.openReadingPipe(1, pipes[1]);
+
+  // Start listening
+  radio.startListening();
 }
 
 void loop() {
