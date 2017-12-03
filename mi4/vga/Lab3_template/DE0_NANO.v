@@ -228,10 +228,10 @@ module DE0_NANO(
       3'd0: base_color = `BLACK; // unvisited
       3'd1: base_color = `CYAN; // visited
       3'd2: base_color = `ORANGE; // unreachable
-      3'd3: base_color = `PURPLE; //robot ^
-      3'd4: base_color = `PURPLE; //robot >
-      3'd5: base_color = `PURPLE; //robot v
-      3'd6: base_color = `PURPLE; //robot <
+      3'd3: base_color = kirstin_out; // `PURPLE; //robot ^
+      3'd4: base_color = kirstin_out; // `PURPLE; //robot >
+      3'd5: base_color = kirstin_out; // `PURPLE; //robot v
+      3'd6: base_color = kirstin_out; // `PURPLE; //robot <
       default: base_color = `ORANGE;
     endcase
 
