@@ -18,3 +18,11 @@ On Linux, the easiest way is through your package manager.
 Here is a terminal recording of how to make a terminal recording:
 
 <script type="text/javascript" src="https://asciinema.org/a/8t8hFJ0OG0WLTixkMByWDt4WJ.js" id="asciicast-8t8hFJ0OG0WLTixkMByWDt4WJ" async data-size="big"></script>
+
+You can embed the Asciinema recording using pure HTML inside your markdown files. The once above is embedded with:
+
+```html
+<script type="text/javascript" src="https://asciinema.org/a/8t8hFJ0OG0WLTixkMByWDt4WJ.js" id="asciicast-8t8hFJ0OG0WLTixkMByWDt4WJ" async data-size="big"></script>
+```
+
+See https://asciinema.org/docs/embedding for more information.
