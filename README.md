@@ -1,4 +1,4 @@
-<img src="https://docs.google.com/uc?id=125B9o5h49Y54XBVWT4iqEPl7q6WOhev" height="400">
+<img src="https://giphy.com/gifs/3o6fJbXYAiuXkb3904" height="40">
 
 ## Members
 
