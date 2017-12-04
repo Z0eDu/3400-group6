@@ -26,7 +26,7 @@ We connected the microphone power and ground to +5 V and GND on the Arduino, res
 
 ### FFT
 
-Team Alpha and the instructions spent lots of time experimenting with wrapping `analogRead` in a loop and measuring the sampling frequency by playing known tones and checking which bins of the FFT picked them up. This seemed like a complicated and time consuming process. Instead, we configured an 8 kHz interrupt. The interrupt fired at exactly 8 kHz, so we knew the exact sampling frequency. We chose 8kHz to satisfy the Nyquist sampling condition, which requires the sampling frequency to be double the highest frequency in our system, which would be human voice at 4 kHz.
+Team Alpha and the instructions spent lots of time experimenting with wrapping `analogRead` in a loop and measuring the sampling frequency by playing known tones and checking which bins of the FFT picked them up. This seemed like a complicated and time consuming process. Instead, we configured an 8 kHz interrupt as our sampling frequency because we could control exactly when it fired, allowing us to know the exact sampling frequency. We chose 8kHz to satisfy the Nyquist sampling condition, which requires the sampling frequency to be double the highest frequency in our system, which would be human voice at 4 kHz.
 
 ```cpp
 cli();
@@ -54,7 +54,7 @@ We tested our code to see if it could initially pick up a 660 Hz tone using a fu
 
 <img src = "https://docs.google.com/uc?id=0B4-ue266N8b0LVRKV1k4MWE3Mms"><img src = "https://docs.google.com/uc?id=0B4-ue266N8b0S0RjRDdyYXFlemM">
 
-We found the spike were between bins 20 and 22, which would be frequencies 625 and 687.5. We changed our code so that we would keep track if we are hearing a tone in that range. We estimated the tone should occur for 15 data collection and FFT cycles before the robot started moving. In this case we just lit up the LED on the Arduino.
+We found the spikes were centered around bin 21 for the 660 Hz tone. Using the equation bin = frequency * bins / sampling frequency, we could see that tones at 585 Hz and 735 Hz would end up in bins 18-19 and bins 23-24, respectively. This separation between bins was enough to discern a 660 Hz tone from these two frequencies, so we changed our code so that we would keep track if we are hearing a tone in that range. We estimated the tone should occur for 15 data collection and FFT cycles before the robot started moving. In this case we just lit up the LED on the Arduino.
 
 <iframe src="https://drive.google.com/file/d/0B4-ue266N8b0TWV5cG9sXzRNX0U/preview" width="640" height="480"></iframe>
 
@@ -110,7 +110,7 @@ Band pass filter
 <img src="https://docs.google.com/uc?id=0B1QvEdmy23tjNlY3YzFfelppQVU" width="400">
 
 
-The amplifier amplified the overall response. However, this made the distinction between the treasure signal and noise smaller. Each filter dampened the desired range of frequency, but filters also dampened the treasure signal somewhat. Additional circuits made the peak unclear, so we decided to process the data software wise.
+The amplifier amplified the overall response. However, this made the distinction between the treasure signal and noise smaller. Each filter dampened the desired range of frequency, but filters also dampened the treasure signal somewhat. In hindsight, we should have pushed our pole frequency even farther out in order to ensure that we are not affecting our output at 7 kHz. Additional circuits made the peak unclear, so we decided to process the data with software for this lab.
 
 
 #### Code and Results
@@ -137,13 +137,15 @@ Finally, we called fft functions from the FFT library to reorder the data to be 
 ```
 For now, we just displayed all of the data points for analysis and graphed them as shown below.  For later parts of the lab, we will process the data, eliminating peaks far away from where we want to look and only check for the treasure frequencies we need to detect.
 
-Below are the graphs for a 7 kHz sine wave from a function generator and for the 7 kHz treasure held close to the sensor.  While slightly less sharp than the function generator, the peak around the 48th bin for the treasure data is still clear.  We can digitally process this data and detect treasures at different frequencies.
+Below are the graphs for a 7 kHz sine wave from a function generator and for the 7 kHz treasure held close to the sensor.  While slightly less sharp than the function generator, the peak around the 48th bin for the treasure data is still clear.  We know the 48th bin should be the one holding the 7 kHz peak from the equation bin = frequency * bins / sampling frequency--we sample at 37 kHz and have 256 bins.  We can digitally process this data and detect treasures at different frequencies.
 
 <img src="https://docs.google.com/uc?id=0ByCM4xElwbIeQnBmUGZ1UGdiZ1k" height="400">
 
 <img src="https://docs.google.com/uc?id=0ByCM4xElwbIeUjRjSHBSaW90Slk" height="400">
 
+Update: After working on milestone 2, we were able to create a non-inverting amplifier that amplified our range enough and actually gave us a decent treasure detection radius.
 
+Finally, we merged the code by using the two separate timers and two ISRs shortly before the final competition. Doing so allowed us to sample both signals concurrently while a while loop could not (despite this not being necessary in the end). The only thing that needed to be changed was changing the channel of the ADC before we read for each ISR.
 
 
 ## Work Distribution
