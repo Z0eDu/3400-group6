@@ -1,4 +1,4 @@
-<img src="https://media.giphy.com/media/3o6fJbXYAiuXkb3904/giphy.gif" height="400">
+<img src="https://media.giphy.com/media/3o6fJbXYAiuXkb3904/giphy.gif" height="200">
 
 ## Members
 
