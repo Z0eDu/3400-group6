@@ -1,4 +1,4 @@
 # Tutorials
 
-1. [ASCII Art and Terminal Recording](ascii.md)
+1. [Terminal Recording](terminal.md)
 2.
