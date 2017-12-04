@@ -1,3 +1,5 @@
+<img src="https://docs.google.com/uc?id=125B9o5h49Y54XBVWT4iqEPl7q6WOhev" height="400">
+
 ## Members
 
 * Ayomi Sanni (acs333)
