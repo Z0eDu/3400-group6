@@ -31,4 +31,4 @@
 
 ## Tutorials
 1. [Terminal Recording](terminal.md)
-2. Foobar
+2. [C Programming: Arduinos & Computers](cprogramming.md)
