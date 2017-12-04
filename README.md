@@ -1,5 +1,4 @@
-<img src="https://media.giphy.com/media/3o6fJbXYAiuXkb3904/giphy.gif" height="200">
-
+<img src="https://media.giphy.com/media/3o6fJbXYAiuXkb3904/giphy.gif" height="300">
 ## Members
 
 * Ayomi Sanni (acs333)

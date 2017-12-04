@@ -3,11 +3,11 @@ Ayomi Sanni (acs333), Drew Mera (dnm54), Emily Sun (eys27), Eric Lyne (eal234), 
 
 ### Links/references on the case you are discussing:	
 
-*	[The Guardian](https://www.theguardian.com/technology/2016/jun/30/tesla-autopilot-death-self-driving-car-elon-musk)
-*	[New York Times](https://www.nytimes.com/interactive/2016/07/01/business/inside-tesla-accident.html)
-*	[Washington Post](https://www.washingtonpost.com/news/the-switch/wp/2017/06/20/the-driver-who-died-in-a-tesla-crash-using-autopilot-ignored-7-safety-warnings/?utm_term=.ade6757d1c24)
-*	[Tesla Statement](https://www.tesla.com/blog/tragic-loss)
-*	[University of Texas](http://www.caee.utexas.edu/prof/kockelman/public_html/TRB17EconomicEffectsofAVs.pdf)
+*	[Tesla driver dies in first fatal crash while using autopilot mode](https://www.theguardian.com/technology/2016/jun/30/tesla-autopilot-death-self-driving-car-elon-musk)
+*	[Inside the Self-Driving Tesla Fatal Accident](https://www.nytimes.com/interactive/2016/07/01/business/inside-tesla-accident.html)
+*	[The driver who died in a Tesla crash using Autopilot ignored at least 7 safety warnings](https://www.washingtonpost.com/news/the-switch/wp/2017/06/20/the-driver-who-died-in-a-tesla-crash-using-autopilot-ignored-7-safety-warnings/?utm_term=.ade6757d1c24)
+*	[Tesla's Statement](https://www.tesla.com/blog/tragic-loss)
+*	[Economic Effects of Automated Vehicles](http://www.caee.utexas.edu/prof/kockelman/public_html/TRB17EconomicEffectsofAVs.pdf)
 
 ### Brief explanation of the case you are discussing.
 The case we are discussing regards the first fatality involving a self-driving car -- particularly the accident of Joshua Brown who was killed driving a Tesla Model S. There is debate as to how effective the technical safety feature of Tesla's Autopilot was versus how Brown responded to the safety warnings of the system.  "Brown was audibly warned six times to keep his hands on the steering wheel. He was also warned visually, seven times, on his Tesla's dashboard," as described by the Washington Post.
@@ -26,4 +26,4 @@ Each driver behind the hands of a self driving car is at risk of injury or even 
 *	Political: There are also legal issues involving whether self driving cars should be placed on the road. A major concern is if a robotic vehicle can share lanes with uncooperative human drivers. In the case of a self driving car, who to blame for an accident becomes much more ambiguous: the human driver, the driver of the autonomous vehicle, or the company which produces these self driving cars. This issue has become a legal nightmare and until accidents in self driving cars become more obsolete they will continued to be constrained by these concerns.
 
 ### Are there creative solutions that would benefit all stakeholders?
-One creative solution Tesla came up with that benefits all stakeholders is a strikeout system. Drivers can no longer ignore the safety warnings if they want to continue using Autopilot while they are driving. Tesla is also preventing any future lawsuits relating to accidents cause when the driver didn't keep their hands on the wheel.
+One creative solution Tesla came up with that benefits all stakeholders is a strikeout system. Drivers can no longer ignore the safety warnings if they want to continue using Autopilot while they are driving. Tesla is also preventing any future lawsuits relating to accidents cause when the driver didn't keep their hands on the wheel. If the strikeout system does not work, Tesla could begin to only distribute the autopilot software to users who are trusted to obey the limitations of the technology. This way, there can be control over who is testing the technology until it can be be perfected and released to anybody. Further, if this does not work, then Tesla should consider an end to distributing the software to users on the open road and only allow its employees to test the software until the bugs are worked out.
