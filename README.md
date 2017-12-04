@@ -28,3 +28,7 @@
 * [Milestone 2](mi2/README.md)
 * [Milestone 3](mi3/README.md)
 * [Milestone 4](mi4/README.md)
+
+## Tutorials
+1. [Terminal Recording](terminal.md)
+2. Foobar
