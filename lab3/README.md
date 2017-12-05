@@ -143,7 +143,7 @@ always @(posedge CLOCK) begin
 end
 ```
 
-Here is the square wave that this code outputs:
+Here is the square wave that this code outputs (we forgot to take a video, but we hooked a scope up to the FPGA output):
 
 <img src="https://docs.google.com/uc?id=0B-CRHiExsEzBS21icTE2U19ZajQ" width="400">
 
@@ -238,6 +238,10 @@ Then, we synthesized that into another Verilog ROM, just as above. The DDS modul
 ### Playing Arbitrary Songs
 
 While we didn't have time for this lab, we can easily generalize the scale approach above to play (at significantly reduced quality) any song. To do so, take the song, and break the samples into groups of some fixed length, probably 0.1 s. Take the Fourier transform of each section, and select the dominant 8 frequencies. Assemble these into a file with 1 frequency per line (8 lines of frequencies that occur at the same time, then the next 8, and so on). Run the increment generation script on the file. Then, modify the Verilog code to instantiate 8 DDS modules, each one reading from a different initial index in the increment file, and incrementing the index by 8 each each 0.1 s. Average the outputs from all 8 (which is not as not that bad: sign extend all to 11 bits, add them, and then bit shift the result right by 3 bits). Output this to the DAC.
+
+### Verilog Style
+
+We decided against having a finite state machine considering the fact that our code was very short and not hard to follow. If we needed more code and/or states, it would have certainly made sense to break everything up, but we were able to accomplish the task efficiently. A finite state machine would have only complicated things in this case. 
 
 
 ## Work Distribution
