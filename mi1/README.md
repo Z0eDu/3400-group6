@@ -21,7 +21,12 @@ We read the sensors using the Arduino's 10 bit ADC, so the reading for each sens
 
 ### Error Measurement
 
-Once the sensors were calibrated, we then implemented line following using a differential method. Because we position 2 sensors on opposite sides of the line, the _error_ while line following is simply the difference between the left and right normalized values! This approach reduces noise, because it removes the common mode from the signals.
+Once the sensors were calibrated, we then implemented line following using a differential method. Because we position 2 sensors on opposite sides of the line, the _error_ while line following is simply the difference between the left and right normalized values! This approach reduces noise, because it removes the common mode from the signals. We then used this error to determine how to follow the line.
+
+```cpp
+while (lineStatus() == LINE_FOLLOW_GOOD)
+	drive(lineError());	//corrects the robot to make up for the error
+```
 
 ### Regulation Loop
 
@@ -34,7 +39,7 @@ This simple proportional controller worked very well, and was able to consistent
 
 <iframe src="https://drive.google.com/file/d/0BzwUNPRyfTQHME9vWGwtVHR6WWM/preview" width="640" height="480"></iframe>
 
-In order to make the line following faster and more robust, we will use a full PID controller for the final project, likely with [this library](https://github.com/br3ttb/Arduino-PID-Library).
+In order to make the line following faster and more robust, we will use a full PID controller for the final project, likely with [this library](https://github.com/br3ttb/Arduino-PID-Library).  While we are currently moving slowly for the proof of concept, we included a speed scaler ```#define DRIVE_SCALE_FWD 180 ``` to make our robot move faster with the same code in the future.
 
 ## Figure Eight
 
@@ -47,7 +52,22 @@ if (left < LINE_THRESHOLD && right < LINE_THRESHOLD) {
 After reaching these intersections, the function for line following is ended.
 
 ### Turning
-Then, the method `rotate90(int dir)` was implemented. This function's intention was to place the robot near 90 degrees, any variations would then be caught by `lineFollow`. In this function the robot drives forward for 2 seconds to nearly center its wheels around the intersection. It then turns around its center by having both wheels turn at the same speed in opposite directions. The direction each wheel turns in is given by `dir`, an argument that is set to either 1 or -1, the speed is given by a constant. This turn is carried out for 1.7 seconds, an empirically determined value. Then the program stops the robot.
+Then, the method `rotate90(int dir)` was implemented. This function's intention was to place the robot near 90 degrees, any variations would then be caught by `lineFollow`. In this function the robot drives forward for 2 seconds to nearly center its wheels around the intersection. It then turns around its center by having both wheels turn at the same speed in opposite directions. The direction each wheel turns in is given by `dir`, an argument that is set to either 1 or -1, the speed is given by a constant. This turn is carried out for 1.7 seconds, an empirically determined value. Then the program stops the robot. Later on, we changed turning to rely on the sensors rather than just timing. We recognized that as a robot is turning, its sensors will cross over the lines at the intersection, so we can use those to guide.
+
+```cpp
+//set the wheels to turn in the opposite direction
+dir = -1;
+int vl = dir * DRIVE_TURN_SPEED;
+int vr = -dir * DRIVE_TURN_SPEED;
+drive(vl, vr);
+
+//code to turn left
+while (nsr(RIGHT_OUT) > 20;
+delay(500);
+while (nsr(RIGHT_IN) > 20);
+```
+
+When turning left, for example, we continue turning and wait until the right outer sensor crosses over the black line in front, then delay to get past that line, and then continue while the right in is still on white. This ensures that at the end of the turn the robot is positioned to move forward with little correction.
 
 ### Putting it Together
 Finally, the method `figureEight()` was constructed to be called in `loop()`. Inside this method is a for loop with an variable, `i`, that counts from 0 to 7. Line follow is called, and does not end until it reaches an intersection. Once it is finished, if `i` is below 4, a right turn is instructed, otherwise a left turn is instructed. Then this method repeats, giving the figure eight pattern.
