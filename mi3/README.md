@@ -93,6 +93,8 @@ The following clip shows the output of our simulation on a sample maze. The robo
 
 <script type="text/javascript" src="https://asciinema.org/a/3V5Omsrkrczqsp4YI2fZJ9qUo.js" id="asciicast-3V5Omsrkrczqsp4YI2fZJ9qUo" async data-size="big"></script>
 
+Rather than change this into a separate code that runs on the Arduino, we imported this C code into our Arduino code to run the same DFS algorithm as shown in the demo above. We made the C code act just like the robot, so we had to change nothing when using it for the robot.
+
 
 ## Demo
 
@@ -144,6 +146,17 @@ void rotate180() {
 ```
 
 <iframe src="https://drive.google.com/file/d/0ByCM4xElwbIeelR5dkJXaXBtY1U/preview" width="640" height="480"></iframe>
+
+##Update
+
+We were able to fix our inconcistencies by raising up the line sensors. They were almost touching the ground, which caused them to sense their own shadows and get thrown off from time to time if they hit the ground. Here is the robot successfylly navigating the same maze:
+
+<iframe src="https://drive.google.com/file/d/1J9mfxvdShdzv5FZRr6nGyIn-4kUWKguF/preview" width="640" height="480"></iframe>
+
+Here is the robot successfully navigating a different maze (this was taken later on in the semester).
+
+<iframe src="https://drive.google.com/file/d/1jSv64BG5JyUz64KameMMnVCxGJmFDhmi/preview" width="640" height="480"></iframe>
+
 
 ## Work Distribution
 
