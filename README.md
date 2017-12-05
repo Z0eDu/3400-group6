@@ -15,6 +15,7 @@
 * [Meeting Notes](meeting_notes.md)
 * [Robot Costs](robot_costs.md)
 * [Ethics Homework](ethics.md)
+* [Final Competition](final/README.md)
 
 ## Labs
 * [Lab 1](lab1/README.md)
