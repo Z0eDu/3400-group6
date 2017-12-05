@@ -93,7 +93,7 @@ The following clip shows the output of our simulation on a sample maze. The robo
 
 <script type="text/javascript" src="https://asciinema.org/a/3V5Omsrkrczqsp4YI2fZJ9qUo.js" id="asciicast-3V5Omsrkrczqsp4YI2fZJ9qUo" async data-size="big"></script>
 
-Rather than change this into a separate code that runs on the Arduino, we imported this C code into our Arduino code to run the same DFS algorithm as shown in the demo above. We made the C code act just like the robot, so we had to change nothing when using it for the robot. See our second tutorial to see how we did this!
+Rather than change this into a separate code that runs on the Arduino, we imported this C code into our Arduino code to run the same DFS algorithm as shown in the demo above. We made the C code act just like the robot, so we had to change nothing when using it for the robot. See our [second tutorial](../tutorials/cprogramming.md) to see how we did this!
 
 
 ## Demo
