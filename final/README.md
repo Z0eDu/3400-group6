@@ -12,6 +12,13 @@ Presence of design flaws
 Comparative discussion of simulation and experimental results  
 Presence of conclusions  
 
+## System Diagrams
+### Robot 
+<img src="https://docs.google.com/uc?id=1u3O5pn8g4v8mFneFVIyXRM5UH_Pw-CvC"  width="650">  
+
+### Base Station
+<img src="https://docs.google.com/uc?id=19J9ya6bEyLajjWw7duF759bAyg2q0A3w"  width="650">  
+
 ## Final Design
 Our final design and robot worked very nicely, at least the day before competition:
 
