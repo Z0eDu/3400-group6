@@ -147,7 +147,7 @@ void rotate180() {
 
 <iframe src="https://drive.google.com/file/d/0ByCM4xElwbIeelR5dkJXaXBtY1U/preview" width="640" height="480"></iframe>
 
-##Update
+## Update
 
 We were able to fix our inconcistencies by raising up the line sensors. They were almost touching the ground, which caused them to sense their own shadows and get thrown off from time to time if they hit the ground. Here is the robot successfylly navigating the same maze:
 
