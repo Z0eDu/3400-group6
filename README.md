@@ -30,5 +30,5 @@
 * [Milestone 4](mi4/README.md)
 
 ## Tutorials
-1. [Terminal Recording](tutorials/terminal.md)
-2. [C Programming: Arduinos & Computers](tutorials/cprogramming.md)
+* [Terminal Recording](tutorials/terminal.md)
+* [C Programming: Arduinos & Computers](tutorials/cprogramming.md)
