@@ -44,4 +44,4 @@ At competition, we had multiple problems:
 
 During our rounds, the robot failed to start, and after it did, often ran into walls. Furthermore, it had just worked perfectly the day before. While we are not sure what caused this, we believe the most likely cause was some accidental short circuit shortly before competition which fried some pins on the Arduino.
 
-The main reason such a thing is likely is because of the number of wires routed throughout our robot. Had we used a protoboard, and even a PCB, we could have made it significantly more reliable.
+The main reason such a thing is likely is because of the number of wires routed throughout our robot. Had we used a protoboard, and even a PCB, we could have made it significantly more reliable. Given an opportunity for future work and improvements, we would have also taken advantage of the resources available to us such as the Skunkworks lab and designed custom parts to make our robot more mechanically robust. 
