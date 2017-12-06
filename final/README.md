@@ -1,6 +1,6 @@
 # Final Competition
 
-Good introductions and problem motivations  
+<!-- Good introductions and problem motivations  
 Clarity and thoroughness of documentation  
 Intuitive and nice layouts  
 Use of the right tools for analysis and unit testing  
@@ -10,16 +10,38 @@ Presence and evaluation of experimental results
 Use of graphs and tables to display results, as well as proper axis and unit labeling  
 Presence of design flaws  
 Comparative discussion of simulation and experimental results  
-Presence of conclusions  
+Presence of conclusions   -->
 
-## System Diagrams
-### Robot 
-<img src="https://docs.google.com/uc?id=1u3O5pn8g4v8mFneFVIyXRM5UH_Pw-CvC"  width="650">  
+For ECE 3400, we built a maze solving robot. The robot was controlled by an Arduino Uno, which wirelessly communicated with an Arduino Uno connected to a DE0 Nano FPGA, which drove a VGA monitor displaying a map of the maze. The robot also used a microphone to start on a 660 Hz tone, and used infrared photodiodes to detect and classify treasures: infrared beacons flashing at 7, 12, and 17 kHz. It used infrared distance sensors to detect walls, and infrared line sensors to follow lines and keep track of its position as it traversed the grid.
+
+## System
+
+### Robot
+<img src="https://docs.google.com/uc?id=1u3O5pn8g4v8mFneFVIyXRM5UH_Pw-CvC"  width="650">
+
+The robot's main processing unit is the Arduino Uno. The Arduino Uno interfaces with line sensors, treasure sensors, distance sensors, and a microphone. Because the Arduino only have 5 analog input pins, we used an analog multiplexer to route far more than 5 signals into the analog input pins. The 2 servo motors where driven by PWM pins on the Arduino. The Arduino was powered off of a 9V battery, and the servos were powered off a 5 volt rechargeable power bank. Finally, the Arduino used a Nordic RF24 radio to communicate with the base station Arduino.
 
 ### Base Station
 <img src="https://docs.google.com/uc?id=19J9ya6bEyLajjWw7duF759bAyg2q0A3w"  width="650">  
+
+The base station consisted of 2 main components: another Arduino Uno, and a DE0 Nano FPGA. The FPGA is necessary because the Arduino can not sustain the required bandwidth to operate a VGA display. The Arduino was rather simple: it received the radio signals, encoded as explained in milestone 4, and sent them to the FPGA. The FPGA maintained a dual port 32 element RAM, in which it stored a 4x5 grid of values, representing the squares. For each square, it stored the state, the treasure status, and the surrounding walls. In addition, the FPGA code contained a Direct Digital Synthesis module (DDS), which played the done signal once the robot had finished. The FPGA outputed a digital 8 bit signal to an R2R DAC, which was connected to speakers.
+
+## Design Methodology
+We worked on each piece of the robot independently, and as evidenced by our milestones, got all the pieces working nicely. We tested each piece individually, then added it to the final robot.
+
+Towards the end, we tested the entire robot as a system, and it performed as expected. Our milestone 4 performed flawlessly.
 
 ## Final Design
 Our final design and robot worked very nicely, at least the day before competition:
 
 <iframe src="https://drive.google.com/file/d/1Rs3jYRBsrQxttRoGFLB5iE3Q41FV31Ir/preview" width="640" height="480"></iframe>
+
+## Conclusion
+
+At competition, we had multiple problems:
+1.  Our transmission system failed. The robot was unable to send transmissions to the base station.
+2.  Wall, treasure, and start tone detection became very unreliable. We removed the treasure circuits to reduce problems, but that did not help.
+
+During our rounds, the robot failed to start, and after it did, often ran into walls. Furthermore, it had just worked perfectly the day before. While we are not sure what caused this, we believe the most likely cause was some accidental short circuit shortly before competition which fried some pins on the Arduino.
+
+The main reason such a thing is likely is because of the number of wires routed throughout our robot. Had we used a protoboard, and even a PCB, we could have made it significantly more reliable.
